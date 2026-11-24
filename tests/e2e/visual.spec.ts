@@ -16,6 +16,8 @@ for (const route of ["home", "detail", "cart", "checkout"] as const) {
       );
     await expect(page.locator(".skeleton")).toHaveCount(0);
     await page.evaluate(async () => {
+      // Full-page captures also need assets outside the lazy-loading viewport.
+      for (const image of document.images) image.loading = "eager";
       await document.fonts.ready;
       await Promise.all(
         Array.from(document.images).map((image) =>
