@@ -36,8 +36,12 @@ export function DetailPage() {
     [info, setInfo] = useState("");
   if (query.isPending)
     return (
-      <div className="container page">
-        <Skeleton type="detail" />
+      <div className="detail-page">
+        <div className="container">
+          <MobileTitle title="Detalhes" />
+          <Breadcrumb current="Detalhes" />
+          <Skeleton type="detail" />
+        </div>
       </div>
     );
   if (query.isError)

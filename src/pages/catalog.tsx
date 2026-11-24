@@ -71,7 +71,7 @@ function Filters({
           update({ minEth: min || undefined, maxEth: max || undefined });
         }}
       >
-        <h3>Faixa de preço</h3>
+        <h2>Faixa de preço</h2>
         <div className="price-inputs">
           <label>
             Mín. ETH

@@ -3142,3 +3142,10 @@ textarea {
     flex-wrap: wrap;
   }
 }
+
+main {
+  min-height: 100vh;
+}
+.filters form > h2 {
+  font-size: 17px;
+}
