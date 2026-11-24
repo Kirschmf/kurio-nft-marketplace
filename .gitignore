@@ -10,3 +10,4 @@ audit-results/
 *.tsbuildinfo
 .openai/local/
 test-results-*/
+playwright-report-*/

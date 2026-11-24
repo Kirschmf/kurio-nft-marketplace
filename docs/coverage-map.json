@@ -4,587 +4,587 @@
     "criterion": "Abrir catálogo, buscar por nome",
     "expected": "URL e API refletem q; resultado correspondente",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T002",
     "criterion": "Combinar categoria, rede e limites de preço",
     "expected": "Interseção correta; filtros continuam selecionados",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T003",
     "criterion": "Mudar ordenação e navegar páginas",
     "expected": "Ordem, total e itens corretos; IDs estáveis",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T004",
     "criterion": "Na página 2, mudar filtro",
     "expected": "page volta a 1",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T005",
     "criterion": "Voltar, avançar e recarregar URL filtrada",
     "expected": "Busca, filtros, sort e page restaurados",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T006",
     "criterion": "Digitar buscas A e B com respostas invertidas",
     "expected": "Resultado B nunca é sobrescrito por A",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T007",
     "criterion": "Aplicar filtros sem resultado e limpar",
     "expected": "Estado vazio e recuperação",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T008",
     "criterion": "Abrir query com page negativa, preço inválido e sort desconhecido",
     "expected": "Normalização documentada e erro seguro; sem crash",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T009",
     "criterion": "Abrir detalhe por URL direta e refresh",
     "expected": "NFT e edições carregam sem home",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T010",
     "criterion": "Abrir NFT inexistente",
     "expected": "404 contextual e retorno ao catálogo",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T011",
     "criterion": "Selecionar edição indisponível",
     "expected": "Compra bloqueada com motivo",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T012",
     "criterion": "Trocar miniatura e edição, variar quantidade",
     "expected": "Imagem selecionada, preço/estoque certos; mínimo/máximo respeitados",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T013",
     "criterion": "Cadastrar, sair e entrar com a conta nova",
     "expected": "Sessão e dados corretos",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T014",
     "criterion": "Cadastrar email/username duplicado",
     "expected": "Erro no campo; nenhum usuário duplicado",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T015",
     "criterion": "Entrar com senha inválida",
     "expected": "Erro sem revelar existência indevida; sem sessão",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T016",
     "criterion": "Acessar checkout sem sessão e autenticar",
     "expected": "Retorna ao checkout com contexto; cotação revalidada",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T017",
     "criterion": "Expirar conta durante navegação",
     "expected": "Redirecionamento seguro e limpeza de dados",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T018",
     "criterion": "Expirar no checkout e entrar novamente",
     "expected": "Retoma revisão; não confirma sozinho",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T019",
     "criterion": "A sair/entrar como B com request A atrasado",
     "expected": "Dados e eventos A descartados",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T020",
     "criterion": "Recarregar rota privada com sessão válida",
     "expected": "Sem flash de dados errados; consulta sessão antes do guard",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T021",
     "criterion": "Tentar pedido/recibo de outro usuário",
     "expected": "404 sem conteúdo privado; cenário 403 também apresentado",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T022",
     "criterion": "Favoritar, refresh, sair/entrar",
     "expected": "Persiste por usuário",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T023",
     "criterion": "Adicionar/remover favorito e forçar falha",
     "expected": "Feedback e rollback exatos",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T024",
     "criterion": "Clicar rapidamente no favorito",
     "expected": "Estado final corresponde à última intenção; sem inversão por resposta antiga",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T025",
     "criterion": "Adicionar mesma edição e outra edição",
     "expected": "Linhas agrupadas pela chave correta",
     "testFiles": ["tests/e2e/cart.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T026",
     "criterion": "Alterar quantidade, remover item e refresh",
     "expected": "Estado correto persiste",
     "testFiles": ["tests/e2e/cart.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T027",
     "criterion": "Informar quantidade 0, negativa, fracionária ou acima do estoque",
     "expected": "Validação UI e API coerentes",
     "testFiles": ["tests/e2e/cart.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T028",
     "criterion": "Aplicar WELCOME10 e remover",
     "expected": "Desconto e total exatos nos dois estados",
     "testFiles": ["tests/e2e/cart.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T029",
     "criterion": "Aplicar cupom inválido/expirado",
     "expected": "Sem desconto fictício; erro recuperável",
     "testFiles": ["tests/e2e/cart.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T030",
     "criterion": "Unir visitante com conta e repetir merge",
     "expected": "Itens preservados; operação aplicada uma vez",
     "testFiles": ["tests/e2e/cart.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T031",
     "criterion": "Unir quantidades acima da disponibilidade",
     "expected": "Ajustes explicados; sem perda silenciosa",
     "testFiles": ["tests/e2e/cart.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T032",
     "criterion": "Comparar totais no carrinho, revisão e recibo",
     "expected": "Todos derivam do mesmo snapshot/cotação",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T033",
     "criterion": "Comprar valores com 18 casas e desconto",
     "expected": "Precisão Wei preservada; sem float; apresentação consistente",
     "testFiles": ["tests/e2e/cart.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T034",
     "criterion": "Percorrer home → detalhe → carrinho → checkout → pedido",
     "expected": "Pedido passa por pending e confirmed; recibo correto",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T035",
     "criterion": "Selecionar principal/secundária e provedor",
     "expected": "Dados e rede da carteira aparecem na revisão/recibo",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T036",
     "criterion": "Recusar conexão ou desconectar carteira",
     "expected": "Sem criação indevida; recuperação disponível",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T037",
     "criterion": "Misturar redes ou escolher carteira incompatível",
     "expected": "Cotação rejeitada com motivo",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T038",
     "criterion": "Alterar produto após compra confirmada",
     "expected": "Recibo não muda",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T039",
     "criterion": "Adicionar outro item/quantidade enquanto pedido resolve",
     "expected": "Somente quantidades compradas são removidas, uma vez",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T040",
     "criterion": "Recusar pagamento",
     "expected": "Carrinho preservado e reserva liberada",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T041",
     "criterion": "Duplo clique e duas requisições concorrentes",
     "expected": "Mesmo orderId, uma reserva, um efeito final",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T042",
     "criterion": "Perder resposta após criação e reenviar",
     "expected": "Recupera mesmo pedido, mesmo com cotação original vencida após commit",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T043",
     "criterion": "Reusar chave com corpo diferente",
     "expected": "409; pedido original intacto",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T044",
     "criterion": "Duas contas disputarem última unidade",
     "expected": "Só uma reserva; estoque não negativo",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T045",
     "criterion": "Deixar cotação expirar antes de enviar",
     "expected": "Revisão e nova confirmação obrigatórias",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T046",
     "criterion": "Alterar perfil e refresh",
     "expected": "Dados persistem; header/perfil sincronizados",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T047",
     "criterion": "Rejeitar username/email/ENS no servidor",
     "expected": "Erro vinculado ao campo; conteúdo preservado",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T048",
     "criterion": "Adicionar, substituir, remover avatar e refresh",
     "expected": "Imagem correta persiste; remoção funciona",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T049",
     "criterion": "Enviar avatar inválido ou maior que 2 MB",
     "expected": "Validação sem alterar avatar anterior",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T050",
     "criterion": "Alterar senha, sair e entrar com nova",
     "expected": "Senha antiga não autentica; nova autentica",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T051",
     "criterion": "Senha atual errada/confirmação divergente",
     "expected": "Erro apropriado; nenhuma alteração",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T052",
     "criterion": "Criar/editar carteiras principal e secundária",
     "expected": "Persistem e aparecem no checkout",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T053",
     "criterion": "Endereço/rede inválidos ou campos obrigatórios vazios",
     "expected": "Validação UI e API; nenhuma falsa gravação",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T054",
     "criterion": "Usar secundária igual à principal e alternar para outra",
     "expected": "Referência/edição persistem conforme regra documentada",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T055",
     "criterion": "Alterar preço via Socket.IO com checkout aberto",
     "expected": "Catálogo/detalhe/carrinho atualizados; aceite anterior inválido",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T056",
     "criterion": "Esgotar edição via Socket.IO",
     "expected": "Quantidade/compra bloqueadas e feedback acessível",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T057",
     "criterion": "Mudar preço entre cotação e criação, sem evento chegar",
     "expected": "API rejeita 409; UI exige revisão explícita",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T058",
     "criterion": "Reentregar eventId",
     "expected": "Sem repetir efeitos ou notificações indevidas",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T059",
     "criterion": "Entregar versão antiga depois da nova",
     "expected": "Preço/estoque/status permanecem novos",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T060",
     "criterion": "Desconectar socket durante pending e reconectar",
     "expected": "REST reconcilia e compra única",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T061",
     "criterion": "Recarregar página durante pending",
     "expected": "resolveAt e tentativa restaurados; resultado recuperado",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T062",
     "criterion": "Trocar usuário antes de evento privado atrasado",
     "expected": "Nenhum dado de A em B",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T063",
     "criterion": "Emitir pending após estado terminal",
     "expected": "Sem regressão; carrinho não limpo novamente",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T064",
     "criterion": "Montar/desmontar páginas e autenticar várias vezes",
     "expected": "Listeners liberados; um evento produz um efeito",
     "testFiles": ["tests/e2e/quality.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T065",
     "criterion": "Completar navegação essencial por Tab/Enter/Escape",
     "expected": "Ordem e foco visíveis; controles operáveis",
     "testFiles": ["tests/e2e/quality.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T066",
     "criterion": "Abrir/fechar login e drawer de filtros",
     "expected": "Foco entra, fica contido e retorna ao disparador",
     "testFiles": ["tests/e2e/quality.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T067",
     "criterion": "Enviar formulário inválido",
     "expected": "Primeiro inválido focado; label/erro associado",
     "testFiles": ["tests/e2e/quality.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T068",
     "criterion": "Receber mudança de preço/recusa sem mouse",
     "expected": "Mensagem anunciada; estado não depende só de cor",
-    "testFiles": [],
-    "evidence": "manual_or_delivery"
+    "testFiles": ["tests/e2e/smoke.spec.ts"],
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T069",
     "criterion": "Zoom 200% e verificação a 390/768/1440",
     "expected": "Sem perda de conteúdo/overflow; último controle acessível",
     "testFiles": ["tests/e2e/quality.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T070",
     "criterion": "Atrasar catálogo/detalhe/resumo",
     "expected": "Skeletons correspondentes e espaço reservado",
     "testFiles": ["tests/e2e/quality.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T071",
     "criterion": "Ativar reduced motion",
     "expected": "Shimmer reduzido/desativado sem perder indicação de loading",
     "testFiles": ["tests/e2e/quality.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T072",
     "criterion": "Falhar rede/500 e recuperar",
     "expected": "Feedback, retry limitado e nova tentativa preservam contexto",
     "testFiles": ["tests/e2e/quality.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T073",
     "criterion": "Atualizar em background com conteúdo já presente",
     "expected": "Mantém conteúdo com indicador; não substitui por loading inicial indevido",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T074",
     "criterion": "Resetar cenário após alterações em todos os recursos",
     "expected": "Dados, versões, filas, sessão e pedidos retornam ao seed conhecido",
     "testFiles": ["tests/e2e/quality.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T075",
     "criterion": "Capturar home/detalhe/carrinho/pagamento em desktop e mobile",
     "expected": "8 baselines versionadas com fontes/dados/relógio estáveis",
     "testFiles": ["tests/e2e/visual.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T076",
     "criterion": "Abrir rotas diretas e refresh no deploy",
     "expected": "SPA, MSW, Socket.IO e assets funcionando no mesmo commit",
     "testFiles": [],
-    "evidence": "manual_or_delivery"
+    "evidence": "Hosted smoke command and delivery verification report"
   },
   {
     "id": "T077",
     "criterion": "Reproduzir instalação em checkout limpo",
     "expected": "Tipos, lint, build, E2E e auditoria seguem README; sem serviços privados",
     "testFiles": [],
-    "evidence": "manual_or_delivery"
+    "evidence": "GitHub Actions: clean checkout and complete checks workflow"
   },
   {
     "id": "T078",
     "criterion": "Rodar home/detalhe em mobile/desktop três vezes",
     "expected": "12 relatórios HTML/JSON, medianas 90/95/95/90 e LCP/CLS/TBT; desvios explicados",
     "testFiles": [],
-    "evidence": "manual_or_delivery"
+    "evidence": "evidence/lighthouse/: 12 reports, mobile performance below target documented"
   },
   {
     "id": "T079",
     "criterion": "Usar social, newsletter, recuperação, editorial e explorer",
     "expected": "Sem OAuth/envio/transação real ou sucesso falso; mensagem/destino coerente",
     "testFiles": ["tests/e2e/quality.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T080",
     "criterion": "Percorrer checkout completo em 390 px com teclado aberto",
     "expected": "Todos os campos/revisão acessíveis; CTA não encobre conteúdo",
     "testFiles": ["tests/e2e/quality.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T081",
     "criterion": "Usar perfil, carteiras e confirmação em mobile",
     "expected": "Três adaptações completas sem frame específico",
     "testFiles": ["tests/e2e/quality.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T082",
     "criterion": "Ler abas de detalhes/avaliações e usar relacionados",
     "expected": "Conteúdo fictício coerente e navegação real; sem avaliações de pessoas reais",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T083",
     "criterion": "Usar tabs Todos/Novos/Em alta, busca mobile e filtros em drawer",
     "expected": "Estado preservado na URL e resultados coerentes",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   },
   {
     "id": "T084",
     "criterion": "Abrir /login direto, refresh e fechar diálogo com return inválido",
     "expected": "Fallback seguro, sem open redirect ou dependência de histórico inexistente",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": null
+    "evidence": "Playwright: desktop and mobile"
   }
 ]

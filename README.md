@@ -2,7 +2,7 @@
 
 Marketplace de NFTs do desafio frontend da Jungle Gaming. React, TypeScript e Vite; dados, contas, carteiras e pagamentos são simulados na camada de rede.
 
-Código: [Kirschmf/kurio-nft-marketplace](https://github.com/Kirschmf/kurio-nft-marketplace).
+[Abrir demonstração](https://kurio-colecoes-matheus.famousbrush11.chatgpt.site) · [Código](https://github.com/Kirschmf/kurio-nft-marketplace) · [Lighthouse](evidence/lighthouse/README.md).
 
 ![Kurio no desktop](docs/screenshots/home-desktop.png)
 
