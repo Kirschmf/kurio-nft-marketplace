@@ -1,0 +1,12 @@
+node_modules/
+dist/
+test-results/
+playwright-report/
+audit-results/
+.env
+.env.local
+.DS_Store
+*.log
+*.tsbuildinfo
+.openai/local/
+test-results-*/

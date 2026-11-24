@@ -1,0 +1,193 @@
+{
+  "source": "Frontend Challenge Figma export; Desktop/Início.png",
+  "sourceFrame": {
+    "width": 1440,
+    "height": 3668
+  },
+  "artwork": [
+    {
+      "name": "emerald",
+      "subject": "Macaco marrom com óculos verdes e jaqueta verde",
+      "source": "Figma export/Desktop/Início.png",
+      "sourceSha256": "e9a308f72d44276730a6f47b01f0c10156d8a0bd1701c7703f423414c2bf636d",
+      "cropXYXY": [870, 101, 1320, 551],
+      "width": 450,
+      "height": 450,
+      "path": "public/assets/emerald.webp",
+      "bytes": 40010,
+      "sha256": "5f348d838cced653a80b78f6b26dfd903f55f32307711e4ecd036e87ec532111",
+      "pixelExact": false,
+      "operations": [
+        "exact native-resolution crop",
+        "WebP quality 92; no resizing"
+      ],
+      "thumbnail": {
+        "path": "public/assets/emerald-thumb.webp",
+        "width": 128,
+        "height": 128,
+        "bytes": 3798,
+        "operations": [
+          "derived thumbnail",
+          "Lanczos downsample",
+          "WebP quality 86"
+        ]
+      },
+      "pixelExactMaster": {
+        "path": "public/assets/source/emerald.png",
+        "bytes": 301889,
+        "sha256": "d53623c348ded36e88545905293b7dcc7a9c343dcf8a3a307639a648637d98d4",
+        "pixelExact": true
+      }
+    },
+    {
+      "name": "violet",
+      "subject": "Macaco cinza com chapéu verde e moletom roxo",
+      "source": "Figma export/Desktop/Início.png",
+      "sourceSha256": "e9a308f72d44276730a6f47b01f0c10156d8a0bd1701c7703f423414c2bf636d",
+      "cropXYXY": [774, 722, 1024, 972],
+      "width": 250,
+      "height": 250,
+      "path": "public/assets/violet.webp",
+      "bytes": 14828,
+      "sha256": "a1800ce4e9a8c7ef35f83bf860c47389b89269c00e6acf5d16cb88e493137c5c",
+      "pixelExact": false,
+      "operations": [
+        "exact native-resolution crop",
+        "WebP quality 92; no resizing"
+      ],
+      "thumbnail": {
+        "path": "public/assets/violet-thumb.webp",
+        "width": 128,
+        "height": 128,
+        "bytes": 3500,
+        "operations": [
+          "derived thumbnail",
+          "Lanczos downsample",
+          "WebP quality 86"
+        ]
+      },
+      "pixelExactMaster": {
+        "path": "public/assets/source/violet.png",
+        "bytes": 102403,
+        "sha256": "723f78c8855d8861c729db7ca74a037f3d06fb3c8e05f881e6dd40ef462e4bdf",
+        "pixelExact": true
+      }
+    },
+    {
+      "name": "ivory",
+      "subject": "Macaco escuro com terno claro",
+      "source": "Figma export/Desktop/Início.png",
+      "sourceSha256": "e9a308f72d44276730a6f47b01f0c10156d8a0bd1701c7703f423414c2bf636d",
+      "cropXYXY": [1066, 721, 1316, 971],
+      "width": 250,
+      "height": 250,
+      "path": "public/assets/ivory.webp",
+      "bytes": 13814,
+      "sha256": "8dcba322a8965b7ed5961566a4f4deb21b2af6d2821f6371f35398557b05bff1",
+      "pixelExact": false,
+      "operations": [
+        "exact native-resolution crop",
+        "WebP quality 92; no resizing"
+      ],
+      "thumbnail": {
+        "path": "public/assets/ivory-thumb.webp",
+        "width": 128,
+        "height": 128,
+        "bytes": 3214,
+        "operations": [
+          "derived thumbnail",
+          "Lanczos downsample",
+          "WebP quality 86"
+        ]
+      },
+      "pixelExactMaster": {
+        "path": "public/assets/source/ivory.png",
+        "bytes": 95929,
+        "sha256": "2b7bb44a24f5421b04f7d4c77bd25a060e6dfb60418a0e0f420c86dfc5ef00df",
+        "pixelExact": true
+      }
+    },
+    {
+      "name": "golden",
+      "subject": "Macaco dourado com fones verdes e jaqueta clara",
+      "source": "Figma export/Desktop/Início.png",
+      "sourceSha256": "e9a308f72d44276730a6f47b01f0c10156d8a0bd1701c7703f423414c2bf636d",
+      "cropXYXY": [482, 1567, 732, 1817],
+      "width": 250,
+      "height": 250,
+      "path": "public/assets/golden.webp",
+      "bytes": 16342,
+      "sha256": "666ebff68bc94c0e99c8d63626da77e4a1326b9f820beac0cc2df4067f4f2cb8",
+      "pixelExact": false,
+      "operations": [
+        "exact native-resolution crop",
+        "WebP quality 92; no resizing"
+      ],
+      "thumbnail": {
+        "path": "public/assets/golden-thumb.webp",
+        "width": 128,
+        "height": 128,
+        "bytes": 3794,
+        "operations": [
+          "derived thumbnail",
+          "Lanczos downsample",
+          "WebP quality 86"
+        ]
+      },
+      "pixelExactMaster": {
+        "path": "public/assets/source/golden.png",
+        "bytes": 101620,
+        "sha256": "62bbc19bbb57cecd082de3cd01d0dd3d785f81ce7a3696d33f2512f2ee75b017",
+        "pixelExact": true
+      }
+    }
+  ],
+  "limitations": [
+    "Recortes de frames exportados, não os assets originais internos do Figma.",
+    "O maior retrato Emerald está disponível em 450×450; os demais em 250×250. Não houve ampliação artificial.",
+    "Os cantos arredondados dos retratos são os do próprio frame, incluindo o fundo escuro existente. Nenhum texto, botão ou ícone foi incluído nos recortes.",
+    "As quatro artes são reutilizadas nas fixtures do projeto; nomes/IDs de NFTs diferentes devem manter mapeamento canônico consistente.",
+    "Fonte exata do Figma ainda não foi confirmada.",
+    "As imagens WebP de uso no navegador usam qualidade 92 na resolução nativa; os PNGs em assets/source preservam os pixels exatos dos recortes.",
+    "Fontes WOFF2 foram derivadas da DejaVu Sans Mono instalada localmente, com subset Latin/Latin Extended/pontuação; fonte provisória até confirmar a original do Figma."
+  ],
+  "fonts": [
+    {
+      "family": "DejaVu Sans Mono",
+      "cssFamilySuggestion": "Kurio Mono",
+      "weight": 400,
+      "source": "C:\\Windows\\Fonts\\DejaVuSansMono.ttf",
+      "path": "public/assets/kurio-mono-regular.woff2",
+      "bytes": 27244,
+      "sha256": "281638646c2efbc05862bb3d2ba83a777444beaa17e0d58530a32a81135d2e02",
+      "operations": [
+        "Latin/Latin Extended and punctuation subset",
+        "WOFF2 encoding"
+      ],
+      "license": "Bitstream Vera license; DejaVu changes public domain; embedded notice copied to FONT-LICENSE.txt",
+      "exactFigmaFont": false
+    },
+    {
+      "family": "DejaVu Sans Mono",
+      "cssFamilySuggestion": "Kurio Mono",
+      "weight": 700,
+      "source": "C:\\Windows\\Fonts\\DejaVuSansMono-Bold.ttf",
+      "path": "public/assets/kurio-mono-bold.woff2",
+      "bytes": 26548,
+      "sha256": "f9de9d47c64620b742d001624987ed9a0a595706cafed62848603c1a6f4788bc",
+      "operations": [
+        "Latin/Latin Extended and punctuation subset",
+        "WOFF2 encoding"
+      ],
+      "license": "Bitstream Vera license; DejaVu changes public domain; embedded notice copied to FONT-LICENSE.txt",
+      "exactFigmaFont": false
+    }
+  ],
+  "validation": {
+    "artworkCount": 4,
+    "mastersPixelExact": true,
+    "allCropsWithinSource": true,
+    "nativeResolutionPreserved": true,
+    "fontsContainPortuguese": true
+  }
+}
