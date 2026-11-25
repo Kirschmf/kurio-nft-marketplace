@@ -73,7 +73,7 @@ export async function render(path: string, template: string) {
         );
         return template.replace(
           '<div id="root"></div>',
-          `<div id="root">${markup}</div><script id="kurio-prerender" type="application/json">${payload}</script>`,
+          `<div id="root" inert>${markup}</div><script id="kurio-prerender" type="application/json">${payload}</script>`,
         );
       },
     }),

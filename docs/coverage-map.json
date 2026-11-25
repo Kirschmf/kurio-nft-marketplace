@@ -311,39 +311,47 @@
         "line": 4,
         "assertions": [
           {
-            "line": 24,
-            "assertion": "expect(payload.path).toBe(route)"
+            "line": 19,
+            "assertion": "expect(html).toContain('<div id=\"root\" inert>')"
           },
           {
             "line": 25,
-            "assertion": "expect(payload.data.queries.length).toBeGreaterThan(0)"
+            "assertion": "expect(payload.path).toBe(route)"
           },
           {
             "line": 26,
+            "assertion": "expect(payload.data.queries.length).toBeGreaterThan(0)"
+          },
+          {
+            "line": 27,
             "assertion": "expect( payload.data.queries.every((query: { queryKey: unknown[] }) => [\"catalog\", \"nft\"].includes(String(query.queryKey[0])), ), ).toBe(true)"
           },
           {
-            "line": 31,
+            "line": 32,
             "assertion": "expect(JSON.stringify(payload)).not.toMatch( /passwordHash|kurio-session|collector\\.a@example/, )"
           },
           {
-            "line": 35,
+            "line": 36,
             "assertion": "expect(page.locator(\"html\")).toHaveAttribute( \"data-network-ready\", \"true\", )"
           },
           {
-            "line": 39,
+            "line": 40,
+            "assertion": "expect(page.locator(\"#root\")).toHaveJSProperty(\"inert\", false)"
+          },
+          {
+            "line": 41,
             "assertion": "expect(page.locator(\".cart-link\")).toHaveAttribute( \"aria-label\", \"Carrinho, 2 itens\", )"
           },
           {
-            "line": 43,
+            "line": 45,
             "assertion": "expect( page .locator(route === \"/\" ? \".nft-grid .nft-card\" : \".detail-info\") .first(), ).toContainText(\"2.19 ETH\")"
           },
           {
-            "line": 48,
+            "line": 50,
             "assertion": "expect(page.locator(\"#main-content\")).toHaveAttribute( \"data-connection\", \"connected\", )"
           },
           {
-            "line": 53,
+            "line": 55,
             "assertion": "expect(errors).toEqual([])"
           }
         ]
@@ -3078,39 +3086,47 @@
         "line": 4,
         "assertions": [
           {
-            "line": 24,
-            "assertion": "expect(payload.path).toBe(route)"
+            "line": 19,
+            "assertion": "expect(html).toContain('<div id=\"root\" inert>')"
           },
           {
             "line": 25,
-            "assertion": "expect(payload.data.queries.length).toBeGreaterThan(0)"
+            "assertion": "expect(payload.path).toBe(route)"
           },
           {
             "line": 26,
+            "assertion": "expect(payload.data.queries.length).toBeGreaterThan(0)"
+          },
+          {
+            "line": 27,
             "assertion": "expect( payload.data.queries.every((query: { queryKey: unknown[] }) => [\"catalog\", \"nft\"].includes(String(query.queryKey[0])), ), ).toBe(true)"
           },
           {
-            "line": 31,
+            "line": 32,
             "assertion": "expect(JSON.stringify(payload)).not.toMatch( /passwordHash|kurio-session|collector\\.a@example/, )"
           },
           {
-            "line": 35,
+            "line": 36,
             "assertion": "expect(page.locator(\"html\")).toHaveAttribute( \"data-network-ready\", \"true\", )"
           },
           {
-            "line": 39,
+            "line": 40,
+            "assertion": "expect(page.locator(\"#root\")).toHaveJSProperty(\"inert\", false)"
+          },
+          {
+            "line": 41,
             "assertion": "expect(page.locator(\".cart-link\")).toHaveAttribute( \"aria-label\", \"Carrinho, 2 itens\", )"
           },
           {
-            "line": 43,
+            "line": 45,
             "assertion": "expect( page .locator(route === \"/\" ? \".nft-grid .nft-card\" : \".detail-info\") .first(), ).toContainText(\"2.19 ETH\")"
           },
           {
-            "line": 48,
+            "line": 50,
             "assertion": "expect(page.locator(\"#main-content\")).toHaveAttribute( \"data-connection\", \"connected\", )"
           },
           {
-            "line": 53,
+            "line": 55,
             "assertion": "expect(errors).toEqual([])"
           }
         ]

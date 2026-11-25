@@ -16,6 +16,7 @@ test("T009 T073 public snapshots hydrate without errors and reconcile persisted 
     const response = await page.goto(route);
     const html = await response!.text();
     if (html.includes('id="kurio-prerender"')) {
+      expect(html).toContain('<div id="root" inert>');
       const payload = JSON.parse(
         html.match(
           /<script id="kurio-prerender" type="application\/json">(.+?)<\/script>/s,
@@ -36,6 +37,7 @@ test("T009 T073 public snapshots hydrate without errors and reconcile persisted 
       "data-network-ready",
       "true",
     );
+    await expect(page.locator("#root")).toHaveJSProperty("inert", false);
     await expect(page.locator(".cart-link")).toHaveAttribute(
       "aria-label",
       "Carrinho, 2 itens",

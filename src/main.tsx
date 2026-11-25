@@ -56,6 +56,7 @@ async function start() {
   else ReactDOM.createRoot(root).render(app);
   await network;
   if (canHydrate) await waitForPublicPage();
+  root.removeAttribute("inert");
   document.documentElement.dataset.networkReady = "true";
   if (canHydrate) void queryClient.invalidateQueries();
 }
