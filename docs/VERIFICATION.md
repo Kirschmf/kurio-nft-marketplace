@@ -25,6 +25,8 @@ npx playwright test smoke.spec.ts startup.spec.ts
 
 Isso verifica catálogo → detalhe → carrinho visitante → login → compra confirmada → recibo/refresh, atualização de preço pelo socket e startup com dados persistidos. Guards, rotas inexistentes, contas e erros também fazem parte da suíte completa local/CI. O registro de entrega identifica o commit publicado e a versão salva pelo host.
 
+O host está configurado com fallback de aplicação de página única. Arquivos pré-renderizados do catálogo e dos NFTs têm prioridade; acesso direto e refresh de login, conta, checkout e pedidos carregam a aplicação e seus guards. A conferência hospedada também testa destinos inválidos e acesso sem sessão. Essa configuração é necessária além do fallback que o preview do Vite já fornece.
+
 ## Lighthouse
 
 [Relatórios HTML/JSON e medianas](../evidence/lighthouse/README.md). O comando mede duas páginas × dois perfis × três execuções com build de produção e cenário padrão. Registra versões, ambiente, commit, LCP, CLS e TBT. As metas 90/95/95/90 são verificadas pelo runner; qualquer mediana abaixo delas produz saída de erro.
