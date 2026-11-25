@@ -29,6 +29,10 @@ Isso verifica catálogo → detalhe → carrinho visitante → login → compra 
 
 [Relatórios HTML/JSON e medianas](../evidence/lighthouse/README.md). O comando mede duas páginas × dois perfis × três execuções com build de produção e cenário padrão. Registra versões, ambiente, commit, LCP, CLS e TBT. As metas 90/95/95/90 são verificadas pelo runner; qualquer mediana abaixo delas produz saída de erro.
 
+Em 25/11/2026, a rodada final no código da aplicação `04bde56f5246022f346a6f3c93c168efa08fb734`, com árvore limpa, atingiu performance 94/100 no catálogo mobile/desktop e 90/100 no detalhe mobile/desktop. Acessibilidade, boas práticas e SEO tiveram mediana 100 em todos os perfis; CLS zero. A evidência conserva as 12 medições, não apenas a melhor execução.
+
+O smoke aguarda a confirmação visível de inclusão antes de recarregar a página do carrinho. O trace da CI anterior mostrou que a navegação forçada imediatamente após o clique abortava o POST ainda pendente. A correção sincroniza o teste com a conclusão da operação, sem aumentar timeout, adicionar retry ou alterar a aplicação.
+
 ## Limites
 
 Os resultados mobile são emulação Chromium. A demonstração não integra blockchain, gateways ou autenticação de produção. Todos os dados e credenciais são fictícios. A referência tipográfica foi confirmada como Roboto Mono e as quatro artes originais foram preservadas; desvios restantes estão descritos por frame. Os relatórios verificam comportamentos e condições reproduzíveis, sem garantir nota do avaliador ou ausência absoluta de defeitos.

@@ -16,6 +16,9 @@ test("catalog → detail → visitor cart → login → confirmed receipt", asyn
   await page
     .getByRole("button", { name: "Adicionar ao carrinho", exact: true })
     .click();
+  await expect(page.locator(".toast")).toHaveText(
+    "Emerald Ape #042 foi para o carrinho.",
+  );
   await page.goto("/cart");
   await expect(page.locator(".cart-row")).toHaveCount(1);
   await page.getByRole("link", { name: "Finalizar compra" }).click();

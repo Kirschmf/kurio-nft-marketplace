@@ -2744,26 +2744,26 @@
       {
         "file": "tests/e2e/smoke.spec.ts",
         "title": "T068 socket connection updates an open cart through the real client",
-        "line": 42,
+        "line": 45,
         "assertions": [
           {
-            "line": 48,
+            "line": 51,
             "assertion": "expect(page.locator(\".cart-product>span\")).toHaveText(\"1.19 ETH\")"
           },
           {
-            "line": 51,
+            "line": 54,
             "assertion": "expect(page.locator(\".cart-product>span\")).toHaveText(\"2.19 ETH\")"
           },
           {
-            "line": 52,
+            "line": 55,
             "assertion": "expect(page.locator(\".toast\")).toHaveAttribute(\"role\", \"status\")"
           },
           {
-            "line": 53,
+            "line": 56,
             "assertion": "expect(page.locator(\".toast\")).toHaveAttribute(\"aria-live\", \"polite\")"
           },
           {
-            "line": 57,
+            "line": 60,
             "assertion": "expect(page.getByTestId(\"socket-status\")).toHaveText(\"connected\")"
           }
         ]
