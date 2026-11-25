@@ -52,7 +52,42 @@ export async function boot(page: Page, scenario = "default") {
     localStorage.removeItem("kurio-guest");
   });
   await page.reload();
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-network-ready",
+    "true",
+  );
+  await expect(page.locator("#root")).toHaveJSProperty("inert", false);
   await expect(page.locator(".nft-card").first()).toBeVisible();
+}
+export async function visitSignedIn(page: Page, route: string) {
+  await page.goto(route);
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-network-ready",
+    "true",
+  );
+  await expect(page.locator(".site-header .account-link")).toBeAttached();
+  const headings: Record<string, string | RegExp> = {
+    "/": /SEJA DONO/,
+    "/nfts/emerald-042": "Emerald Ape #042",
+    "/checkout": "Perfil do colecionador",
+    "/login": "Entrar",
+    "/register": "Criar perfil de colecionador",
+    "/account/profile": "Detalhes do perfil",
+    "/account/wallets": "Minhas carteiras",
+    "/favorites": "Lista de interesse",
+  };
+  if (route === "/cart")
+    await expect(page.locator(".cart-row").first()).toBeVisible();
+  else
+    await expect(
+      page.getByRole("heading", {
+        name: route.startsWith("/orders/")
+          ? "Compra confirmada!"
+          : headings[route],
+        exact: typeof headings[route] === "string",
+      }),
+    ).toBeVisible();
+  await expect(page.locator(".skeleton")).toHaveCount(0);
 }
 export async function login(
   page: Page,

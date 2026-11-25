@@ -1,5 +1,12 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
-import { action, add, boot, createOrder, login } from "./helpers";
+import {
+  action,
+  add,
+  boot,
+  createOrder,
+  login,
+  visitSignedIn,
+} from "./helpers";
 
 async function tabTo(page: Page, target: Locator) {
   for (let i = 0; i < 160; i++) {
@@ -145,9 +152,7 @@ test("T069 T080 T081 all nine screens and favorites fit required widths", async 
       `/orders/${order.id}`,
       "/favorites",
     ]) {
-      await page.goto(route);
-      await expect(page.locator("#main-content")).not.toBeEmpty();
-      await expect(page.locator(".skeleton")).toHaveCount(0);
+      await visitSignedIn(page, route);
       expect(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= window.innerWidth + 1,

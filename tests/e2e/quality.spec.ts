@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { action, add, api, boot, login } from "./helpers";
+import { action, add, api, boot, login, visitSignedIn } from "./helpers";
 import type { CartView } from "../../src/lib/types";
 
 test.beforeEach(async ({ page }) => boot(page));
@@ -51,8 +51,7 @@ test("T069 T080 T081 no overflow at 390, 768, 1440 or 200 percent equivalent wid
       "/account/profile",
       "/account/wallets",
     ]) {
-      await page.goto(route);
-      await expect(page.locator("#main-content")).not.toBeEmpty();
+      await visitSignedIn(page, route);
       expect(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= window.innerWidth + 1,

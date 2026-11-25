@@ -2506,22 +2506,22 @@
       {
         "file": "tests/e2e/quality.spec.ts",
         "title": "T064 mounting pages does not duplicate socket effects",
-        "line": 136,
+        "line": 135,
         "assertions": [
           {
-            "line": 142,
+            "line": 141,
             "assertion": "expect(page.locator(\"#main-content\")).not.toBeEmpty()"
           },
           {
-            "line": 144,
+            "line": 143,
             "assertion": "expect(page.locator(\"#main-content\")).toHaveAttribute( \"data-connection\", \"connected\", )"
           },
           {
-            "line": 149,
+            "line": 148,
             "assertion": "expect(page.locator(\".cart-product>span\")).toHaveText(\"4.19 ETH\")"
           },
           {
-            "line": 153,
+            "line": 152,
             "assertion": "expect(page.getByRole(\"dialog\")).toContainText(\"1 eventos recebidos\")"
           }
         ]
@@ -2541,18 +2541,18 @@
       {
         "file": "tests/e2e/accessibility.spec.ts",
         "title": "T065 complete purchase uses Tab and Enter",
-        "line": 21,
+        "line": 28,
         "assertions": [
           {
-            "line": 34,
+            "line": 41,
             "assertion": "expect(page).not.toHaveURL(/\\/login/)"
           },
           {
-            "line": 43,
+            "line": 50,
             "assertion": "expect(page).toHaveURL(/\\/checkout/)"
           },
           {
-            "line": 61,
+            "line": 68,
             "assertion": "expect( page.getByRole(\"heading\", { name: \"Compra confirmada!\" }), ).toBeVisible()"
           }
         ]
@@ -2595,38 +2595,38 @@
       {
         "file": "tests/e2e/accessibility.spec.ts",
         "title": "T066 login and mobile filters contain and restore focus",
-        "line": 66,
+        "line": 73,
         "assertions": [
           {
-            "line": 74,
+            "line": 81,
             "assertion": "expect(dialog).toBeVisible()"
           },
           {
-            "line": 77,
+            "line": 84,
             "assertion": "expect( await dialog.evaluate((node) => node.contains(document.activeElement)), ).toBe(true)"
           },
           {
-            "line": 82,
+            "line": 89,
             "assertion": "expect(dialog).toHaveCount(0)"
           },
           {
-            "line": 83,
+            "line": 90,
             "assertion": "expect(trigger).toBeFocused()"
           },
           {
-            "line": 88,
+            "line": 95,
             "assertion": "expect(dialog).toBeVisible()"
           },
           {
-            "line": 91,
+            "line": 98,
             "assertion": "expect( await dialog.evaluate((node) => node.contains(document.activeElement)), ).toBe(true)"
           },
           {
-            "line": 96,
+            "line": 103,
             "assertion": "expect(dialog).toHaveCount(0)"
           },
           {
-            "line": 97,
+            "line": 104,
             "assertion": "expect(filters).toBeFocused()"
           }
         ]
@@ -2784,18 +2784,10 @@
       {
         "file": "tests/e2e/accessibility.spec.ts",
         "title": "T069 T080 T081 all nine screens and favorites fit required widths",
-        "line": 122,
+        "line": 129,
         "assertions": [
           {
-            "line": 149,
-            "assertion": "expect(page.locator(\"#main-content\")).not.toBeEmpty()"
-          },
-          {
-            "line": 150,
-            "assertion": "expect(page.locator(\".skeleton\")).toHaveCount(0)"
-          },
-          {
-            "line": 151,
+            "line": 156,
             "assertion": "expect( await page.evaluate( () => document.documentElement.scrollWidth <= window.innerWidth + 1, ), `${route} at ${width}`, ).toBe(true)"
           }
         ]
@@ -2807,10 +2799,6 @@
         "assertions": [
           {
             "line": 55,
-            "assertion": "expect(page.locator(\"#main-content\")).not.toBeEmpty()"
-          },
-          {
-            "line": 56,
             "assertion": "expect( await page.evaluate( () => document.documentElement.scrollWidth <= window.innerWidth + 1, ), `${route} at ${width}`, ).toBe(true)"
           }
         ]
@@ -2849,22 +2837,22 @@
       {
         "file": "tests/e2e/accessibility.spec.ts",
         "title": "T070 T071 shimmer runs normally and stops with reduced motion",
-        "line": 100,
+        "line": 107,
         "assertions": [
           {
-            "line": 107,
+            "line": 114,
             "assertion": "expect(skeleton).toBeVisible()"
           },
           {
-            "line": 108,
+            "line": 115,
             "assertion": "expect( await skeleton.evaluate( (element) => getComputedStyle(element).animationName, ), ).toBe(\"shimmer\")"
           },
           {
-            "line": 114,
+            "line": 121,
             "assertion": "expect( await skeleton.evaluate( (element) => getComputedStyle(element).animationName, ), ).toBe(\"none\")"
           },
           {
-            "line": 119,
+            "line": 126,
             "assertion": "expect(page.locator(\".nft-grid .nft-card\")).toHaveCount(4)"
           }
         ]
@@ -2872,34 +2860,34 @@
       {
         "file": "tests/e2e/quality.spec.ts",
         "title": "T070 T071 slow skeletons and reduced motion remain accessible",
-        "line": 65,
+        "line": 64,
         "assertions": [
           {
-            "line": 70,
+            "line": 69,
             "assertion": "expect( page.getByRole(\"status\", { name: \"Carregando\" }).first(), ).toBeVisible()"
           },
           {
-            "line": 73,
+            "line": 72,
             "assertion": "expect( await page .locator(\".skeleton\") .first() .evaluate((element) => getComputedStyle(element).animationName), ).toBe(\"none\")"
           },
           {
-            "line": 79,
+            "line": 78,
             "assertion": "expect(page.locator(\".nft-grid .nft-card\")).toHaveCount(4)"
           },
           {
-            "line": 83,
+            "line": 82,
             "assertion": "expect(page.locator(\".skeleton-detail\")).toBeVisible()"
           },
           {
-            "line": 84,
+            "line": 83,
             "assertion": "expect( page.getByRole(\"heading\", { name: \"Emerald Ape #042\" }), ).toBeVisible()"
           },
           {
-            "line": 88,
+            "line": 87,
             "assertion": "expect(page.locator(\".skeleton-summary\")).toBeVisible()"
           },
           {
-            "line": 89,
+            "line": 88,
             "assertion": "expect( page.getByRole(\"heading\", { name: \"Seu carrinho está vazio\" }), ).toBeVisible()"
           }
         ]
@@ -2919,22 +2907,22 @@
       {
         "file": "tests/e2e/accessibility.spec.ts",
         "title": "T070 T071 shimmer runs normally and stops with reduced motion",
-        "line": 100,
+        "line": 107,
         "assertions": [
           {
-            "line": 107,
+            "line": 114,
             "assertion": "expect(skeleton).toBeVisible()"
           },
           {
-            "line": 108,
+            "line": 115,
             "assertion": "expect( await skeleton.evaluate( (element) => getComputedStyle(element).animationName, ), ).toBe(\"shimmer\")"
           },
           {
-            "line": 114,
+            "line": 121,
             "assertion": "expect( await skeleton.evaluate( (element) => getComputedStyle(element).animationName, ), ).toBe(\"none\")"
           },
           {
-            "line": 119,
+            "line": 126,
             "assertion": "expect(page.locator(\".nft-grid .nft-card\")).toHaveCount(4)"
           }
         ]
@@ -2942,34 +2930,34 @@
       {
         "file": "tests/e2e/quality.spec.ts",
         "title": "T070 T071 slow skeletons and reduced motion remain accessible",
-        "line": 65,
+        "line": 64,
         "assertions": [
           {
-            "line": 70,
+            "line": 69,
             "assertion": "expect( page.getByRole(\"status\", { name: \"Carregando\" }).first(), ).toBeVisible()"
           },
           {
-            "line": 73,
+            "line": 72,
             "assertion": "expect( await page .locator(\".skeleton\") .first() .evaluate((element) => getComputedStyle(element).animationName), ).toBe(\"none\")"
           },
           {
-            "line": 79,
+            "line": 78,
             "assertion": "expect(page.locator(\".nft-grid .nft-card\")).toHaveCount(4)"
           },
           {
-            "line": 83,
+            "line": 82,
             "assertion": "expect(page.locator(\".skeleton-detail\")).toBeVisible()"
           },
           {
-            "line": 84,
+            "line": 83,
             "assertion": "expect( page.getByRole(\"heading\", { name: \"Emerald Ape #042\" }), ).toBeVisible()"
           },
           {
-            "line": 88,
+            "line": 87,
             "assertion": "expect(page.locator(\".skeleton-summary\")).toBeVisible()"
           },
           {
-            "line": 89,
+            "line": 88,
             "assertion": "expect( page.getByRole(\"heading\", { name: \"Seu carrinho está vazio\" }), ).toBeVisible()"
           }
         ]
@@ -2986,14 +2974,14 @@
       {
         "file": "tests/e2e/quality.spec.ts",
         "title": "T072 transient failures stop retrying and recover on request",
-        "line": 93,
+        "line": 92,
         "assertions": [
           {
-            "line": 98,
+            "line": 97,
             "assertion": "expect(page.getByRole(\"alert\")).toContainText(\"temporariamente\")"
           },
           {
-            "line": 100,
+            "line": 99,
             "assertion": "expect(page.locator(\".nft-grid .nft-card\")).toHaveCount(4)"
           }
         ]
@@ -3037,30 +3025,30 @@
       {
         "file": "tests/e2e/accessibility.spec.ts",
         "title": "T073 background refresh preserves catalog and announces progress",
-        "line": 161,
+        "line": 166,
         "assertions": [
           {
-            "line": 165,
+            "line": 170,
             "assertion": "expect(cards).toHaveCount(9)"
           },
           {
-            "line": 166,
+            "line": 171,
             "assertion": "expect(page.locator(\"#main-content\")).toHaveAttribute( \"data-connection\", \"connected\", )"
           },
           {
-            "line": 172,
+            "line": 177,
             "assertion": "expect(page.locator(\".background-status\")).toHaveText( \"Atualizando resultados…\", )"
           },
           {
-            "line": 175,
+            "line": 180,
             "assertion": "expect(cards).toHaveCount(9)"
           },
           {
-            "line": 176,
+            "line": 181,
             "assertion": "expect(page.locator(\".skeleton\")).toHaveCount(0)"
           },
           {
-            "line": 177,
+            "line": 182,
             "assertion": "expect(cards.first()).toContainText(\"2.19 ETH\")"
           }
         ]
@@ -3143,22 +3131,22 @@
       {
         "file": "tests/e2e/quality.spec.ts",
         "title": "T074 reset restores sessions, versions, cart, favorites and orders",
-        "line": 102,
+        "line": 101,
         "assertions": [
           {
-            "line": 111,
+            "line": 110,
             "assertion": "expect(page.locator(\".header-actions\")).toContainText(\"Entrar\")"
           },
           {
-            "line": 113,
+            "line": 112,
             "assertion": "expect((await api<string[]>(page, \"GET\", \"/favorites\")).data).toEqual([])"
           },
           {
-            "line": 114,
+            "line": 113,
             "assertion": "expect((await api<CartView>(page, \"GET\", \"/cart\")).data.lines).toEqual([])"
           },
           {
-            "line": 116,
+            "line": 115,
             "assertion": "expect(page.locator(\".detail-price\")).toHaveText(\"1.19 ETH\")"
           }
         ]
@@ -3227,14 +3215,14 @@
       {
         "file": "tests/e2e/quality.spec.ts",
         "title": "T079 auxiliary actions explain scope without pretending to send",
-        "line": 118,
+        "line": 117,
         "assertions": [
           {
-            "line": 126,
+            "line": 125,
             "assertion": "expect(page.getByRole(\"dialog\")).toContainText(\"demonstração\")"
           },
           {
-            "line": 132,
+            "line": 131,
             "assertion": "expect(page.getByRole(\"dialog\")).toContainText( \"Nenhum e-mail foi cadastrado\", )"
           }
         ]
@@ -3254,18 +3242,10 @@
       {
         "file": "tests/e2e/accessibility.spec.ts",
         "title": "T069 T080 T081 all nine screens and favorites fit required widths",
-        "line": 122,
+        "line": 129,
         "assertions": [
           {
-            "line": 149,
-            "assertion": "expect(page.locator(\"#main-content\")).not.toBeEmpty()"
-          },
-          {
-            "line": 150,
-            "assertion": "expect(page.locator(\".skeleton\")).toHaveCount(0)"
-          },
-          {
-            "line": 151,
+            "line": 156,
             "assertion": "expect( await page.evaluate( () => document.documentElement.scrollWidth <= window.innerWidth + 1, ), `${route} at ${width}`, ).toBe(true)"
           }
         ]
@@ -3273,26 +3253,26 @@
       {
         "file": "tests/e2e/accessibility.spec.ts",
         "title": "T080 checkout remains operable in a short mobile viewport",
-        "line": 180,
+        "line": 185,
         "assertions": [
           {
-            "line": 186,
+            "line": 191,
             "assertion": "expect(page.locator(\".skeleton\")).toHaveCount(0)"
           },
           {
-            "line": 193,
+            "line": 198,
             "assertion": "expect .poll( () => field.evaluate((element) => { const rect = element.getBoundingClientRect(); const hit = document.elementFromPoint( rect.x + rect.width / 2, rect.y + rect.height / 2, ); return { inside: rect.top >= -1 && rect.bottom <= innerHeight + 1, uncovered: hit === element || element.contains(hit), }; }), { message: (await field.getAttribute(\"id\")) ?? \"checkout field\" }, ) .toEqual({ inside: true, uncovered: true })"
           },
           {
-            "line": 218,
+            "line": 223,
             "assertion": "expect(page.locator(\"#quote-review\")).toBeFocused()"
           },
           {
-            "line": 219,
+            "line": 224,
             "assertion": "expect( page.getByRole(\"heading\", { name: \"Revise e confirme\" }), ).toBeVisible()"
           },
           {
-            "line": 225,
+            "line": 230,
             "assertion": "expect( page.getByRole(\"heading\", { name: \"Compra confirmada!\" }), ).toBeVisible()"
           }
         ]
@@ -3304,10 +3284,6 @@
         "assertions": [
           {
             "line": 55,
-            "assertion": "expect(page.locator(\"#main-content\")).not.toBeEmpty()"
-          },
-          {
-            "line": 56,
             "assertion": "expect( await page.evaluate( () => document.documentElement.scrollWidth <= window.innerWidth + 1, ), `${route} at ${width}`, ).toBe(true)"
           }
         ]
@@ -3328,18 +3304,10 @@
       {
         "file": "tests/e2e/accessibility.spec.ts",
         "title": "T069 T080 T081 all nine screens and favorites fit required widths",
-        "line": 122,
+        "line": 129,
         "assertions": [
           {
-            "line": 149,
-            "assertion": "expect(page.locator(\"#main-content\")).not.toBeEmpty()"
-          },
-          {
-            "line": 150,
-            "assertion": "expect(page.locator(\".skeleton\")).toHaveCount(0)"
-          },
-          {
-            "line": 151,
+            "line": 156,
             "assertion": "expect( await page.evaluate( () => document.documentElement.scrollWidth <= window.innerWidth + 1, ), `${route} at ${width}`, ).toBe(true)"
           }
         ]
@@ -3351,10 +3319,6 @@
         "assertions": [
           {
             "line": 55,
-            "assertion": "expect(page.locator(\"#main-content\")).not.toBeEmpty()"
-          },
-          {
-            "line": 56,
             "assertion": "expect( await page.evaluate( () => document.documentElement.scrollWidth <= window.innerWidth + 1, ), `${route} at ${width}`, ).toBe(true)"
           }
         ]

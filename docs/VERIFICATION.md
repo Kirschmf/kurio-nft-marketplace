@@ -35,6 +35,8 @@ Em 25/11/2026, a rodada final no código da aplicação `04bde56f5246022f346a6f3
 
 O smoke aguarda a confirmação visível de inclusão antes de recarregar a página do carrinho. O trace da CI anterior mostrou que a navegação forçada imediatamente após o clique abortava o POST ainda pendente. A correção sincroniza o teste com a conclusão da operação, sem aumentar timeout, adicionar retry ou alterar a aplicação.
 
+A preparação aguarda o fim da hidratação antes de enviar teclas. A matriz de layout espera também o conteúdo da rota e a sessão montada, evitando medir o HTML público de fallback enquanto a rota autenticada ainda inicializa. Isso é necessário com o tempo de rede da hospedagem, além da condição local.
+
 ## Limites
 
 Os resultados mobile são emulação Chromium. A demonstração não integra blockchain, gateways ou autenticação de produção. Todos os dados e credenciais são fictícios. A referência tipográfica foi confirmada como Roboto Mono e as quatro artes originais foram preservadas; desvios restantes estão descritos por frame. Os relatórios verificam comportamentos e condições reproduzíveis, sem garantir nota do avaliador ou ausência absoluta de defeitos.
