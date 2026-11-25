@@ -1,6 +1,6 @@
 # Verificação da entrega
 
-A suíte define 66 cenários em Chromium desktop e mobile: **132 verificações**, 12 testes unitários e oito baselines visuais versionadas. REST passa pelos handlers MSW e eventos pelo cliente Socket.IO. Os contextos são isolados e o seed é reiniciado em cada teste. O relatório HTML e os traces de falhas ficam nos artifacts da [execução em checkout limpo](https://github.com/Kirschmf/kurio-nft-marketplace/actions/workflows/checks.yml).
+A suíte define 67 cenários em Chromium desktop e mobile: **134 verificações**, 12 testes unitários e oito baselines visuais versionadas. REST passa pelos handlers MSW e eventos pelo cliente Socket.IO. Os contextos são isolados e o seed é reiniciado em cada teste. O relatório HTML e os traces de falhas ficam nos artifacts da [execução em checkout limpo](https://github.com/Kirschmf/kurio-nft-marketplace/actions/workflows/checks.yml).
 
 O workflow usa `npm ci`, instala Chromium, executa tipos, lint, unitários, build e a suíte inteira contra o preview de produção. A auditoria Lighthouse é um comando separado, com execução serial e perfil novo por medição.
 

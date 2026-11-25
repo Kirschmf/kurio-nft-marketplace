@@ -32,6 +32,7 @@ export function AuthPage({ register = false }: { register?: boolean }) {
     [info, setInfo] = useState(""),
     [desktop, setDesktop] = useState(window.innerWidth > 600);
   const close = () => {
+    active.current = false;
     auth.cancelAuthentication();
     const destination = /^\/(checkout|account|orders|favorites)(\/|$)/.test(
       redirect,
@@ -46,12 +47,14 @@ export function AuthPage({ register = false }: { register?: boolean }) {
   };
   const redirect = safeReturnTo(search.redirect, window.location.origin);
   const origin = useRef(document.activeElement as HTMLElement | null);
-  useEffect(
-    () => () => {
+  const active = useRef(true);
+  useEffect(() => {
+    active.current = true;
+    return () => {
+      active.current = false;
       auth.cancelAuthentication();
-    },
-    [],
-  );
+    };
+  }, []);
   const mutation = useMutation({
     mutationFn: async (body: RegisterInput) => {
       const response = register
@@ -60,12 +63,12 @@ export function AuthPage({ register = false }: { register?: boolean }) {
       return auth.accept(response);
     },
     onSuccess: ({ adjustments, generation }) => {
-      if (generation !== auth.generation()) return;
+      if (!active.current || generation !== auth.generation()) return;
       if (adjustments.length) notice(adjustments.join(" "));
       void navigate({ to: redirect });
     },
     onError: (error) => {
-      if (isCanceled(error)) return;
+      if (!active.current || isCanceled(error)) return;
       setErrors(errorsFrom(error));
       setError(errorMessage(error));
     },

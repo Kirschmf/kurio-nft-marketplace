@@ -654,7 +654,7 @@
     "id": "T018",
     "criterion": "Expirar no checkout e entrar novamente",
     "expected": "Retoma revisão; não confirma sozinho",
-    "testFiles": ["tests/e2e/account.spec.ts"],
+    "testFiles": ["tests/e2e/account.spec.ts", "tests/e2e/recovery.spec.ts"],
     "evidence": "Playwright: desktop and mobile",
     "tests": [
       {
@@ -681,6 +681,37 @@
           {
             "line": 120,
             "assertion": "expect( page.getByRole(\"button\", { name: \"Confirmar compra\" }), ).toHaveCount(0)"
+          }
+        ]
+      },
+      {
+        "file": "tests/e2e/recovery.spec.ts",
+        "title": "T018 closing login while the cart merge is pending does not navigate later",
+        "line": 6,
+        "assertions": [
+          {
+            "line": 11,
+            "assertion": "expect(page.locator(\".cart-link\")).toHaveAttribute( \"aria-label\", \"Carrinho, 2 itens\", )"
+          },
+          {
+            "line": 36,
+            "assertion": "expect(page).toHaveURL((url) => url.pathname === \"/\")"
+          },
+          {
+            "line": 44,
+            "assertion": "expect((await received).status()).toBe(200)"
+          },
+          {
+            "line": 50,
+            "assertion": "expect(page.locator(\".cart-link\")).toHaveAttribute( \"aria-label\", \"Carrinho, 2 itens\", )"
+          },
+          {
+            "line": 54,
+            "assertion": "expect(page).toHaveURL((url) => url.pathname === \"/\")"
+          },
+          {
+            "line": 55,
+            "assertion": "expect(page.locator(\".account-link\")).toContainText(\"Alex\")"
           }
         ]
       }
@@ -746,38 +777,38 @@
       {
         "file": "tests/e2e/recovery.spec.ts",
         "title": "T019 late ${expired ? \"401\" : \"200\"} from A cannot affect B",
-        "line": 7,
+        "line": 59,
         "assertions": [
           {
-            "line": 15,
+            "line": 67,
             "assertion": "expect(name).toBeVisible()"
           },
           {
-            "line": 32,
+            "line": 84,
             "assertion": "expect .poll(async () => (await import(\"./helpers\")) .api<{ displayName: string }>(page, \"GET\", \"/profile\") .then((value) => value.data.displayName), ) .toBe(\"Resposta da conta anterior\")"
           },
           {
-            "line": 42,
+            "line": 94,
             "assertion": "expect(page.locator(\".header-actions\")).toContainText(\"Entrar\")"
           },
           {
-            "line": 54,
+            "line": 106,
             "assertion": "expect(page.locator(\".account-link\")).toContainText(\"Bia\")"
           },
           {
-            "line": 65,
+            "line": 117,
             "assertion": "expect((await received).status()).toBe(expired ? 401 : 200)"
           },
           {
-            "line": 66,
+            "line": 118,
             "assertion": "expect(page.locator(\".account-link\")).toContainText(\"Bia\")"
           },
           {
-            "line": 73,
+            "line": 125,
             "assertion": "expect( page.getByRole(\"textbox\", { name: \"E-mail\", exact: true }), ).toHaveValue(\"collector.b@example.test\")"
           },
           {
-            "line": 76,
+            "line": 128,
             "assertion": "expect(page.locator(\".toast\")).not.toContainText(\"Perfil atualizado\")"
           }
         ]
@@ -1953,26 +1984,26 @@
       {
         "file": "tests/e2e/recovery.spec.ts",
         "title": "T051 T067 password errors are associated, focused and cleared on recovery",
-        "line": 101,
+        "line": 153,
         "assertions": [
           {
-            "line": 116,
+            "line": 168,
             "assertion": "expect(confirmation).toHaveAttribute(\"aria-invalid\", \"true\")"
           },
           {
-            "line": 117,
+            "line": 169,
             "assertion": "expect(confirmation).toHaveAttribute(\"aria-describedby\", /error/)"
           },
           {
-            "line": 118,
+            "line": 170,
             "assertion": "expect(confirmation).toBeFocused()"
           },
           {
-            "line": 123,
+            "line": 175,
             "assertion": "expect(page.locator(\".toast\")).toContainText(\"Senha alterada\")"
           },
           {
-            "line": 124,
+            "line": 176,
             "assertion": "expect(confirmation).toHaveAttribute(\"aria-invalid\", \"false\")"
           }
         ]
@@ -2395,34 +2426,34 @@
       {
         "file": "tests/e2e/recovery.spec.ts",
         "title": "T062 delayed private event from A stays isolated after B signs in",
-        "line": 127,
+        "line": 179,
         "assertions": [
           {
-            "line": 139,
+            "line": 191,
             "assertion": "expect(page.locator(\".header-actions\")).toContainText(\"Entrar\")"
           },
           {
-            "line": 151,
+            "line": 203,
             "assertion": "expect(page.locator(\"#main-content\")).toHaveAttribute( \"data-connection\", \"connected\", )"
           },
           {
-            "line": 166,
+            "line": 218,
             "assertion": "expect(released.data.released).toBe(1)"
           },
           {
-            "line": 167,
+            "line": 219,
             "assertion": "expect(count).toHaveText(before!)"
           },
           {
-            "line": 168,
+            "line": 220,
             "assertion": "expect((await api(page, \"GET\", `/orders/${order.id}`)).status).toBe(404)"
           },
           {
-            "line": 169,
+            "line": 221,
             "assertion": "expect((await api(page, \"GET\", `/orders/${order.id}/receipt`)).status).toBe( 404, )"
           },
           {
-            "line": 173,
+            "line": 225,
             "assertion": "expect(page.locator(\".account-link\")).toContainText(\"Bia\")"
           }
         ]
@@ -2650,26 +2681,26 @@
       {
         "file": "tests/e2e/recovery.spec.ts",
         "title": "T051 T067 password errors are associated, focused and cleared on recovery",
-        "line": 101,
+        "line": 153,
         "assertions": [
           {
-            "line": 116,
+            "line": 168,
             "assertion": "expect(confirmation).toHaveAttribute(\"aria-invalid\", \"true\")"
           },
           {
-            "line": 117,
+            "line": 169,
             "assertion": "expect(confirmation).toHaveAttribute(\"aria-describedby\", /error/)"
           },
           {
-            "line": 118,
+            "line": 170,
             "assertion": "expect(confirmation).toBeFocused()"
           },
           {
-            "line": 123,
+            "line": 175,
             "assertion": "expect(page.locator(\".toast\")).toContainText(\"Senha alterada\")"
           },
           {
-            "line": 124,
+            "line": 176,
             "assertion": "expect(confirmation).toHaveAttribute(\"aria-invalid\", \"false\")"
           }
         ]
@@ -2962,22 +2993,22 @@
       {
         "file": "tests/e2e/recovery.spec.ts",
         "title": "T072 initial favorites failure exposes retry and recovers",
-        "line": 80,
+        "line": 132,
         "assertions": [
           {
-            "line": 84,
+            "line": 136,
             "assertion": "expect( page.getByRole(\"textbox\", { name: \"Nome de exibição\", exact: true }), ).toBeVisible()"
           },
           {
-            "line": 91,
+            "line": 143,
             "assertion": "expect( page.getByRole(\"button\", { name: \"Tentar novamente\" }), ).toBeVisible()"
           },
           {
-            "line": 94,
+            "line": 146,
             "assertion": "expect(page.locator(\".skeleton\")).toHaveCount(0)"
           },
           {
-            "line": 96,
+            "line": 148,
             "assertion": "expect( page.getByRole(\"heading\", { name: \"Sua lista ainda está vazia\" }), ).toBeVisible()"
           }
         ]

@@ -3,6 +3,58 @@ import { action, add, api, boot, createOrder, login } from "./helpers";
 
 test.beforeEach(async ({ page }) => boot(page));
 
+test("T018 closing login while the cart merge is pending does not navigate later", async ({
+  page,
+}) => {
+  await add(page, 2);
+  await page.goto("/login?redirect=%2Fcheckout");
+  await expect(page.locator(".cart-link")).toHaveAttribute(
+    "aria-label",
+    "Carrinho, 2 itens",
+  );
+  await action(page, "network.hold", { method: "POST", path: "/cart/merge" });
+  await action(page, "network.hold", {
+    method: "GET",
+    path: "/cart",
+    phase: "response",
+  });
+  await page
+    .getByRole("textbox", { name: "E-mail", exact: true })
+    .fill("collector.a@example.test");
+  await page.getByLabel("Senha", { exact: true }).fill("CollectorDemoA!2026");
+  const sent = page.waitForRequest((request) =>
+    request.url().endsWith("/api/cart/merge"),
+  );
+  await page.getByRole("button", { name: "Entrar", exact: true }).click();
+  await sent;
+  if (page.viewportSize()!.width <= 600)
+    await page
+      .getByRole("link", { name: "Kurio, início", exact: true })
+      .click();
+  else
+    await page.getByRole("button", { name: "Fechar acesso à conta" }).click();
+  await expect(page).toHaveURL((url) => url.pathname === "/");
+  const received = page.waitForResponse((response) =>
+    response.url().endsWith("/api/cart/merge"),
+  );
+  await action(page, "network.release", {
+    method: "POST",
+    path: "/cart/merge",
+  });
+  expect((await received).status()).toBe(200);
+  await action(page, "network.release", {
+    method: "GET",
+    path: "/cart",
+    phase: "response",
+  });
+  await expect(page.locator(".cart-link")).toHaveAttribute(
+    "aria-label",
+    "Carrinho, 2 itens",
+  );
+  await expect(page).toHaveURL((url) => url.pathname === "/");
+  await expect(page.locator(".account-link")).toContainText("Alex");
+});
+
 for (const expired of [true, false]) {
   test(`T019 late ${expired ? "401" : "200"} from A cannot affect B`, async ({
     page,

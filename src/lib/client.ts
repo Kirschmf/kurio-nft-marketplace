@@ -163,6 +163,8 @@ export const auth = {
     }
     if (started !== generation)
       throw new axios.CanceledError("A sessão mudou.");
+    await queryClient.cancelQueries({ queryKey: ["cart"] });
+    auth.assertGeneration(started);
     queryClient.setQueryData(["cart", result.user.id, started], merge);
     guest = `guest-${crypto.randomUUID()}`;
     local?.setItem("kurio-guest", guest);
