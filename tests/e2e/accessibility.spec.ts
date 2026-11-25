@@ -185,7 +185,7 @@ test("T080 checkout remains operable in a short mobile viewport", async ({
   await login(page, "a", "/checkout");
   await expect(page.locator(".skeleton")).toHaveCount(0);
   const fields = page.locator(
-    ".checkout-page form input, .checkout-page form select, .checkout-page form textarea",
+    ".checkout-layout > section form :is(input, select, textarea)",
   );
   for (const field of await fields.all()) {
     await field.focus();
