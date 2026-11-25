@@ -29,7 +29,12 @@ export function catalog(): Nft[] {
       network: index < 18 ? "ethereum" : index < 27 ? "polygon" : "solana",
       image: `/assets/${image}.webp`,
       description:
-        "Um colecionável digital da coleção Kurio Editions. Arte, identidade e novos encontros para quem gosta de descobrir o próximo detalhe.",
+        "Um colecionável digital finalizado à mão da coleção Kurio Editions, verificado " +
+        (index < 18
+          ? "na Ethereum."
+          : index < 27
+            ? "na Polygon."
+            : "na Solana."),
       attributes:
         image === "emerald"
           ? ["Óculos", "Esmeralda", "Raro"]
@@ -155,10 +160,13 @@ export async function seed(
         avatar: null,
         version: 1,
       },
-      credential: await credential(
-        `CollectorDemo${letter.toUpperCase()}!2026`,
-        `kurio-fixture-${letter}`,
-      ),
+      credential: {
+        salt: `kurio-fixture-${letter}`,
+        hash:
+          letter === "a"
+            ? "c7ec95e9aa44184ef54bc1edde04a75a55e28177d0b0060c349bbb120340e6ec"
+            : "f90a1f56347a9132e72c75b481b286af107421617a7010a27f722f86a159c194",
+      },
     })),
   );
   return {

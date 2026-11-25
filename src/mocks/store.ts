@@ -17,7 +17,25 @@ const database = openDB("kurio-demo", 1, {
     db.createObjectStore("state");
   },
 });
-const subscribers = new Set<(event: DomainEvent) => void>();
+const subscribers = new Set<(event: DomainEvent) => void | Promise<void>>();
+let deferredOrders: DomainEvent[] | undefined;
+export const holdOrderEvents = () => {
+  deferredOrders = [];
+};
+async function publish(message: DomainEvent) {
+  if (deferredOrders && message.type === "order.updated") {
+    deferredOrders.push(message);
+    return;
+  }
+  await Promise.all([...subscribers].map((listener) => listener(message)));
+  channel.postMessage({ event: message });
+}
+export async function releaseOrderEvents() {
+  const queued = deferredOrders ?? [];
+  deferredOrders = undefined;
+  for (const message of queued) await publish(message);
+  return { released: queued.length };
+}
 const resetSubscribers = new Set<() => void>();
 const channel = new BroadcastChannel("kurio-domain");
 channel.addEventListener(
@@ -27,7 +45,9 @@ channel.addEventListener(
     if (data.reset) for (const listener of resetSubscribers) listener();
   },
 );
-export const onDomainEvent = (fn: (event: DomainEvent) => void) => {
+export const onDomainEvent = (
+  fn: (event: DomainEvent) => void | Promise<void>,
+) => {
   subscribers.add(fn);
   return () => {
     subscribers.delete(fn);
@@ -212,8 +232,7 @@ export async function transact<T>(
     await tx.store.put(state, "current");
     await tx.done;
     for (const message of events) {
-      for (const listener of subscribers) listener(message);
-      channel.postMessage({ event: message });
+      await publish(message);
     }
     return structuredClone(result);
   } catch (error) {
@@ -232,6 +251,7 @@ export async function snapshot() {
   return (await (await database).get("state", "current")) as Database;
 }
 export async function reset(scenario: ScenarioId = "default", seedNumber = 7) {
+  deferredOrders = undefined;
   const initial = await seed(scenario, seedNumber);
   if (scenario === "last-unit")
     initial.nfts[0].editions.forEach((edition) => {

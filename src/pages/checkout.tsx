@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Link, useNavigate, useParams } from "@tanstack/react-router";
 import {
   Check,
@@ -16,6 +16,7 @@ import {
   auth,
   errorMessage,
   errorsFrom,
+  isCanceled,
   queryClient,
   sessionKey,
 } from "../lib/client";
@@ -98,12 +99,18 @@ export function CheckoutPage() {
     [attempt, setAttempt] = useState<PurchaseAttempt | null>(() =>
       readAttempt(userId),
     ),
-    [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
     [errors, setErrors] = useState<Record<string, string[]>>({}),
     lock = useRef(false),
     [step, setStep] = useState(readAttempt(userId) ? 3 : 1);
+  const operation = useMutation({
+    mutationFn: (run: () => Promise<void>) => run(),
+  });
+  const busy = operation.isPending;
   useFormErrors(errors);
+  useEffect(() => {
+    if (quote && step === 3) document.getElementById("quote-review")?.focus();
+  }, [quote, step]);
   const selectedWallet = wallets.data?.find((wallet) => wallet.id === walletId);
   useEffect(() => {
     sessionStorage.setItem(draftKey, JSON.stringify(collector));
@@ -150,22 +157,21 @@ export function CheckoutPage() {
     setQuote(null);
   };
   const connect = async () => {
-    setBusy(true);
     setError("");
     try {
       await api.connectWallet(walletId, provider);
       setConnected(true);
       notice("Carteira conectada na simulação.");
     } catch (error) {
+      if (isCanceled(error)) return;
       setConnected(false);
       setError(errorMessage(error));
-    } finally {
-      setBusy(false);
     }
   };
   const review = async () => {
     const parsed = collectorSchema.safeParse(collector);
     if (!parsed.success) {
+      setStep(1);
       setErrors(fieldErrors(parsed.error));
       setError("Confira os campos do perfil do colecionador.");
       return;
@@ -174,7 +180,6 @@ export function CheckoutPage() {
       setError("Selecione e conecte uma carteira para continuar.");
       return;
     }
-    setBusy(true);
     setErrors({});
     setError("");
     try {
@@ -183,19 +188,16 @@ export function CheckoutPage() {
       const next = await api.quote(fresh.cart.version, walletId, parsed.data);
       setQuote(next);
       setStep(3);
-      document.getElementById("quote-review")?.focus();
     } catch (error) {
+      if (isCanceled(error)) return;
       setError(errorMessage(error));
       setErrors(errorsFrom(error));
       void cart.refetch();
-    } finally {
-      setBusy(false);
     }
   };
   const confirm = async () => {
     if (lock.current || (!quote && !attempt)) return;
     lock.current = true;
-    setBusy(true);
     setError("");
     const next = attempt ?? {
       key: crypto.randomUUID(),
@@ -250,7 +252,6 @@ export function CheckoutPage() {
       );
     } finally {
       lock.current = false;
-      setBusy(false);
     }
   };
   if (!user) return null;
@@ -296,7 +297,7 @@ export function CheckoutPage() {
   );
   return (
     <div className={`container page checkout-page checkout-step-${step}`}>
-      <MobileTitle title="Pagamento" />
+      <MobileTitle title="Pagamento com carteira" />
       <Breadcrumb current="Pagamento" />
       <nav className="checkout-steps" aria-label="Etapas do pagamento">
         {["Dados", "Carteira e rede", "Revisão"].map((label, index) => (
@@ -316,7 +317,7 @@ export function CheckoutPage() {
           <form
             onSubmit={(event) => {
               event.preventDefault();
-              void review();
+              operation.mutate(review);
             }}
             noValidate
           >
@@ -409,6 +410,42 @@ export function CheckoutPage() {
           </form>
         </section>
         <aside className="checkout-summary">
+          <fieldset
+            className="mobile-wallet-choices"
+            disabled={busy || !!attempt}
+          >
+            <legend>Carteira conectada</legend>
+            {wallets.data.map((wallet) => (
+              <label
+                key={wallet.id}
+                className={walletId === wallet.id ? "selected" : ""}
+              >
+                <input
+                  type="radio"
+                  name="wallet-choice"
+                  value={wallet.id}
+                  checked={walletId === wallet.id}
+                  onChange={() => {
+                    setWalletId(wallet.id);
+                    setProvider(wallet.provider);
+                    setConnected(false);
+                    setQuote(null);
+                  }}
+                />
+                <span>
+                  <strong>
+                    {wallet.role === "primary" ? "Principal" : "Reserva"}
+                  </strong>
+                  <small>
+                    {wallet.nickname} · {wallet.network}
+                  </small>
+                  <small>
+                    {wallet.address.slice(0, 9)}…{wallet.address.slice(-4)}
+                  </small>
+                </span>
+              </label>
+            ))}
+          </fieldset>
           <h2>Seus NFTs</h2>
           <div className="mini-lines">
             {(quote?.lines ?? cart.data.lines).map((line) => (
@@ -454,6 +491,13 @@ export function CheckoutPage() {
                     setQuote(null);
                   }}
                 />
+                <img
+                  className="provider-symbol"
+                  src={`/assets/icons/${value}.svg`}
+                  width={value === "coinbase" ? "24" : "12"}
+                  height="24"
+                  alt=""
+                />
                 {label}
               </label>
             ))}
@@ -462,7 +506,7 @@ export function CheckoutPage() {
             <Button
               variant="outline"
               disabled={busy || !walletId}
-              onClick={() => void connect()}
+              onClick={() => operation.mutate(connect)}
             >
               {connected ? (
                 <>
@@ -501,7 +545,7 @@ export function CheckoutPage() {
                 Existe uma tentativa de compra salva. Recupere o resultado antes
                 de iniciar outra.
               </p>
-              <Button disabled={busy} onClick={() => void confirm()}>
+              <Button disabled={busy} onClick={() => operation.mutate(confirm)}>
                 {busy ? (
                   <Busy label="Recuperando pedido" />
                 ) : (
@@ -513,7 +557,7 @@ export function CheckoutPage() {
             <Button
               key="confirm"
               disabled={busy}
-              onClick={() => void confirm()}
+              onClick={() => operation.mutate(confirm)}
             >
               {busy ? <Busy label="Confirmando" /> : "Confirmar compra"}
             </Button>
@@ -521,7 +565,7 @@ export function CheckoutPage() {
             <Button
               key="review"
               disabled={busy || !connected}
-              onClick={() => void review()}
+              onClick={() => operation.mutate(review)}
             >
               {busy ? <Busy label="Revalidando" /> : "Revisar compra"}
             </Button>
@@ -638,6 +682,17 @@ export function OrderPage() {
         </div>
         <Summary totals={order.quote} coupon={order.quote.couponCode} />
         <dl className="receipt-details">
+          <div>
+            <dt>Data do pedido</dt>
+            <dd>
+              <time dateTime={new Date(order.createdAt).toISOString()}>
+                {new Intl.DateTimeFormat("pt-BR", {
+                  dateStyle: "medium",
+                  timeZone: "America/Sao_Paulo",
+                }).format(order.createdAt)}
+              </time>
+            </dd>
+          </div>
           <div>
             <dt>Carteira</dt>
             <dd>{order.quote.wallet.address}</dd>

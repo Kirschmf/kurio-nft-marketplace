@@ -11,7 +11,7 @@ test("T019 delayed private response from A is discarded after login as B", async
   await page.goto("/account/profile");
   await expect(page.locator(".skeleton-summary")).toBeVisible();
   await page.getByRole("button", { name: "Sair", exact: true }).click();
-  await expect(page).toHaveURL(/127\.0\.0\.1:5173\/\?/);
+  await expect(page).toHaveURL((url) => url.pathname === "/");
   await login(page, "b", "/account/profile");
   await expect(
     page.getByRole("textbox", { name: "E-mail", exact: true }),
@@ -42,7 +42,7 @@ test("T052 newly registered collector creates both wallets through the form", as
     ["secundária", "Segunda", `0x${"d".repeat(40)}`],
   ]) {
     await page
-      .getByRole("button", { name: `Carteira ${role}`, exact: true })
+      .getByRole("button", { name: new RegExp(`^Carteira ${role}`) })
       .click();
     await page
       .getByRole("textbox", { name: "Apelido da carteira", exact: true })
@@ -77,7 +77,7 @@ test("T013 T014 T015 register, conflict, login and logout", async ({
     page.getByRole("textbox", { name: "Nome de usuário", exact: true }),
   ).toHaveValue("new_collector");
   await page.getByRole("button", { name: "Sair", exact: true }).click();
-  await expect(page).toHaveURL(/127\.0\.0\.1:5173\/\?/);
+  await expect(page).toHaveURL((url) => url.pathname === "/");
   const conflict = await api(page, "POST", "/auth/register", {
     username: "new_collector",
     email: "new@example.test",
@@ -132,7 +132,7 @@ test("T017 T019 T062 private state is isolated after account switch", async ({
     .click();
   await page.goto("/account/profile");
   await page.getByRole("button", { name: "Sair", exact: true }).click();
-  await expect(page).toHaveURL(/127\.0\.0\.1:5173\/\?/);
+  await expect(page).toHaveURL((url) => url.pathname === "/");
   await login(page, "b", "/favorites");
   await expect(
     page.getByRole("heading", { name: "Sua lista ainda está vazia" }),
@@ -205,6 +205,16 @@ test("T048 T049 avatar upload, replace, refresh, invalid upload and removal", as
   await expect(page.locator(".avatar-editor img")).toBeVisible();
   const before = await page.locator(".avatar-editor img").getAttribute("src");
   await input.setInputFiles({
+    name: "broken.png",
+    mimeType: "image/png",
+    buffer: Buffer.from("not a png"),
+  });
+  await expect(page.locator(".toast")).toContainText("ler esta imagem");
+  await expect(page.locator(".avatar-editor img")).toHaveAttribute(
+    "src",
+    before!,
+  );
+  await input.setInputFiles({
     name: "bad.txt",
     mimeType: "text/plain",
     buffer: Buffer.from("invalid"),
@@ -251,7 +261,7 @@ test("T050 T051 password confirmation, wrong current password and new login", as
     .click();
   await expect(page.locator(".toast")).toContainText("Senha alterada");
   await page.getByRole("button", { name: "Sair", exact: true }).click();
-  await expect(page).toHaveURL(/127\.0\.0\.1:5173\/\?/);
+  await expect(page).toHaveURL((url) => url.pathname === "/");
   expect(
     (
       await api(page, "POST", "/auth/login", {
@@ -289,9 +299,7 @@ test("T052 T053 T054 wallets persist, validate network and copy primary data", a
   await expect(
     page.getByRole("textbox", { name: "Endereço da carteira", exact: true }),
   ).toHaveAttribute("aria-invalid", "true");
-  await page
-    .getByRole("button", { name: "Carteira secundária", exact: true })
-    .click();
+  await page.getByRole("button", { name: /^Carteira secundária/ }).click();
   await page
     .getByRole("checkbox", {
       name: "Usar os mesmos dados da carteira principal",
@@ -300,9 +308,7 @@ test("T052 T053 T054 wallets persist, validate network and copy primary data", a
   await page.getByRole("button", { name: "Salvar carteira" }).click();
   await expect(page.locator(".toast")).toContainText("Carteira salva");
   await page.reload();
-  await page
-    .getByRole("button", { name: "Carteira secundária", exact: true })
-    .click();
+  await page.getByRole("button", { name: /^Carteira secundária/ }).click();
   await expect(
     page.getByRole("textbox", { name: "Apelido da carteira", exact: true }),
   ).toHaveValue("Principal editada");
@@ -327,6 +333,6 @@ test("T084 direct login rejects external return destinations", async ({
     .fill("collector.a@example.test");
   await page.getByLabel("Senha", { exact: true }).fill("CollectorDemoA!2026");
   await page.getByRole("button", { name: "Entrar", exact: true }).click();
-  await expect(page).toHaveURL(/127\.0\.0\.1:5173\/\?/);
+  await expect(page).toHaveURL((url) => url.pathname === "/");
   await expect(page.getByRole("heading", { name: /SEJA DONO/ })).toBeVisible();
 });

@@ -6,6 +6,7 @@ import lighthouse from "lighthouse";
 import desktopConfig from "lighthouse/core/config/desktop-config.js";
 import { launch } from "chrome-launcher";
 import { chromium } from "@playwright/test";
+import { execFileSync } from "node:child_process";
 import { profiles, runs, targets, thresholds } from "./config.mjs";
 
 const output = new URL("../audit-results/", import.meta.url);
@@ -32,6 +33,12 @@ server.stderr.on("data", (data) => {
   serverError += data.toString();
 });
 const measurements = [];
+const sourceCommit = execFileSync("git", ["rev-parse", "HEAD"], {
+  encoding: "utf8",
+}).trim();
+const sourceDirty = !!execFileSync("git", ["status", "--porcelain"], {
+  encoding: "utf8",
+}).trim();
 try {
   for (
     let attempt = 0;
@@ -112,11 +119,27 @@ try {
       };
     }),
   );
+  const failures = summaries.flatMap(({ page, profile, scores }) =>
+      Object.entries(thresholds)
+        .filter(([category, minimum]) => scores[category] < minimum)
+        .map(([category, minimum]) => ({
+          page,
+          profile,
+          category,
+          score: scores[category],
+          minimum,
+        })),
+    ),
+    passed = failures.length === 0;
   await writeFile(
     new URL("summary.json", output),
     JSON.stringify(
       {
         generatedAt: new Date().toISOString(),
+        sourceCommit,
+        sourceDirty,
+        passed,
+        failures,
         conditions: {
           node: process.version,
           os: `${platform()} ${release()}`,
@@ -138,6 +161,10 @@ try {
     ),
   );
   console.log(JSON.stringify(summaries, null, 2));
+  if (!passed) {
+    console.error("Lighthouse thresholds failed:", failures);
+    process.exitCode = 1;
+  }
 } finally {
   server.kill();
 }

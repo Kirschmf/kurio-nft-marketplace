@@ -77,7 +77,9 @@ test("T070 T071 slow skeletons and reduced motion remain accessible", async ({
       .evaluate((element) => getComputedStyle(element).animationName),
   ).toBe("none");
   await expect(page.locator(".nft-grid .nft-card")).toHaveCount(4);
-  await page.goto("/nfts/emerald-042");
+  await page
+    .getByRole("link", { name: "Ver Emerald Ape #042", exact: true })
+    .click();
   await expect(page.locator(".skeleton-detail")).toBeVisible();
   await expect(
     page.getByRole("heading", { name: "Emerald Ape #042" }),

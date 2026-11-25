@@ -4,7 +4,7 @@ import { socketHandler } from "./socket";
 import { initialize, startOrderClock } from "./store";
 
 export async function startMocks() {
-  await initialize();
+  const data = initialize();
   const worker = setupWorker(apiHandler, socketHandler);
   await worker.start({
     quiet: true,
@@ -15,5 +15,6 @@ export async function startMocks() {
         );
     },
   });
+  await data;
   startOrderClock();
 }

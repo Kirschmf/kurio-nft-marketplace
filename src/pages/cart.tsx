@@ -36,7 +36,7 @@ export function CartPage() {
     invalid = view.lines.some((line) => line.available < line.quantity);
   return (
     <div className="container page cart-page">
-      <MobileTitle title="Carrinho" />
+      <MobileTitle title="Carrinho de NFTs" />
       <Breadcrumb current="Carrinho" />
       <h1 className="desktop-page-title">Carrinho</h1>
       {!view.lines.length ? (
@@ -109,13 +109,10 @@ export function CartPage() {
                 </Button>
               </article>
             ))}
-            <Coupon view={view} />
-            <Link to="/" className="text-link">
-              ← Continuar explorando
-            </Link>
           </section>
           <aside className="order-summary">
             <h2>Resumo do pedido</h2>
+            <Coupon view={view} />
             <Summary totals={view.summary} coupon={view.cart.couponCode}>
               {invalid ? (
                 <p role="alert" className="field-error">
@@ -131,6 +128,9 @@ export function CartPage() {
                 Compra simulada e sem cobrança real
               </p>
             </Summary>
+            <Link to="/" className="text-link">
+              ← Continuar explorando
+            </Link>
           </aside>
         </div>
       )}

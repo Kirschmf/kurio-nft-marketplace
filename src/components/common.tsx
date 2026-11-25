@@ -7,6 +7,7 @@ import {
   useState,
   useSyncExternalStore,
   type InputHTMLAttributes,
+  type SelectHTMLAttributes,
   type ReactNode,
 } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -29,6 +30,7 @@ import {
   auth,
   errorMessage,
   queryClient,
+  isCanceled,
   sessionKey,
 } from "../lib/client";
 import type { CartView, Nft, Totals } from "../lib/types";
@@ -60,7 +62,7 @@ export function Notices({ children }: { children: ReactNode }) {
   );
 }
 export function useAuth() {
-  return useSyncExternalStore(auth.subscribe, auth.get);
+  return useSyncExternalStore(auth.subscribe, auth.get, () => null);
 }
 export function useCart() {
   const [, generation] = sessionKey();
@@ -224,6 +226,44 @@ export function PasswordField({
     </div>
   );
 }
+
+export function SelectField({
+  label,
+  error,
+  children,
+  ...props
+}: SelectHTMLAttributes<HTMLSelectElement> & {
+  label: string;
+  error?: string[];
+}) {
+  const id = useId();
+  return (
+    <div className="field">
+      <label htmlFor={id}>
+        {label}
+        {props.required && (
+          <span className="required" aria-hidden="true">
+            {" "}
+            *
+          </span>
+        )}
+      </label>
+      <select
+        {...props}
+        id={id}
+        aria-invalid={!!error}
+        aria-describedby={error ? `${id}-error` : undefined}
+      >
+        {children}
+      </select>
+      {error && (
+        <span id={`${id}-error`} className="field-error">
+          {error[0]}
+        </span>
+      )}
+    </div>
+  );
+}
 export function Quantity({
   value,
   onChange,
@@ -296,9 +336,14 @@ export function FavoriteButton({
   const selected = favorites.data?.includes(nftId) ?? false;
   const key = ["favorites", ...sessionKey()];
   const mutation = useMutation({
-    mutationFn: (add: boolean) => api.favorite(nftId, add),
-    onMutate: async (add) => {
+    mutationFn: ({ add, generation }: { add: boolean; generation: number }) => {
+      auth.assertGeneration(generation);
+      return api.favorite(nftId, add);
+    },
+    onMutate: async ({ add, generation }) => {
+      auth.assertGeneration(generation);
       await queryClient.cancelQueries({ queryKey: key });
+      auth.assertGeneration(generation);
       const before = queryClient.getQueryData<string[]>(key) ?? [];
       queryClient.setQueryData(
         key,
@@ -306,9 +351,11 @@ export function FavoriteButton({
           ? [...new Set([...before, nftId])]
           : before.filter((id) => id !== nftId),
       );
-      return { before, generation: auth.generation() };
+      return { before, generation };
     },
     onError: (error, _value, context) => {
+      if (context?.generation !== auth.generation() || isCanceled(error))
+        return;
       if (context?.generation === auth.generation())
         queryClient.setQueryData(key, context.before);
       notice(errorMessage(error));
@@ -330,7 +377,7 @@ export function FavoriteButton({
           void navigate({ to: "/login", search: { redirect: location.href } });
           return;
         }
-        mutation.mutate(!selected);
+        mutation.mutate({ add: !selected, generation: auth.generation() });
       }}
     >
       <Heart
@@ -349,26 +396,22 @@ export function NftCard({
   priority?: boolean;
 }) {
   const notice = useNotice(),
-    cart = useCart(),
-    [busy, setBusy] = useState(false);
-  const add = async () => {
-    setBusy(true);
-    try {
-      const result = await api.addItem(
-        nft.id,
-        "fifty",
-        1,
-        cart.data?.cart.version,
-      );
+    cart = useCart();
+  const add = useMutation({
+    onMutate: () => auth.generation(),
+    mutationFn: () => api.addItem(nft.id, "fifty", 1, cart.data?.cart.version),
+    onSuccess: (result, _value, started) => {
+      if (started !== auth.generation()) return;
       queryClient.setQueryData(["cart", ...sessionKey()], result);
       notice(`${nft.name} foi para o carrinho.`);
-    } catch (error) {
+    },
+    onError: (error, _value, started) => {
+      if (started !== auth.generation() || isCanceled(error)) return;
       notice(errorMessage(error));
       void cart.refetch();
-    } finally {
-      setBusy(false);
-    }
-  };
+    },
+  });
+  const busy = add.isPending;
   return (
     <article className="nft-card">
       <div className="nft-card-art">
@@ -393,7 +436,7 @@ export function NftCard({
             variant="outline"
             size="icon"
             aria-label={`Adicionar ${nft.name} ao carrinho`}
-            onClick={() => void add()}
+            onClick={() => add.mutate()}
             disabled={busy}
           >
             {busy ? (
@@ -492,11 +535,14 @@ export function Summary({
 export function useCartMutation() {
   const notice = useNotice();
   return useMutation({
+    onMutate: () => auth.generation(),
     mutationFn: (operation: () => Promise<CartView>) => operation(),
-    onSuccess: (result) => {
+    onSuccess: (result, _value, started) => {
+      if (started !== auth.generation()) return;
       queryClient.setQueryData(["cart", ...sessionKey()], result);
     },
-    onError: (error) => {
+    onError: (error, _value, started) => {
+      if (started !== auth.generation() || isCanceled(error)) return;
       notice(errorMessage(error));
       void queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
@@ -529,6 +575,8 @@ export function Coupon({ view }: { view: CartView }) {
         >
           <input
             id="coupon-code"
+            aria-invalid={mutation.isError}
+            aria-describedby={mutation.isError ? "coupon-error" : undefined}
             value={code}
             onChange={(event) => setCode(event.target.value)}
             placeholder="Digite o código promocional…"
@@ -540,7 +588,7 @@ export function Coupon({ view }: { view: CartView }) {
         </form>
       )}
       {mutation.isError && (
-        <p role="alert" className="field-error">
+        <p role="alert" className="field-error" id="coupon-error">
           {errorMessage(mutation.error)}
         </p>
       )}

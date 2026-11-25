@@ -29,22 +29,22 @@ export const socketHandler = events.addEventListener(
       () => connection.client.send("2"),
       20_000,
     );
-    const unsubscribe = onDomainEvent((message) => {
+    const unsubscribe = onDomainEvent(async (message) => {
       if (message.resourceId === "__disconnect") {
         connection.client.close(1012, "Interrupção simulada");
         return;
       }
       if (message.type === "nft.updated")
         socket.client.emit(message.type, message);
-      else
-        void snapshot().then((state) => {
-          const session = state.sessions.find(
-            (value) =>
-              value.tokenHash === tokenHash && value.expiresAt > now(state),
-          );
-          if (!closed && session && session.userId === message.userId)
-            socket.client.emit(message.type, message);
-        });
+      else {
+        const state = await snapshot();
+        const session = state.sessions.find(
+          (value) =>
+            value.tokenHash === tokenHash && value.expiresAt > now(state),
+        );
+        if (!closed && session && session.userId === message.userId)
+          socket.client.emit(message.type, message);
+      }
     });
     const unsubscribeReset = onDemoReset(() =>
       connection.client.close(1012, "Cenário reiniciado"),

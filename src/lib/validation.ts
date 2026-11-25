@@ -117,11 +117,5 @@ export const collectorSchema = z.object({
   secondaryIdentifier: z.string().max(120).default(""),
   collectorNote: z.string().max(1000).default(""),
 });
-export function fieldErrors(error: z.ZodError): Record<string, string[]> {
-  const fields: Record<string, string[]> = {};
-  for (const issue of error.issues) {
-    const key = issue.path.join(".") || "form";
-    (fields[key] ??= []).push(issue.message);
-  }
-  return fields;
-}
+export { fieldErrors } from "./field-errors";
+export const providerSchema = z.enum(["walletconnect", "metamask", "coinbase"]);

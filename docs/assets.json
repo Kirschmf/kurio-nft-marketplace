@@ -1,5 +1,5 @@
 {
-  "source": "Frontend Challenge Figma export; Desktop/Início.png",
+  "source": "Native embedded PNG images extracted from the 15 exported Figma SVG frames",
   "sourceFrame": {
     "width": 1440,
     "height": 3668
@@ -7,187 +7,468 @@
   "artwork": [
     {
       "name": "emerald",
-      "subject": "Macaco marrom com óculos verdes e jaqueta verde",
-      "source": "Figma export/Desktop/Início.png",
-      "sourceSha256": "e9a308f72d44276730a6f47b01f0c10156d8a0bd1701c7703f423414c2bf636d",
-      "cropXYXY": [870, 101, 1320, 551],
-      "width": 450,
-      "height": 450,
-      "path": "public/assets/emerald.webp",
-      "bytes": 40010,
-      "sha256": "5f348d838cced653a80b78f6b26dfd903f55f32307711e4ecd036e87ec532111",
-      "pixelExact": false,
-      "operations": [
-        "exact native-resolution crop",
-        "WebP quality 92; no resizing"
+      "sourceFile": "assets/figma/emerald.png",
+      "sourceSha256": "f20b58b99de12b6eceede2090607e4b999275bba95de7674bb14f26b59666b21",
+      "sourceDimensions": [1254, 1254],
+      "pixelExactMaster": true,
+      "origins": [
+        {
+          "svg": "Desktop\\Cadastro.svg",
+          "image_id": "image0_9_1022",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Desktop\\Carrinho de NFTs.svg",
+          "image_id": "image0_11_1278",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Desktop\\Confirmação de Pedido.svg",
+          "image_id": "image0_11_4385",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Desktop\\Detalhes do NFT.svg",
+          "image_id": "image0_10_244",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Desktop\\Início.svg",
+          "image_id": "image0_2_2",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Desktop\\Login.svg",
+          "image_id": "image0_9_115",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Desktop\\Pagamento.svg",
+          "image_id": "image0_11_2862",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Mobile\\Carrinho de NFTs.svg",
+          "image_id": "image0_16_360",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Mobile\\Detalhes do NFT.svg",
+          "image_id": "image0_15_5536",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Mobile\\Início.svg",
+          "image_id": "image0_14_5226",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        }
       ],
-      "thumbnail": {
-        "path": "public/assets/emerald-thumb.webp",
-        "width": 128,
-        "height": 128,
-        "bytes": 3798,
-        "operations": [
-          "derived thumbnail",
-          "Lanczos downsample",
-          "WebP quality 86"
-        ]
-      },
-      "pixelExactMaster": {
-        "path": "public/assets/source/emerald.png",
-        "bytes": 301889,
-        "sha256": "d53623c348ded36e88545905293b7dcc7a9c343dcf8a3a307639a648637d98d4",
-        "pixelExact": true
-      }
-    },
-    {
-      "name": "violet",
-      "subject": "Macaco cinza com chapéu verde e moletom roxo",
-      "source": "Figma export/Desktop/Início.png",
-      "sourceSha256": "e9a308f72d44276730a6f47b01f0c10156d8a0bd1701c7703f423414c2bf636d",
-      "cropXYXY": [774, 722, 1024, 972],
-      "width": 250,
-      "height": 250,
-      "path": "public/assets/violet.webp",
-      "bytes": 14828,
-      "sha256": "a1800ce4e9a8c7ef35f83bf860c47389b89269c00e6acf5d16cb88e493137c5c",
-      "pixelExact": false,
-      "operations": [
-        "exact native-resolution crop",
-        "WebP quality 92; no resizing"
-      ],
-      "thumbnail": {
-        "path": "public/assets/violet-thumb.webp",
-        "width": 128,
-        "height": 128,
-        "bytes": 3500,
-        "operations": [
-          "derived thumbnail",
-          "Lanczos downsample",
-          "WebP quality 86"
-        ]
-      },
-      "pixelExactMaster": {
-        "path": "public/assets/source/violet.png",
-        "bytes": 102403,
-        "sha256": "723f78c8855d8861c729db7ca74a037f3d06fb3c8e05f881e6dd40ef462e4bdf",
-        "pixelExact": true
-      }
-    },
-    {
-      "name": "ivory",
-      "subject": "Macaco escuro com terno claro",
-      "source": "Figma export/Desktop/Início.png",
-      "sourceSha256": "e9a308f72d44276730a6f47b01f0c10156d8a0bd1701c7703f423414c2bf636d",
-      "cropXYXY": [1066, 721, 1316, 971],
-      "width": 250,
-      "height": 250,
-      "path": "public/assets/ivory.webp",
-      "bytes": 13814,
-      "sha256": "8dcba322a8965b7ed5961566a4f4deb21b2af6d2821f6371f35398557b05bff1",
-      "pixelExact": false,
-      "operations": [
-        "exact native-resolution crop",
-        "WebP quality 92; no resizing"
-      ],
-      "thumbnail": {
-        "path": "public/assets/ivory-thumb.webp",
-        "width": 128,
-        "height": 128,
-        "bytes": 3214,
-        "operations": [
-          "derived thumbnail",
-          "Lanczos downsample",
-          "WebP quality 86"
-        ]
-      },
-      "pixelExactMaster": {
-        "path": "public/assets/source/ivory.png",
-        "bytes": 95929,
-        "sha256": "2b7bb44a24f5421b04f7d4c77bd25a060e6dfb60418a0e0f420c86dfc5ef00df",
-        "pixelExact": true
-      }
+      "variants": [
+        {
+          "path": "public/assets/emerald.webp",
+          "width": 450,
+          "height": 450,
+          "bytes": 29290,
+          "sha256": "1e23c3dc08fdc9e0c7abf5d2ccbce0f73ed0eba9fb6975ffc9d88fcab74286bc",
+          "operations": ["Lanczos downsample", "WebP quality 90"]
+        },
+        {
+          "path": "public/assets/emerald-900.webp",
+          "width": 900,
+          "height": 900,
+          "bytes": 76170,
+          "sha256": "9ab5697e244ea1092d4419ef70c72454c86ea3721f3bccebe6eb9b41f56c8a16",
+          "operations": ["Lanczos downsample", "WebP quality 88"]
+        },
+        {
+          "path": "public/assets/emerald-thumb.webp",
+          "width": 128,
+          "height": 128,
+          "bytes": 3734,
+          "sha256": "1e293c9f0c6f0d35b4bd4e42384a11e7cc19d6f41abb03bdc744f549850731bb",
+          "operations": ["Lanczos downsample", "WebP quality 86"]
+        }
+      ]
     },
     {
       "name": "golden",
-      "subject": "Macaco dourado com fones verdes e jaqueta clara",
-      "source": "Figma export/Desktop/Início.png",
-      "sourceSha256": "e9a308f72d44276730a6f47b01f0c10156d8a0bd1701c7703f423414c2bf636d",
-      "cropXYXY": [482, 1567, 732, 1817],
-      "width": 250,
-      "height": 250,
-      "path": "public/assets/golden.webp",
-      "bytes": 16342,
-      "sha256": "666ebff68bc94c0e99c8d63626da77e4a1326b9f820beac0cc2df4067f4f2cb8",
-      "pixelExact": false,
-      "operations": [
-        "exact native-resolution crop",
-        "WebP quality 92; no resizing"
+      "sourceFile": "assets/figma/golden.png",
+      "sourceSha256": "2a42ba5adc341c3d0e1ad6905058e2762d995fc988113a7cd28b0d15f6a4ba28",
+      "sourceDimensions": [1254, 1254],
+      "pixelExactMaster": true,
+      "origins": [
+        {
+          "svg": "Desktop\\Cadastro.svg",
+          "image_id": "image1_9_1022",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Desktop\\Carrinho de NFTs.svg",
+          "image_id": "image3_11_1278",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Desktop\\Detalhes do NFT.svg",
+          "image_id": "image3_10_244",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Desktop\\Início.svg",
+          "image_id": "image3_2_2",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Desktop\\Login.svg",
+          "image_id": "image1_9_115",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Mobile\\Carrinho de NFTs.svg",
+          "image_id": "image3_16_360",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Mobile\\Início.svg",
+          "image_id": "image3_14_5226",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        }
       ],
-      "thumbnail": {
-        "path": "public/assets/golden-thumb.webp",
-        "width": 128,
-        "height": 128,
-        "bytes": 3794,
-        "operations": [
-          "derived thumbnail",
-          "Lanczos downsample",
-          "WebP quality 86"
-        ]
-      },
-      "pixelExactMaster": {
-        "path": "public/assets/source/golden.png",
-        "bytes": 101620,
-        "sha256": "62bbc19bbb57cecd082de3cd01d0dd3d785f81ce7a3696d33f2512f2ee75b017",
-        "pixelExact": true
-      }
+      "variants": [
+        {
+          "path": "public/assets/golden.webp",
+          "width": 450,
+          "height": 450,
+          "bytes": 31402,
+          "sha256": "3fa99572c37f2cffe34f52c011a161f295952a1045c38228b4eec0bd36e9aac0",
+          "operations": ["Lanczos downsample", "WebP quality 90"]
+        },
+        {
+          "path": "public/assets/golden-900.webp",
+          "width": 900,
+          "height": 900,
+          "bytes": 93658,
+          "sha256": "ffc45cc5ccb69d51065526770316521651c7b658cd3a670079e03bc05a6a045f",
+          "operations": ["Lanczos downsample", "WebP quality 88"]
+        },
+        {
+          "path": "public/assets/golden-thumb.webp",
+          "width": 128,
+          "height": 128,
+          "bytes": 3608,
+          "sha256": "c61f003ac60afacb3295c6b3375f877ac6f7ab9dbbebe6e61f0fde26355b5e0e",
+          "operations": ["Lanczos downsample", "WebP quality 86"]
+        }
+      ]
+    },
+    {
+      "name": "ivory",
+      "sourceFile": "assets/figma/ivory.png",
+      "sourceSha256": "326df4c1c08c31c88b9f407e51be3991e46667183af62aa1501927adc76f52b5",
+      "sourceDimensions": [1254, 1254],
+      "pixelExactMaster": true,
+      "origins": [
+        {
+          "svg": "Desktop\\Cadastro.svg",
+          "image_id": "image2_9_1022",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Desktop\\Carrinho de NFTs.svg",
+          "image_id": "image2_11_1278",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Desktop\\Confirmação de Pedido.svg",
+          "image_id": "image2_11_4385",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Desktop\\Detalhes do NFT.svg",
+          "image_id": "image2_10_244",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Desktop\\Início.svg",
+          "image_id": "image2_2_2",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Desktop\\Login.svg",
+          "image_id": "image2_9_115",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Desktop\\Pagamento.svg",
+          "image_id": "image2_11_2862",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Mobile\\Carrinho de NFTs.svg",
+          "image_id": "image2_16_360",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Mobile\\Início.svg",
+          "image_id": "image2_14_5226",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        }
+      ],
+      "variants": [
+        {
+          "path": "public/assets/ivory.webp",
+          "width": 450,
+          "height": 450,
+          "bytes": 24718,
+          "sha256": "7079c5f18ccea48f77ce19d45099cb498629270b9d25f7e9b8dfe30f0a2c7f68",
+          "operations": ["Lanczos downsample", "WebP quality 90"]
+        },
+        {
+          "path": "public/assets/ivory-900.webp",
+          "width": 900,
+          "height": 900,
+          "bytes": 71090,
+          "sha256": "a35a40d42c6f4444e0f9eb4202c57d01b5a81db383252a7b626f561c72e0acc1",
+          "operations": ["Lanczos downsample", "WebP quality 88"]
+        },
+        {
+          "path": "public/assets/ivory-thumb.webp",
+          "width": 128,
+          "height": 128,
+          "bytes": 3000,
+          "sha256": "86b221c256c3f9a3156b9325fc40370c609173cd118fa149e341422aea57f986",
+          "operations": ["Lanczos downsample", "WebP quality 86"]
+        }
+      ]
+    },
+    {
+      "name": "violet",
+      "sourceFile": "assets/figma/violet.png",
+      "sourceSha256": "9b25d8d72395aa62f919f6ad33b95b7ba7bbfee6049e95cf159a319b03ecb8d9",
+      "sourceDimensions": [1254, 1254],
+      "pixelExactMaster": true,
+      "origins": [
+        {
+          "svg": "Desktop\\Cadastro.svg",
+          "image_id": "image3_9_1022",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Desktop\\Carrinho de NFTs.svg",
+          "image_id": "image1_11_1278",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Desktop\\Confirmação de Pedido.svg",
+          "image_id": "image1_11_4385",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Desktop\\Detalhes do NFT.svg",
+          "image_id": "image1_10_244",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Desktop\\Início.svg",
+          "image_id": "image1_2_2",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Desktop\\Login.svg",
+          "image_id": "image3_9_115",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Desktop\\Pagamento.svg",
+          "image_id": "image1_11_2862",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Mobile\\Carrinho de NFTs.svg",
+          "image_id": "image1_16_360",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        },
+        {
+          "svg": "Mobile\\Início.svg",
+          "image_id": "image1_14_5226",
+          "svg_width": "1254",
+          "svg_height": "1254"
+        }
+      ],
+      "variants": [
+        {
+          "path": "public/assets/violet.webp",
+          "width": 450,
+          "height": 450,
+          "bytes": 26838,
+          "sha256": "4ed1741d5ef19e962717f3207ae92f9f0faa99262cc5639a1dc5a3eda3590fd2",
+          "operations": ["Lanczos downsample", "WebP quality 90"]
+        },
+        {
+          "path": "public/assets/violet-900.webp",
+          "width": 900,
+          "height": 900,
+          "bytes": 89478,
+          "sha256": "2aa588fbc5f6d1535d1ee7903da4f9e470efdcccf8b5a40b8b1aecd1af645cd8",
+          "operations": ["Lanczos downsample", "WebP quality 88"]
+        },
+        {
+          "path": "public/assets/violet-thumb.webp",
+          "width": 128,
+          "height": 128,
+          "bytes": 3376,
+          "sha256": "ff436503fed07fcead551438b49e1bb0473fe71481d889df228de3a98119ecd3",
+          "operations": ["Lanczos downsample", "WebP quality 86"]
+        }
+      ]
     }
   ],
   "limitations": [
-    "Recortes de frames exportados, não os assets originais internos do Figma.",
-    "O maior retrato Emerald está disponível em 450×450; os demais em 250×250. Não houve ampliação artificial.",
-    "Os cantos arredondados dos retratos são os do próprio frame, incluindo o fundo escuro existente. Nenhum texto, botão ou ícone foi incluído nos recortes.",
-    "As quatro artes são reutilizadas nas fixtures do projeto; nomes/IDs de NFTs diferentes devem manter mapeamento canônico consistente.",
-    "Fonte exata do Figma ainda não foi confirmada.",
-    "As imagens WebP de uso no navegador usam qualidade 92 na resolução nativa; os PNGs em assets/source preservam os pixels exatos dos recortes.",
-    "Fontes WOFF2 foram derivadas da DejaVu Sans Mono instalada localmente, com subset Latin/Latin Extended/pontuação; fonte provisória até confirmar a original do Figma."
+    "Os SVGs dos 15 frames contêm somente quatro artes únicas, reutilizadas em 35 ocorrências. Não há outras imagens independentes de galeria.",
+    "As miniaturas oferecem enquadramentos da mesma obra, sem inventar novas artes.",
+    "Os monogramas W/M e a carteira Iconly de Coinbase reproduzem os símbolos do Figma; não representam integrações reais.",
+    "Valores, quantidades e categorias seguem a API simulada; números inconsistentes do desenho não são reproduzidos."
   ],
   "fonts": [
     {
-      "family": "DejaVu Sans Mono",
+      "family": "Roboto Mono",
       "cssFamilySuggestion": "Kurio Mono",
       "weight": 400,
-      "source": "C:\\Windows\\Fonts\\DejaVuSansMono.ttf",
+      "source": "https://github.com/googlefonts/RobotoMono/blob/main/fonts/webfonts/RobotoMono-Regular.woff2",
       "path": "public/assets/kurio-mono-regular.woff2",
-      "bytes": 27244,
-      "sha256": "281638646c2efbc05862bb3d2ba83a777444beaa17e0d58530a32a81135d2e02",
+      "bytes": 22908,
+      "sha256": "49f369ae3b4962cc876797204f162ff18a6763570d5d6cbb5e228d3a7a6e5d72",
       "operations": [
-        "Latin/Latin Extended and punctuation subset",
-        "WOFF2 encoding"
+        "Latin/Latin Extended, punctuation, currency and arrows subset",
+        "WOFF2"
       ],
-      "license": "Bitstream Vera license; DejaVu changes public domain; embedded notice copied to FONT-LICENSE.txt",
-      "exactFigmaFont": false
+      "license": "SIL Open Font License 1.1; FONT-LICENSE.txt",
+      "exactFigmaFont": true,
+      "figmaEvidence": "SVG exportado do texto Entrar node16-1173: font-family Roboto Mono,20px,700"
     },
     {
-      "family": "DejaVu Sans Mono",
+      "family": "Roboto Mono",
       "cssFamilySuggestion": "Kurio Mono",
       "weight": 700,
-      "source": "C:\\Windows\\Fonts\\DejaVuSansMono-Bold.ttf",
+      "source": "https://github.com/googlefonts/RobotoMono/blob/main/fonts/webfonts/RobotoMono-Bold.woff2",
       "path": "public/assets/kurio-mono-bold.woff2",
-      "bytes": 26548,
-      "sha256": "f9de9d47c64620b742d001624987ed9a0a595706cafed62848603c1a6f4788bc",
+      "bytes": 23104,
+      "sha256": "c39e56eca753a08f411d1a327fd13082e3d984d921b0957f8c2dcc9ab0b171ac",
       "operations": [
-        "Latin/Latin Extended and punctuation subset",
-        "WOFF2 encoding"
+        "Latin/Latin Extended, punctuation, currency and arrows subset",
+        "WOFF2"
       ],
-      "license": "Bitstream Vera license; DejaVu changes public domain; embedded notice copied to FONT-LICENSE.txt",
-      "exactFigmaFont": false
+      "license": "SIL Open Font License 1.1; FONT-LICENSE.txt",
+      "exactFigmaFont": true,
+      "figmaEvidence": "SVG exportado do texto Entrar node16-1173: font-family Roboto Mono,20px,700"
+    },
+    {
+      "family": "Roboto Mono",
+      "cssFamilySuggestion": "Kurio Mono",
+      "weight": 500,
+      "source": "https://github.com/googlefonts/RobotoMono/blob/main/fonts/webfonts/RobotoMono-Medium.woff2",
+      "path": "public/assets/kurio-mono-medium.woff2",
+      "bytes": 23860,
+      "sha256": "e5d9c0146db307b198155c9f6e5eec6463fa58db6c7745deb98e8239bd137197",
+      "operations": [
+        "Latin/Latin Extended, punctuation, currency and arrows subset",
+        "WOFF2"
+      ],
+      "license": "SIL Open Font License 1.1; FONT-LICENSE.txt",
+      "exactFigmaFont": true,
+      "figmaEvidence": "64 text elements with weight500 in the15 exported SVG frames"
     }
   ],
   "validation": {
     "artworkCount": 4,
-    "mastersPixelExact": true,
-    "allCropsWithinSource": true,
-    "nativeResolutionPreserved": true,
+    "sourceImages1254": true,
+    "nativeMastersPreserved": true,
+    "fontConfirmed": "Roboto Mono",
     "fontsContainPortuguese": true
-  }
+  },
+  "icons": [
+    {
+      "file": "google.svg",
+      "node": "I70522:3186;70504:2992;70483:242",
+      "source_zip": "Frontend Challenge (2).zip",
+      "source_member": "Mobile/google 1.svg",
+      "sha256": "1421a54c29d0e22e88255633563c1c68e6097ea016dd2a18bd00903f5c15eaaf",
+      "bytes": 2207,
+      "svg_header": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">",
+      "path": "public/assets/icons/google.svg"
+    },
+    {
+      "file": "facebook.svg",
+      "node": "I70522:3186;70504:2993;70483:259",
+      "source_zip": "Frontend Challenge (3).zip",
+      "source_member": "Mobile/facebook 1.svg",
+      "sha256": "a802649fd46e0d60da7dbdc0ac93b0ed1c37c51af9afe599688c7f37cf8ecb16",
+      "bytes": 365,
+      "svg_header": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">",
+      "path": "public/assets/icons/facebook.svg"
+    },
+    {
+      "file": "walletconnect.svg",
+      "node": "70243:316",
+      "source_zip": "Frontend Challenge (4).zip",
+      "source_member": "Mobile/Wallet mark W.svg",
+      "sha256": "97a18aadb944574dc9465cc15f330481764fe7b77e0ade4f6309ad2dd4634750",
+      "bytes": 382,
+      "svg_header": "<svg width=\"9\" height=\"10\" viewBox=\"0 0 9 10\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">",
+      "path": "public/assets/icons/walletconnect.svg"
+    },
+    {
+      "file": "metamask.svg",
+      "node": "70243:315",
+      "source_zip": "Frontend Challenge (5).zip",
+      "source_member": "Mobile/Wallet mark M.svg",
+      "sha256": "81a6905c4ef729bfcee805444838a3d6a696c278d733bc2e847d2ba25eead8cc",
+      "bytes": 289,
+      "svg_header": "<svg width=\"7\" height=\"10\" viewBox=\"0 0 7 10\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">",
+      "path": "public/assets/icons/metamask.svg"
+    },
+    {
+      "file": "coinbase.svg",
+      "node": "23:1379",
+      "source_zip": "Frontend Challenge (6).zip",
+      "source_member": "Mobile/Iconly/Curved/Wallet.svg",
+      "sha256": "8cf1d5516ae68ba24fc181302623edcb1bdb52e65914c7ead493b25b0048f563",
+      "bytes": 868,
+      "svg_header": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">",
+      "path": "public/assets/icons/coinbase.svg"
+    }
+  ]
 }

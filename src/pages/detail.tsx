@@ -1,8 +1,16 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { markPublicPageReady } from "../lib/network-ready";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Link, useNavigate, useParams } from "@tanstack/react-router";
 import { Check, ChevronDown, ShoppingCart } from "lucide-react";
-import { api, errorMessage, queryClient, sessionKey } from "../lib/client";
+import {
+  api,
+  auth,
+  errorMessage,
+  isCanceled,
+  queryClient,
+  sessionKey,
+} from "../lib/client";
 import { formatEth } from "../lib/money";
 import {
   Breadcrumb,
@@ -16,10 +24,10 @@ import {
   useCart,
   useNotice,
 } from "../components/common";
-import { PromoBanners } from "../components/layout";
 import { Button } from "../components/ui/button";
 
 export function DetailPage() {
+  useEffect(markPublicPageReady, []);
   const { nftId } = useParams({ strict: false }) as { nftId: string },
     query = useQuery({
       queryKey: ["nft", nftId],
@@ -27,13 +35,36 @@ export function DetailPage() {
     }),
     [editionId, setEditionId] = useState("fifty"),
     [quantity, setQuantity] = useState(1),
-    [busy, setBusy] = useState(false),
     cart = useCart(),
     notice = useNotice(),
     navigate = useNavigate(),
     [thumb, setThumb] = useState(0),
     [tab, setTab] = useState("description"),
     [info, setInfo] = useState("");
+  const add = useMutation({
+    onMutate: () => auth.generation(),
+    mutationFn: ({
+      editionId,
+      quantity,
+    }: {
+      editionId: string;
+      quantity: number;
+      checkout: boolean;
+    }) => api.addItem(nftId, editionId, quantity, cart.data?.cart.version),
+    onSuccess: (view, input, started) => {
+      if (started !== auth.generation()) return;
+      queryClient.setQueryData(["cart", ...sessionKey()], view);
+      if (input.checkout) void navigate({ to: "/checkout" });
+      else notice(`${query.data?.name} foi para o carrinho.`);
+    },
+    onError: (error, _input, started) => {
+      if (started !== auth.generation() || isCanceled(error)) return;
+      notice(errorMessage(error));
+      void query.refetch();
+      void cart.refetch();
+    },
+  });
+  const busy = add.isPending;
   if (query.isPending)
     return (
       <div className="detail-page">
@@ -56,26 +87,6 @@ export function DetailPage() {
       nft.editions.find((item) => item.id === editionId) ?? nft.editions[2],
     available = Math.max(0, edition.stock - edition.reserved),
     safeQuantity = Math.min(quantity, Math.max(1, available));
-  const add = async (checkout: boolean) => {
-    setBusy(true);
-    try {
-      const view = await api.addItem(
-        nft.id,
-        edition.id,
-        safeQuantity,
-        cart.data?.cart.version,
-      );
-      queryClient.setQueryData(["cart", ...sessionKey()], view);
-      if (checkout) await navigate({ to: "/checkout" });
-      else notice(`${nft.name} foi para o carrinho.`);
-    } catch (error) {
-      notice(errorMessage(error));
-      void query.refetch();
-      void cart.refetch();
-    } finally {
-      setBusy(false);
-    }
-  };
   return (
     <div className="detail-page">
       <div className="container">
@@ -86,6 +97,8 @@ export function DetailPage() {
             <div className="detail-art">
               <img
                 src={nft.image}
+                srcSet={`${nft.image} 450w, ${nft.image.replace(".webp", "-900.webp")} 900w`}
+                sizes="(max-width: 600px) calc(100vw - 56px), (max-width: 900px) 40vw, 404px"
                 width="450"
                 height="450"
                 alt={`${nft.name}${thumb ? " — visualização ampliada" : ""}`}
@@ -126,30 +139,26 @@ export function DetailPage() {
               {nft.collection}{" "}
               <Check size={16} aria-label="Coleção verificada" />
             </p>
+            <h2 className="detail-about">Sobre este NFT:</h2>
             <p className="detail-description">{nft.description}</p>
-            <ul className="attributes">
-              {nft.attributes.map((attribute) => (
-                <li key={attribute}>{attribute}</li>
-              ))}
-            </ul>
             <dl className="metadata">
               <div>
-                <dt>Rede</dt>
+                <dt>ID do token</dt>
                 <dd>
-                  {nft.network === "ethereum"
-                    ? "Ethereum"
-                    : nft.network === "polygon"
-                      ? "Polygon"
-                      : "Solana"}
+                  #{nft.tokenId} · {nft.network}
                 </dd>
               </div>
               <div>
-                <dt>Token ID</dt>
-                <dd>#{nft.tokenId}</dd>
+                <dt>Coleção</dt>
+                <dd>{nft.collection}</dd>
+              </div>
+              <div>
+                <dt>Atributos</dt>
+                <dd>{nft.attributes.join(", ")}</dd>
               </div>
             </dl>
             <div className="edition-picker">
-              <h2>Escolha sua edição</h2>
+              <h2>Edição:</h2>
               <div>
                 {nft.editions.map((item) => (
                   <button
@@ -170,7 +179,10 @@ export function DetailPage() {
             <strong className="detail-price">
               {formatEth(edition.priceEth)}
             </strong>
-            <p className="stock-note" role="status">
+            <p
+              className={`stock-note ${available ? "sr-only" : ""}`}
+              role="status"
+            >
               {available
                 ? `${available} ${available === 1 ? "unidade disponível" : "unidades disponíveis"}`
                 : "Edição esgotada"}
@@ -187,19 +199,31 @@ export function DetailPage() {
             <div className="detail-buttons">
               <Button
                 disabled={!available || busy}
-                onClick={() => void add(true)}
+                onClick={() =>
+                  add.mutate({
+                    editionId: edition.id,
+                    quantity: safeQuantity,
+                    checkout: true,
+                  })
+                }
               >
                 Comprar agora
               </Button>
               <Button
                 variant="outline"
                 disabled={!available || busy}
-                onClick={() => void add(false)}
+                onClick={() =>
+                  add.mutate({
+                    editionId: edition.id,
+                    quantity: safeQuantity,
+                    checkout: false,
+                  })
+                }
               >
                 <ShoppingCart size={18} />
-                Adicionar ao carrinho
+                <span className="add-cart-label">Adicionar ao carrinho</span>
               </Button>
-              <FavoriteButton nftId={nft.id} />
+              <FavoriteButton nftId={nft.id} compact />
             </div>
             <details>
               <summary>
@@ -293,7 +317,6 @@ export function DetailPage() {
         </section>
         <Related title="Você também pode gostar" exclude={nft.id} />
       </div>
-      <PromoBanners />
     </div>
   );
 }

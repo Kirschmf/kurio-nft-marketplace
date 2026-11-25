@@ -1,5 +1,6 @@
 import axios from "axios";
 import { QueryClient } from "@tanstack/react-query";
+import { waitForNetwork } from "./network-ready";
 import type {
   ApiErrorBody,
   AuthResult,
@@ -12,6 +13,11 @@ import type {
   Profile,
   Quote,
   Wallet,
+  LoginInput,
+  RegisterInput,
+  ProfileInput,
+  PasswordInput,
+  WalletInput,
 } from "./types";
 
 export const queryClient = new QueryClient({
@@ -29,33 +35,21 @@ export const queryClient = new QueryClient({
     mutations: { retry: false },
   },
 });
+const local = typeof window === "undefined" ? undefined : window.localStorage;
+const session =
+  typeof window === "undefined" ? undefined : window.sessionStorage;
 let guest =
-  localStorage.getItem("kurio-guest") ?? `guest-${crypto.randomUUID()}`;
-localStorage.setItem("kurio-guest", guest);
+  local?.getItem("kurio-guest") ??
+  (typeof window === "undefined"
+    ? "guest-prerender"
+    : `guest-${crypto.randomUUID()}`);
+local?.setItem("kurio-guest", guest);
 let generation = 0;
+let authenticationAttempt = 0;
 let current: Omit<AuthResult, "token"> | null = null;
 const listeners = new Set<() => void>();
 let bootstrapPromise: Promise<void> | undefined;
 export const http = axios.create({ baseURL: "/api", timeout: 5000 });
-http.interceptors.request.use((config) => {
-  const token = sessionStorage.getItem("kurio-session");
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  config.headers["X-Demo-Guest-Id"] = guest;
-  return config;
-});
-http.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (
-      axios.isAxiosError<ApiErrorBody>(error) &&
-      error.response?.status === 401 &&
-      error.response.data.error.code === "SESSION_EXPIRED" &&
-      current
-    )
-      auth.clear();
-    return Promise.reject(error);
-  },
-);
 
 async function request<T>(
   method: string,
@@ -68,24 +62,54 @@ async function request<T>(
   },
 ) {
   const started = generation;
-  const response = await http.request<{ data: T }>({
-    method,
-    url: path,
-    data: body,
-    signal: options?.signal,
-    params: options?.params,
-    paramsSerializer: { indexes: null },
-    headers: options?.key ? { "Idempotency-Key": options.key } : undefined,
-  });
-  if (started !== generation && !path.startsWith("/auth/"))
-    throw new axios.CanceledError("A sessão mudou.");
+  const token = session?.getItem("kurio-session") ?? null;
+  const stillCurrent = () =>
+    started === generation &&
+    token === (session?.getItem("kurio-session") ?? null);
+  let response;
+  try {
+    await waitForNetwork();
+    if (!stillCurrent()) throw new axios.CanceledError("A sessão mudou.");
+    response = await http.request<{ data: T }>({
+      method,
+      url: path,
+      data: body,
+      signal: options?.signal,
+      params: options?.params,
+      paramsSerializer: { indexes: null },
+      headers: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        "X-Demo-Guest-Id": guest,
+        ...(options?.key ? { "Idempotency-Key": options.key } : {}),
+      },
+    });
+  } catch (error) {
+    // Even rejected requests belong to the session that sent them.
+    if (!stillCurrent()) throw new axios.CanceledError("A sessão mudou.");
+    if (
+      axios.isAxiosError<ApiErrorBody>(error) &&
+      error.response?.status === 401 &&
+      error.response.data.error?.code === "SESSION_EXPIRED" &&
+      current
+    )
+      auth.clear();
+    throw error;
+  }
+  if (!stillCurrent()) throw new axios.CanceledError("A sessão mudou.");
   return response.data.data;
 }
 const notify = () => listeners.forEach((fn) => fn());
 export const auth = {
   get: () => current,
   generation: () => generation,
-  token: () => sessionStorage.getItem("kurio-session") ?? "",
+  assertGeneration(expected: number) {
+    if (expected !== generation)
+      throw new axios.CanceledError("A sessão mudou.");
+  },
+  token: () => session?.getItem("kurio-session") ?? "",
+  cancelAuthentication: () => {
+    authenticationAttempt++;
+  },
   subscribe: (fn: () => void) => {
     listeners.add(fn);
     return () => {
@@ -95,6 +119,7 @@ export const auth = {
   async bootstrap() {
     bootstrapPromise ??= (async () => {
       if (!auth.token()) return;
+      const started = generation;
       try {
         current = await request<Omit<AuthResult, "token">>(
           "GET",
@@ -102,8 +127,9 @@ export const auth = {
         );
         notify();
       } catch (error) {
+        if (started !== generation || axios.isCancel(error)) return;
         if (axios.isAxiosError(error) && error.response?.status === 401) {
-          sessionStorage.removeItem("kurio-session");
+          session?.removeItem("kurio-session");
           current = null;
           notify();
         } else {
@@ -116,7 +142,7 @@ export const auth = {
   },
   async accept(result: AuthResult) {
     auth.clear();
-    sessionStorage.setItem("kurio-session", result.token);
+    session?.setItem("kurio-session", result.token);
     current = {
       user: result.user,
       sessionId: result.sessionId,
@@ -124,17 +150,30 @@ export const auth = {
     };
     bootstrapPromise = Promise.resolve();
     notify();
-    const merge = await api.mergeCart(guest, guest);
-    queryClient.setQueryData(["cart", result.user.id, generation], merge);
+    const started = generation;
+    const visitor = guest;
+    let merge: CartView;
+    try {
+      merge = await api.mergeCart(visitor, visitor);
+    } catch (error) {
+      if (started !== generation || axios.isCancel(error)) throw error;
+      // Keep the visitor identity so the same merge can be retried after login.
+      auth.clear();
+      throw error;
+    }
+    if (started !== generation)
+      throw new axios.CanceledError("A sessão mudou.");
+    queryClient.setQueryData(["cart", result.user.id, started], merge);
     guest = `guest-${crypto.randomUUID()}`;
-    localStorage.setItem("kurio-guest", guest);
-    return merge.adjustments;
+    local?.setItem("kurio-guest", guest);
+    return { adjustments: merge.adjustments, generation: started };
   },
   clear() {
     generation++;
+    authenticationAttempt++;
     void queryClient.cancelQueries();
     queryClient.clear();
-    sessionStorage.removeItem("kurio-session");
+    session?.removeItem("kurio-session");
     current = null;
     bootstrapPromise = Promise.resolve();
     notify();
@@ -146,13 +185,22 @@ export const auth = {
     }
   },
   async logout() {
+    const started = generation;
     try {
       await request("POST", "/auth/logout");
     } finally {
-      auth.clear();
+      if (started === generation) auth.clear();
     }
   },
 };
+async function authenticate(path: string, body: unknown) {
+  const attempt = ++authenticationAttempt;
+  const result = await request<AuthResult>("POST", path, body);
+  if (attempt !== authenticationAttempt)
+    throw new axios.CanceledError("Outra autenticação foi iniciada.");
+  return result;
+}
+export const isCanceled = axios.isCancel;
 export const sessionKey = () =>
   [current?.user.id ?? guest, generation] as const;
 
@@ -164,9 +212,8 @@ export const api = {
     }),
   nft: (id: string, signal?: AbortSignal) =>
     request<Nft>("GET", `/nfts/${id}`, undefined, { signal }),
-  register: (body: unknown) =>
-    request<AuthResult>("POST", "/auth/register", body),
-  login: (body: unknown) => request<AuthResult>("POST", "/auth/login", body),
+  register: (body: RegisterInput) => authenticate("/auth/register", body),
+  login: (body: LoginInput) => authenticate("/auth/login", body),
   cart: (signal?: AbortSignal) =>
     request<CartView>("GET", "/cart", undefined, { signal }),
   addItem: (
@@ -201,7 +248,8 @@ export const api = {
   favorite: (id: string, add: boolean) =>
     request<string[]>(add ? "PUT" : "DELETE", `/favorites/${id}`),
   profile: () => request<Profile>("GET", "/profile"),
-  saveProfile: (body: unknown) => request<Profile>("PATCH", "/profile", body),
+  saveProfile: (body: ProfileInput) =>
+    request<Profile>("PATCH", "/profile", body),
   avatar: (file?: File) => {
     const form = new FormData();
     if (file) form.append("file", file);
@@ -211,11 +259,11 @@ export const api = {
       file ? form : undefined,
     );
   },
-  changePassword: (body: unknown) =>
+  changePassword: (body: PasswordInput) =>
     request<null>("POST", "/profile/password", body),
   wallets: (signal?: AbortSignal) =>
     request<Wallet[]>("GET", "/wallets", undefined, { signal }),
-  saveWallet: (body: unknown, id?: string) =>
+  saveWallet: (body: WalletInput, id?: string) =>
     request<Wallet>(
       id ? "PATCH" : "POST",
       id ? `/wallets/${id}` : "/wallets",

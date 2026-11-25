@@ -355,7 +355,11 @@ function DemoPanel() {
     notice = useNotice(),
     cart = useCart(),
     navigate = useNavigate();
-  const connection = useSyncExternalStore(realtime.subscribe, realtime.status);
+  const connection = useSyncExternalStore(
+    realtime.subscribe,
+    realtime.status,
+    () => "connecting",
+  );
   const run = async (
     fn: () => Promise<unknown>,
     success = "Cenário atualizado.",
@@ -550,7 +554,11 @@ function LayoutContent() {
   const location = useLocation(),
     user = useAuth(),
     notice = useNotice(),
-    connection = useSyncExternalStore(realtime.subscribe, realtime.status),
+    connection = useSyncExternalStore(
+      realtime.subscribe,
+      realtime.status,
+      () => "connecting",
+    ),
     navigate = useNavigate();
   useEffect(() => realtime.start(), [user?.sessionId]);
   useEffect(() => realtime.notice(notice), [notice]);
@@ -566,6 +574,7 @@ function LayoutContent() {
   }, [user, location.pathname, location.href, navigate]);
   useEffect(() => {
     window.scrollTo({ top: 0 });
+    if (["/login", "/register"].includes(location.pathname)) return;
     document.getElementById("main-content")?.focus({ preventScroll: true });
   }, [location.pathname]);
   const noFooter =
@@ -589,7 +598,9 @@ function LayoutContent() {
         <Outlet />
       </main>
       {!noFooter && <Footer />}
-      <MobileNav />
+      {!/^\/(login|register|cart|checkout|nfts|orders)(\/|$)/.test(
+        location.pathname,
+      ) && <MobileNav />}
       {import.meta.env.VITE_DEMO_CONTROLS !== "false" && <DemoPanel />}
     </>
   );

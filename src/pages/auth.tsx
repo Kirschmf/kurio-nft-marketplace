@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import { Link, useNavigate, useSearch } from "@tanstack/react-router";
-import { ArrowLeft, X } from "lucide-react";
-import { api, auth, errorMessage, errorsFrom } from "../lib/client";
+import { X } from "lucide-react";
+import { api, auth, errorMessage, errorsFrom, isCanceled } from "../lib/client";
 import { loginSchema, registerSchema, fieldErrors } from "../lib/validation";
 import { safeReturnTo } from "../lib/return-to";
+import type { RegisterInput } from "../lib/types";
+import { CatalogPage } from "./catalog";
 import { Dialog } from "../components/ui/dialog";
 import { Button } from "../components/ui/button";
 import {
@@ -26,9 +29,48 @@ export function AuthPage({ register = false }: { register?: boolean }) {
     }),
     [errors, setErrors] = useState<Record<string, string[]>>({}),
     [error, setError] = useState(""),
-    [busy, setBusy] = useState(false),
     [info, setInfo] = useState(""),
     [desktop, setDesktop] = useState(window.innerWidth > 600);
+  const close = () => {
+    auth.cancelAuthentication();
+    const destination = /^\/(checkout|account|orders|favorites)(\/|$)/.test(
+      redirect,
+    )
+      ? "/"
+      : redirect;
+    void navigate({ to: destination }).then(() =>
+      requestAnimationFrame(() => {
+        if (origin.current?.isConnected) origin.current.focus();
+      }),
+    );
+  };
+  const redirect = safeReturnTo(search.redirect, window.location.origin);
+  const origin = useRef(document.activeElement as HTMLElement | null);
+  useEffect(
+    () => () => {
+      auth.cancelAuthentication();
+    },
+    [],
+  );
+  const mutation = useMutation({
+    mutationFn: async (body: RegisterInput) => {
+      const response = register
+        ? await api.register(body)
+        : await api.login({ email: body.email, password: body.password });
+      return auth.accept(response);
+    },
+    onSuccess: ({ adjustments, generation }) => {
+      if (generation !== auth.generation()) return;
+      if (adjustments.length) notice(adjustments.join(" "));
+      void navigate({ to: redirect });
+    },
+    onError: (error) => {
+      if (isCanceled(error)) return;
+      setErrors(errorsFrom(error));
+      setError(errorMessage(error));
+    },
+  });
+  const busy = mutation.isPending;
   useEffect(() => {
     const media = matchMedia("(min-width: 601px)");
     const change = () => setDesktop(media.matches);
@@ -39,9 +81,9 @@ export function AuthPage({ register = false }: { register?: boolean }) {
     if (Object.keys(errors).length)
       document.querySelector<HTMLInputElement>("[aria-invalid=true]")?.focus();
   }, [errors]);
-  const redirect = safeReturnTo(search.redirect, window.location.origin);
-  const submit = async (event: React.FormEvent) => {
+  const submit = (event: React.FormEvent) => {
     event.preventDefault();
+    if (busy) return;
     const result = (register ? registerSchema : loginSchema).safeParse(form);
     if (!result.success) {
       setErrors(fieldErrors(result.error));
@@ -49,49 +91,54 @@ export function AuthPage({ register = false }: { register?: boolean }) {
     }
     setErrors({});
     setError("");
-    setBusy(true);
-    try {
-      const response = register
-        ? await api.register(result.data)
-        : await api.login(result.data);
-      const adjustments = await auth.accept(response);
-      if (adjustments.length) notice(adjustments.join(" "));
-      await navigate({ to: redirect });
-    } catch (error) {
-      setErrors(errorsFrom(error));
-      setError(errorMessage(error));
-    } finally {
-      setBusy(false);
-    }
+    mutation.mutate({ ...form, ...result.data });
   };
   const content = (
     <div className="auth-backdrop">
-      <div className="auth-background" aria-hidden="true">
-        <img src="/assets/emerald.webp" alt="" />
-        <span>
-          SEJA DONO DO FUTURO
-          <br />
-          DA ARTE DIGITAL
-        </span>
-      </div>
-      <section className="auth-card" aria-labelledby="auth-title">
-        <Link to="/" className="auth-close" aria-label="Voltar ao início">
+      <section
+        className={`auth-card ${register ? "auth-register" : ""}`}
+        aria-labelledby="auth-title"
+      >
+        <button
+          onClick={close}
+          className="auth-close"
+          aria-label="Fechar acesso à conta"
+        >
           <X size={20} />
+        </button>
+        <Link to="/" className="auth-wordmark" aria-label="Kurio, início">
+          KURIO
         </Link>
-        <Link to="/" className="mobile-auth-back">
-          <ArrowLeft size={20} />
-          Voltar
-        </Link>
-        <h1 id="auth-title">{register ? "Cadastre-se" : "Entrar"}</h1>
-        <p>
+        <div className="auth-tabs" aria-label="Acesso à conta">
+          <Link
+            to="/login"
+            search={{ redirect }}
+            className={!register ? "active" : ""}
+          >
+            Entrar
+          </Link>
+          <span>/</span>
+          <Link
+            to="/register"
+            search={{ redirect }}
+            className={register ? "active" : ""}
+          >
+            Criar conta
+          </Link>
+        </div>
+        <p className="auth-intro">
           {register
-            ? "Crie sua conta e comece sua coleção."
-            : "Bem-vindo de volta à Kurio."}
+            ? "Crie seu perfil de colecionador e comece sua coleção."
+            : "Entre para gerenciar sua carteira, coleção e perfil de criador."}
         </p>
+        <h1 id="auth-title">
+          {register ? "Criar perfil de colecionador" : "Entrar"}
+        </h1>
         <form onSubmit={submit} noValidate>
           {register && (
             <Field
               label="Nome de usuário"
+              placeholder="Nome de usuário"
               autoComplete="username"
               required
               value={form.username}
@@ -103,6 +150,7 @@ export function AuthPage({ register = false }: { register?: boolean }) {
           )}
           <Field
             label="E-mail"
+            placeholder="Digite seu e-mail"
             type="email"
             autoComplete="email"
             required
@@ -114,6 +162,7 @@ export function AuthPage({ register = false }: { register?: boolean }) {
           />
           <PasswordField
             label="Senha"
+            placeholder="Senha"
             autoComplete={register ? "new-password" : "current-password"}
             required
             value={form.password}
@@ -126,6 +175,7 @@ export function AuthPage({ register = false }: { register?: boolean }) {
             <>
               <PasswordField
                 label="Confirmar senha"
+                placeholder="Confirmar senha"
                 autoComplete="new-password"
                 required
                 value={form.confirmPassword}
@@ -142,6 +192,19 @@ export function AuthPage({ register = false }: { register?: boolean }) {
               {error}
             </p>
           )}
+          {!register && (
+            <button
+              type="button"
+              className="text-link forgot-password"
+              onClick={() =>
+                setInfo(
+                  "A recuperação por e-mail não está disponível na demonstração. Use uma conta de teste ou altere a senha no perfil autenticado.",
+                )
+              }
+            >
+              Esqueceu a senha?
+            </button>
+          )}
           <Button type="submit" disabled={busy}>
             {busy ? (
               <Busy label={register ? "Criando conta" : "Entrando"} />
@@ -152,18 +215,7 @@ export function AuthPage({ register = false }: { register?: boolean }) {
             )}
           </Button>
         </form>
-        {!register && (
-          <button
-            className="text-link forgot-password"
-            onClick={() =>
-              setInfo(
-                "A recuperação por e-mail não está disponível na demonstração. Use uma conta de teste ou altere a senha no perfil autenticado.",
-              )
-            }
-          >
-            Esqueceu a senha?
-          </button>
-        )}
+        <div className="social-separator">Ou continue com</div>
         <div className="social-login">
           <Button
             variant="outline"
@@ -173,7 +225,8 @@ export function AuthPage({ register = false }: { register?: boolean }) {
               )
             }
           >
-            Google
+            <img src="/assets/icons/google.svg" width="20" height="20" alt="" />
+            Continuar com Google
           </Button>
           <Button
             variant="outline"
@@ -183,7 +236,13 @@ export function AuthPage({ register = false }: { register?: boolean }) {
               )
             }
           >
-            Facebook
+            <img
+              src="/assets/icons/facebook.svg"
+              width="20"
+              height="20"
+              alt=""
+            />
+            Continuar com Facebook
           </Button>
         </div>
         <p className="auth-switch">
@@ -192,25 +251,35 @@ export function AuthPage({ register = false }: { register?: boolean }) {
             {register ? "Entrar" : "Cadastre-se"}
           </Link>
         </p>
-        <small className="fine-print">
-          Ambiente de demonstração. Use dados fictícios.
-        </small>
       </section>
       <DemoInfo open={!!info} onClose={() => setInfo("")} message={info} />
     </div>
   );
   return desktop ? (
-    <Dialog
-      open
-      onOpenChange={(open) => {
-        if (!open) void navigate({ to: "/" });
-      }}
-      title={register ? "Cadastre-se" : "Entrar"}
-      className="auth-dialog"
-    >
-      {content}
-    </Dialog>
+    <>
+      <div className="auth-catalog">
+        <CatalogPage />
+      </div>
+      <Dialog
+        open
+        onOpenChange={(open) => {
+          if (!open) close();
+        }}
+        title={register ? "Cadastre-se" : "Entrar"}
+        className="auth-dialog"
+        returnFocusTo={origin.current}
+      >
+        {content}
+      </Dialog>
+    </>
   ) : (
     content
   );
+}
+
+export function LoginPage() {
+  return <AuthPage />;
+}
+export function RegisterPage() {
+  return <AuthPage register />;
 }

@@ -83,7 +83,7 @@ test("T030 repeated merge and a new visitor cart are each consumed once", async 
   expect(cart.lines[0].quantity).toBe(2);
   await page.goto("/account/profile");
   await page.getByRole("button", { name: "Sair", exact: true }).click();
-  await expect(page).toHaveURL(/127\.0\.0\.1:5173\/\?/);
+  await expect(page).toHaveURL((url) => url.pathname === "/");
   await add(page, 1);
   await login(page);
   expect(
@@ -95,7 +95,7 @@ test("T031 guest merge explains stock adjustment", async ({ page }) => {
   await add(page, 49);
   await page.goto("/account/profile");
   await page.getByRole("button", { name: "Sair", exact: true }).click();
-  await expect(page).toHaveURL(/127\.0\.0\.1:5173\/\?/);
+  await expect(page).toHaveURL((url) => url.pathname === "/");
   await add(page, 5);
   await login(page);
   await expect(page.locator(".toast")).toContainText("quantidade ajustada");

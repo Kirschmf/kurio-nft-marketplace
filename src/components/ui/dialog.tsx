@@ -10,6 +10,7 @@ export function Dialog({
   description,
   children,
   className = "",
+  returnFocusTo,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -17,6 +18,7 @@ export function Dialog({
   description?: string;
   children: ReactNode;
   className?: string;
+  returnFocusTo?: HTMLElement | null;
 }) {
   const returnFocus = useRef<HTMLElement | null>(null);
   return (
@@ -26,11 +28,14 @@ export function Dialog({
         <DialogPrimitive.Content
           className={`dialog-content ${className}`}
           onOpenAutoFocus={() => {
-            returnFocus.current = document.activeElement as HTMLElement;
+            returnFocus.current =
+              returnFocusTo ?? (document.activeElement as HTMLElement);
           }}
           onCloseAutoFocus={(event) => {
             event.preventDefault();
-            returnFocus.current?.focus();
+            queueMicrotask(() => {
+              if (returnFocus.current?.isConnected) returnFocus.current.focus();
+            });
           }}
           {...(!description ? { "aria-describedby": undefined } : {})}
         >

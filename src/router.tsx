@@ -9,13 +9,17 @@ import {
 import { auth } from "./lib/client";
 import { RootLayout } from "./components/layout";
 import { CatalogPage } from "./pages/catalog";
-import { AuthPage } from "./pages/auth";
 import { EmptyState, ErrorState } from "./components/common";
 import type { CatalogParams } from "./lib/types";
 
 const DetailPage = lazyRouteComponent(
   () => import("./pages/detail"),
   "DetailPage",
+);
+const LoginPage = lazyRouteComponent(() => import("./pages/auth"), "LoginPage");
+const RegisterPage = lazyRouteComponent(
+  () => import("./pages/auth"),
+  "RegisterPage",
 );
 const CartPage = lazyRouteComponent(() => import("./pages/cart"), "CartPage");
 const FavoritesPage = lazyRouteComponent(
@@ -101,7 +105,7 @@ const routes = [
       validateSearch: (search: Record<string, unknown>) => ({
         redirect: typeof search.redirect === "string" ? search.redirect : "/",
       }),
-      component: () => <AuthPage register={path === "/register"} />,
+      component: path === "/register" ? RegisterPage : LoginPage,
     }),
   ),
   createRoute({

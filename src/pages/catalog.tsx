@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { ArrowRight, ChevronLeft, ChevronRight, Search, X } from "lucide-react";
 import { toWei } from "../lib/money";
+import { markPublicPageReady } from "../lib/network-ready";
 import { api } from "../lib/client";
 import type { CatalogParams, CatalogResult } from "../lib/types";
 import { categories, networks } from "../lib/catalog-options";
@@ -123,6 +124,7 @@ function Filters({
 }
 
 export function CatalogPage() {
+  useEffect(markPublicPageReady, []);
   const params = useSearch({ strict: false }) as CatalogParams,
     navigate = useNavigate(),
     [filterOpen, setFilterOpen] = useState(false),

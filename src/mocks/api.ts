@@ -1,17 +1,12 @@
+import { DomainError, fail } from "./domain-error";
+import { listCatalog } from "./catalog";
 import { HttpResponse, delay, http } from "msw";
-import { z } from "zod";
+import type { ZodType } from "zod";
+import { fieldErrors } from "../lib/field-errors";
 import { toWei } from "../lib/money";
 import type { Database, DomainEvent, Nft, Quote } from "../lib/types";
 import { scenarioIds } from "../lib/types";
-import {
-  collectorSchema,
-  fieldErrors,
-  loginSchema,
-  passwordSchema,
-  profileSchema,
-  registerSchema,
-  walletSchema,
-} from "../lib/validation";
+
 import { credential, digest, networks } from "./fixtures";
 import {
   cartView,
@@ -22,29 +17,22 @@ import {
   resolveOrder,
   snapshot,
   transact,
+  holdOrderEvents,
+  releaseOrderEvents,
 } from "./store";
 
-class DomainError extends Error {
-  constructor(
-    public status: number,
-    public code: string,
-    message: string,
-    public fields?: Record<string, string[]>,
-    public details?: unknown,
-  ) {
-    super(message);
-  }
+const heldRequests = new Map<
+  string,
+  { promise: Promise<void>; release: () => void }
+>();
+function releaseRequests() {
+  for (const hold of heldRequests.values()) hold.release();
+  heldRequests.clear();
 }
-function fail(
-  status: number,
-  code: string,
-  message: string,
-  fields?: Record<string, string[]>,
-  details?: unknown,
-): never {
-  throw new DomainError(status, code, message, fields, details);
-}
-const parse = <T>(schema: z.ZodType<T>, value: unknown): T => {
+
+const parse = <T>(schema: ZodType<T> | undefined, value: unknown): T => {
+  if (!schema)
+    throw new Error("Validation module unavailable for this resource");
   const result = schema.safeParse(value);
   return result.success
     ? result.data
@@ -125,6 +113,7 @@ async function simulate(path: string, method: string, url: URL) {
     return { scenario: state.config.scenario, count };
   });
   if (path.startsWith("/demo/")) return;
+  await heldRequests.get(`request:${method}:${path}`)?.promise;
   if (status.scenario === "slow") await delay(1500);
   if (
     status.scenario === "out-of-order" &&
@@ -177,11 +166,34 @@ async function dispatch(
   key: string,
   upload?: File,
 ) {
-  if (path === "/demo/reset" && method === "POST")
+  if (path === "/demo/actions" && body.type === "events.release")
+    return releaseOrderEvents();
+  const validates =
+    [
+      "/auth/register",
+      "/auth/login",
+      "/profile/password",
+      "/quotes",
+      "/wallet-connections",
+    ].includes(path) ||
+    (path === "/profile" && method === "PATCH") ||
+    (path.startsWith("/wallets") && ["POST", "PATCH"].includes(method));
+  const {
+    collectorSchema,
+    loginSchema,
+    passwordSchema,
+    profileSchema,
+    registerSchema,
+    walletSchema,
+    providerSchema,
+  } = validates ? await import("../lib/validation") : {};
+  if (path === "/demo/reset" && method === "POST") {
+    releaseRequests();
     return reset(
-      parse(z.enum(scenarioIds), body.scenario ?? "default"),
+      readScenario(body.scenario ?? "default"),
       typeof body.seed === "number" ? body.seed : 7,
     );
+  }
   if (path === "/demo/scenarios")
     return { scenarios: scenarioIds, config: (await snapshot()).config };
   if (path === "/auth/register" && method === "POST") {
@@ -302,6 +314,17 @@ async function dispatch(
         "Escolha uma imagem PNG, JPEG ou WebP de até 2 MB.",
         { avatar: ["Escolha uma imagem de até 2 MB."] },
       );
+    try {
+      const image = await createImageBitmap(upload);
+      image.close();
+    } catch {
+      fail(
+        422,
+        "AVATAR_INVALID",
+        "Não foi possível ler esta imagem. Escolha outro arquivo.",
+        { avatar: ["O arquivo não contém uma imagem válida."] },
+      );
+    }
     avatar = await new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => resolve(String(reader.result));
@@ -561,10 +584,7 @@ async function dispatch(
         state.wallets.find(
           (wallet) => wallet.id === body.walletId && wallet.userId === user.id,
         ) ?? fail(404, "WALLET_NOT_FOUND", "Escolha uma carteira cadastrada.");
-      const provider = parse(
-        z.enum(["walletconnect", "metamask", "coinbase"]),
-        body.provider,
-      );
+      const provider = parse(providerSchema, body.provider);
       if (wallet.network === "solana" && provider !== "walletconnect")
         fail(
           422,
@@ -815,77 +835,6 @@ async function dispatch(
   });
 }
 
-function listCatalog(state: Database, url: URL) {
-  const params = url.searchParams,
-    q = (params.get("q") ?? "").trim().toLowerCase(),
-    selectedCategories = params.getAll("categories"),
-    selectedNetworks = params.getAll("networks");
-  const sort = params.get("sort") ?? "recent",
-    tab = params.get("tab") ?? "all",
-    page = Number(params.get("page") ?? 1);
-  if (
-    !Number.isInteger(page) ||
-    page < 1 ||
-    !["recent", "price-asc", "price-desc", "popular"].includes(sort)
-  )
-    fail(422, "QUERY_INVALID", "Confira os filtros da busca.");
-  let min = 0n,
-    max: bigint | undefined;
-  try {
-    if (params.get("minEth")) min = toWei(params.get("minEth")!);
-    if (params.get("maxEth")) max = toWei(params.get("maxEth")!);
-    if (max !== undefined && min > max) throw new Error();
-  } catch {
-    fail(422, "PRICE_INVALID", "Confira o intervalo de preço.");
-  }
-  let items = state.nfts.filter(
-    (nft) =>
-      (!q ||
-        `${nft.name} ${nft.collection} ${nft.attributes.join(" ")}`
-          .toLowerCase()
-          .includes(q)) &&
-      (!selectedCategories.length ||
-        selectedCategories.includes(nft.category)) &&
-      (!selectedNetworks.length || selectedNetworks.includes(nft.network)) &&
-      toWei(nft.editions[2].priceEth) >= min &&
-      (max === undefined || toWei(nft.editions[2].priceEth) <= max) &&
-      (tab !== "new" || nft.createdAt >= "2026-09-15") &&
-      (tab !== "trending" || nft.popularity >= 65),
-  );
-  if (state.config.scenario === "empty") items = [];
-  items.sort((a, b) =>
-    sort === "price-asc" || sort === "price-desc"
-      ? (toWei(a.editions[2].priceEth) < toWei(b.editions[2].priceEth)
-          ? -1
-          : toWei(a.editions[2].priceEth) > toWei(b.editions[2].priceEth)
-            ? 1
-            : a.id.localeCompare(b.id)) * (sort === "price-desc" ? -1 : 1)
-      : sort === "popular"
-        ? b.popularity - a.popularity
-        : b.createdAt.localeCompare(a.createdAt),
-  );
-  const total = items.length,
-    totalPages = Math.max(1, Math.ceil(total / 9)),
-    currentPage = Math.min(page, totalPages);
-  const facets = {
-    categories: {} as Record<string, number>,
-    networks: {} as Record<string, number>,
-  };
-  for (const nft of state.nfts) {
-    facets.categories[nft.category] =
-      (facets.categories[nft.category] ?? 0) + 1;
-    facets.networks[nft.network] = (facets.networks[nft.network] ?? 0) + 1;
-  }
-  return {
-    items: items.slice((currentPage - 1) * 9, currentPage * 9),
-    total,
-    page: currentPage,
-    pageSize: 9,
-    totalPages,
-    facets,
-  };
-}
-
 function demoAction(
   state: Database,
   events: DomainEvent[],
@@ -893,7 +842,19 @@ function demoAction(
 ) {
   const type = text(body, "type"),
     payload = (body.payload ?? {}) as Record<string, unknown>;
-  if (type === "clock.advance")
+  if (type === "events.hold") holdOrderEvents();
+  else if (type === "network.hold" || type === "network.release") {
+    const key = `${payload.phase === "response" ? "response" : "request"}:${String(payload.method ?? "GET").toUpperCase()}:${String(payload.path)}`;
+    heldRequests.get(key)?.release();
+    heldRequests.delete(key);
+    if (type === "network.hold") {
+      let release!: () => void;
+      const promise = new Promise<void>((resolve) => {
+        release = resolve;
+      });
+      heldRequests.set(key, { promise, release });
+    }
+  } else if (type === "clock.advance")
     state.config.offset += Number(payload.ms ?? 61_000);
   else if (type === "session.expire")
     state.sessions.forEach((session) => {
@@ -949,7 +910,7 @@ function demoAction(
       }),
     );
   } else if (type === "scenario.set") {
-    state.config.scenario = parse(z.enum(scenarioIds), payload.scenario);
+    state.config.scenario = readScenario(payload.scenario);
     state.config.calls = {};
   } else if (type === "socket.disconnect") {
     state.config.socketConnected = false;
@@ -1001,6 +962,7 @@ export const apiHandler = http.all("/api/*", async ({ request }) => {
       upload,
     );
     const state = await snapshot();
+    await heldRequests.get(`response:${method}:${path}`)?.promise;
     if (
       path === "/orders" &&
       method === "POST" &&
@@ -1048,3 +1010,12 @@ export const apiHandler = http.all("/api/*", async ({ request }) => {
 });
 
 export { networks };
+
+function readScenario(value: unknown) {
+  if (
+    typeof value !== "string" ||
+    !scenarioIds.includes(value as (typeof scenarioIds)[number])
+  )
+    fail(422, "SCENARIO_INVALID", "Escolha um cenário disponível.");
+  return value as (typeof scenarioIds)[number];
+}

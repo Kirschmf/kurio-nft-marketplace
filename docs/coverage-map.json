@@ -4,587 +4,3402 @@
     "criterion": "Abrir catálogo, buscar por nome",
     "expected": "URL e API refletem q; resultado correspondente",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/catalog.spec.ts",
+        "title": "T001 T005 search, refresh and history use URL and REST parameters",
+        "line": 23,
+        "assertions": [
+          {
+            "line": 36,
+            "assertion": "expect(page.locator(\".nft-grid .nft-card\")).toHaveCount(4)"
+          },
+          {
+            "line": 37,
+            "assertion": "expect(page).toHaveURL(/q=Emerald/)"
+          },
+          {
+            "line": 39,
+            "assertion": "expect(page.locator(\".nft-grid .nft-card\")).toHaveCount(4)"
+          },
+          {
+            "line": 44,
+            "assertion": "expect(page).toHaveURL(/q=Ivory/)"
+          },
+          {
+            "line": 46,
+            "assertion": "expect( page.getByRole(\"textbox\", { name: \"Buscar nome, coleção ou atributo\" }), ).toHaveValue(\"Emerald\")"
+          },
+          {
+            "line": 50,
+            "assertion": "expect(page.locator(\".nft-grid .nft-card-name\").first()).toContainText( \"Ivory\", )"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T002",
     "criterion": "Combinar categoria, rede e limites de preço",
     "expected": "Interseção correta; filtros continuam selecionados",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/catalog.spec.ts",
+        "title": "T002 T004 T083 combined category/network/price filters reset page",
+        "line": 54,
+        "assertions": [
+          {
+            "line": 58,
+            "assertion": "expect(page).toHaveURL(/page=2/)"
+          },
+          {
+            "line": 66,
+            "assertion": "expect(page).toHaveURL(/page=1/)"
+          },
+          {
+            "line": 73,
+            "assertion": "expect(page.locator(\".nft-grid .nft-card\")).toHaveCount(2)"
+          },
+          {
+            "line": 74,
+            "assertion": "expect(page).toHaveURL(/categories/)"
+          },
+          {
+            "line": 76,
+            "assertion": "expect(page.locator(\".nft-grid .nft-card\")).toHaveCount(2)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T003",
     "criterion": "Mudar ordenação e navegar páginas",
     "expected": "Ordem, total e itens corretos; IDs estáveis",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/catalog.spec.ts",
+        "title": "T003 sorting and pagination match API order",
+        "line": 78,
+        "assertions": [
+          {
+            "line": 87,
+            "assertion": "expect(page.locator(\".nft-grid .nft-card-name\").first()).toHaveText( response.data.items[0].name, )"
+          },
+          {
+            "line": 91,
+            "assertion": "expect(page).toHaveURL(/page=2/)"
+          },
+          {
+            "line": 97,
+            "assertion": "expect(page.locator(\".nft-grid .nft-card-name\").first()).toHaveText( next.data.items[0].name, )"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T004",
     "criterion": "Na página 2, mudar filtro",
     "expected": "page volta a 1",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/catalog.spec.ts",
+        "title": "T002 T004 T083 combined category/network/price filters reset page",
+        "line": 54,
+        "assertions": [
+          {
+            "line": 58,
+            "assertion": "expect(page).toHaveURL(/page=2/)"
+          },
+          {
+            "line": 66,
+            "assertion": "expect(page).toHaveURL(/page=1/)"
+          },
+          {
+            "line": 73,
+            "assertion": "expect(page.locator(\".nft-grid .nft-card\")).toHaveCount(2)"
+          },
+          {
+            "line": 74,
+            "assertion": "expect(page).toHaveURL(/categories/)"
+          },
+          {
+            "line": 76,
+            "assertion": "expect(page.locator(\".nft-grid .nft-card\")).toHaveCount(2)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T005",
     "criterion": "Voltar, avançar e recarregar URL filtrada",
     "expected": "Busca, filtros, sort e page restaurados",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/catalog.spec.ts",
+        "title": "T001 T005 search, refresh and history use URL and REST parameters",
+        "line": 23,
+        "assertions": [
+          {
+            "line": 36,
+            "assertion": "expect(page.locator(\".nft-grid .nft-card\")).toHaveCount(4)"
+          },
+          {
+            "line": 37,
+            "assertion": "expect(page).toHaveURL(/q=Emerald/)"
+          },
+          {
+            "line": 39,
+            "assertion": "expect(page.locator(\".nft-grid .nft-card\")).toHaveCount(4)"
+          },
+          {
+            "line": 44,
+            "assertion": "expect(page).toHaveURL(/q=Ivory/)"
+          },
+          {
+            "line": 46,
+            "assertion": "expect( page.getByRole(\"textbox\", { name: \"Buscar nome, coleção ou atributo\" }), ).toHaveValue(\"Emerald\")"
+          },
+          {
+            "line": 50,
+            "assertion": "expect(page.locator(\".nft-grid .nft-card-name\").first()).toContainText( \"Ivory\", )"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T006",
     "criterion": "Digitar buscas A e B com respostas invertidas",
     "expected": "Resultado B nunca é sobrescrito por A",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/catalog.spec.ts",
+        "title": "T006 T073 obsolete search response cannot replace the latest result",
+        "line": 101,
+        "assertions": [
+          {
+            "line": 112,
+            "assertion": "expect(page.locator(\".nft-grid .nft-card-name\").first()).toContainText( \"Golden\", )"
+          },
+          {
+            "line": 115,
+            "assertion": "expect( page.locator(\".nft-grid .nft-card-name\").filter({ hasNotText: \"Golden\" }), ).toHaveCount(0)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T007",
     "criterion": "Aplicar filtros sem resultado e limpar",
     "expected": "Estado vazio e recuperação",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/catalog.spec.ts",
+        "title": "T007 T008 empty results, malformed parameters and recovery",
+        "line": 119,
+        "assertions": [
+          {
+            "line": 123,
+            "assertion": "expect( page.getByRole(\"heading\", { name: \"Nenhum NFT encontrado\" }), ).toBeVisible()"
+          },
+          {
+            "line": 127,
+            "assertion": "expect(page.locator(\".nft-grid .nft-card\")).toHaveCount(9)"
+          },
+          {
+            "line": 129,
+            "assertion": "expect(page.getByRole(\"alert\")).toContainText(\"Confira\")"
+          },
+          {
+            "line": 130,
+            "assertion": "expect(page).toHaveURL(/page=1/)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T008",
     "criterion": "Abrir query com page negativa, preço inválido e sort desconhecido",
     "expected": "Normalização documentada e erro seguro; sem crash",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/catalog.spec.ts",
+        "title": "T007 T008 empty results, malformed parameters and recovery",
+        "line": 119,
+        "assertions": [
+          {
+            "line": 123,
+            "assertion": "expect( page.getByRole(\"heading\", { name: \"Nenhum NFT encontrado\" }), ).toBeVisible()"
+          },
+          {
+            "line": 127,
+            "assertion": "expect(page.locator(\".nft-grid .nft-card\")).toHaveCount(9)"
+          },
+          {
+            "line": 129,
+            "assertion": "expect(page.getByRole(\"alert\")).toContainText(\"Confira\")"
+          },
+          {
+            "line": 130,
+            "assertion": "expect(page).toHaveURL(/page=1/)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T009",
     "criterion": "Abrir detalhe por URL direta e refresh",
     "expected": "NFT e edições carregam sem home",
-    "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "testFiles": ["tests/e2e/catalog.spec.ts", "tests/e2e/startup.spec.ts"],
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/catalog.spec.ts",
+        "title": "T009 T010 T012 direct detail, editions, gallery, limits and not found",
+        "line": 132,
+        "assertions": [
+          {
+            "line": 136,
+            "assertion": "expect( page.getByRole(\"heading\", { name: \"Emerald Ape #042\" }), ).toBeVisible()"
+          },
+          {
+            "line": 141,
+            "assertion": "expect( page.getByRole(\"button\", { name: \"Visualização 2\" }), ).toHaveAttribute(\"aria-pressed\", \"true\")"
+          },
+          {
+            "line": 145,
+            "assertion": "expect( page.getByRole(\"button\", { name: \"Aumentar quantidade\", exact: true }), ).toBeDisabled()"
+          },
+          {
+            "line": 148,
+            "assertion": "expect( page.getByRole(\"button\", { name: \"Diminuir quantidade\" }), ).toBeDisabled()"
+          },
+          {
+            "line": 155,
+            "assertion": "expect( page.getByRole(\"status\", { name: \"Quantidade selecionada\" }), ).toHaveText(\"2\")"
+          },
+          {
+            "line": 159,
+            "assertion": "expect(page.getByRole(\"alert\")).toContainText(\"não está disponível\")"
+          }
+        ]
+      },
+      {
+        "file": "tests/e2e/startup.spec.ts",
+        "title": "T009 T073 public snapshots hydrate without errors and reconcile persisted data",
+        "line": 4,
+        "assertions": [
+          {
+            "line": 24,
+            "assertion": "expect(payload.path).toBe(route)"
+          },
+          {
+            "line": 25,
+            "assertion": "expect(payload.data.queries.length).toBeGreaterThan(0)"
+          },
+          {
+            "line": 26,
+            "assertion": "expect( payload.data.queries.every((query: { queryKey: unknown[] }) => [\"catalog\", \"nft\"].includes(String(query.queryKey[0])), ), ).toBe(true)"
+          },
+          {
+            "line": 31,
+            "assertion": "expect(JSON.stringify(payload)).not.toMatch( /passwordHash|kurio-session|collector\\.a@example/, )"
+          },
+          {
+            "line": 35,
+            "assertion": "expect(page.locator(\"html\")).toHaveAttribute( \"data-network-ready\", \"true\", )"
+          },
+          {
+            "line": 39,
+            "assertion": "expect(page.locator(\".cart-link\")).toHaveAttribute( \"aria-label\", \"Carrinho, 2 itens\", )"
+          },
+          {
+            "line": 43,
+            "assertion": "expect( page .locator(route === \"/\" ? \".nft-grid .nft-card\" : \".detail-info\") .first(), ).toContainText(\"2.19 ETH\")"
+          },
+          {
+            "line": 48,
+            "assertion": "expect(page.locator(\"#main-content\")).toHaveAttribute( \"data-connection\", \"connected\", )"
+          },
+          {
+            "line": 53,
+            "assertion": "expect(errors).toEqual([])"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T010",
     "criterion": "Abrir NFT inexistente",
     "expected": "404 contextual e retorno ao catálogo",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/catalog.spec.ts",
+        "title": "T009 T010 T012 direct detail, editions, gallery, limits and not found",
+        "line": 132,
+        "assertions": [
+          {
+            "line": 136,
+            "assertion": "expect( page.getByRole(\"heading\", { name: \"Emerald Ape #042\" }), ).toBeVisible()"
+          },
+          {
+            "line": 141,
+            "assertion": "expect( page.getByRole(\"button\", { name: \"Visualização 2\" }), ).toHaveAttribute(\"aria-pressed\", \"true\")"
+          },
+          {
+            "line": 145,
+            "assertion": "expect( page.getByRole(\"button\", { name: \"Aumentar quantidade\", exact: true }), ).toBeDisabled()"
+          },
+          {
+            "line": 148,
+            "assertion": "expect( page.getByRole(\"button\", { name: \"Diminuir quantidade\" }), ).toBeDisabled()"
+          },
+          {
+            "line": 155,
+            "assertion": "expect( page.getByRole(\"status\", { name: \"Quantidade selecionada\" }), ).toHaveText(\"2\")"
+          },
+          {
+            "line": 159,
+            "assertion": "expect(page.getByRole(\"alert\")).toContainText(\"não está disponível\")"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T011",
     "criterion": "Selecionar edição indisponível",
     "expected": "Compra bloqueada com motivo",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/catalog.spec.ts",
+        "title": "T011 T056 sold-out edition disables purchase via Socket.IO",
+        "line": 161,
+        "assertions": [
+          {
+            "line": 165,
+            "assertion": "expect( page.getByRole(\"button\", { name: \"Comprar agora\" }), ).toBeEnabled()"
+          },
+          {
+            "line": 169,
+            "assertion": "expect( page.getByRole(\"button\", { name: \"Comprar agora\" }), ).toBeDisabled()"
+          },
+          {
+            "line": 172,
+            "assertion": "expect( page.getByText(\"Edição esgotada\", { exact: true }), ).toBeVisible()"
+          },
+          {
+            "line": 175,
+            "assertion": "expect((await firstNft(page)).editions[2].stock).toBe(0)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T012",
     "criterion": "Trocar miniatura e edição, variar quantidade",
     "expected": "Imagem selecionada, preço/estoque certos; mínimo/máximo respeitados",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/catalog.spec.ts",
+        "title": "T009 T010 T012 direct detail, editions, gallery, limits and not found",
+        "line": 132,
+        "assertions": [
+          {
+            "line": 136,
+            "assertion": "expect( page.getByRole(\"heading\", { name: \"Emerald Ape #042\" }), ).toBeVisible()"
+          },
+          {
+            "line": 141,
+            "assertion": "expect( page.getByRole(\"button\", { name: \"Visualização 2\" }), ).toHaveAttribute(\"aria-pressed\", \"true\")"
+          },
+          {
+            "line": 145,
+            "assertion": "expect( page.getByRole(\"button\", { name: \"Aumentar quantidade\", exact: true }), ).toBeDisabled()"
+          },
+          {
+            "line": 148,
+            "assertion": "expect( page.getByRole(\"button\", { name: \"Diminuir quantidade\" }), ).toBeDisabled()"
+          },
+          {
+            "line": 155,
+            "assertion": "expect( page.getByRole(\"status\", { name: \"Quantidade selecionada\" }), ).toHaveText(\"2\")"
+          },
+          {
+            "line": 159,
+            "assertion": "expect(page.getByRole(\"alert\")).toContainText(\"não está disponível\")"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T013",
     "criterion": "Cadastrar, sair e entrar com a conta nova",
     "expected": "Sessão e dados corretos",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/account.spec.ts",
+        "title": "T013 T014 T015 register, conflict, login and logout",
+        "line": 59,
+        "assertions": [
+          {
+            "line": 74,
+            "assertion": "expect(page).not.toHaveURL(/register/)"
+          },
+          {
+            "line": 76,
+            "assertion": "expect( page.getByRole(\"textbox\", { name: \"Nome de usuário\", exact: true }), ).toHaveValue(\"new_collector\")"
+          },
+          {
+            "line": 80,
+            "assertion": "expect(page).toHaveURL((url) => url.pathname === \"/\")"
+          },
+          {
+            "line": 87,
+            "assertion": "expect(conflict.status).toBe(409)"
+          },
+          {
+            "line": 94,
+            "assertion": "expect(page.getByRole(\"alert\")).toContainText(\"não conferem\")"
+          },
+          {
+            "line": 97,
+            "assertion": "expect(page).not.toHaveURL(/login/)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T014",
     "criterion": "Cadastrar email/username duplicado",
     "expected": "Erro no campo; nenhum usuário duplicado",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/account.spec.ts",
+        "title": "T013 T014 T015 register, conflict, login and logout",
+        "line": 59,
+        "assertions": [
+          {
+            "line": 74,
+            "assertion": "expect(page).not.toHaveURL(/register/)"
+          },
+          {
+            "line": 76,
+            "assertion": "expect( page.getByRole(\"textbox\", { name: \"Nome de usuário\", exact: true }), ).toHaveValue(\"new_collector\")"
+          },
+          {
+            "line": 80,
+            "assertion": "expect(page).toHaveURL((url) => url.pathname === \"/\")"
+          },
+          {
+            "line": 87,
+            "assertion": "expect(conflict.status).toBe(409)"
+          },
+          {
+            "line": 94,
+            "assertion": "expect(page.getByRole(\"alert\")).toContainText(\"não conferem\")"
+          },
+          {
+            "line": 97,
+            "assertion": "expect(page).not.toHaveURL(/login/)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T015",
     "criterion": "Entrar com senha inválida",
     "expected": "Erro sem revelar existência indevida; sem sessão",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/account.spec.ts",
+        "title": "T013 T014 T015 register, conflict, login and logout",
+        "line": 59,
+        "assertions": [
+          {
+            "line": 74,
+            "assertion": "expect(page).not.toHaveURL(/register/)"
+          },
+          {
+            "line": 76,
+            "assertion": "expect( page.getByRole(\"textbox\", { name: \"Nome de usuário\", exact: true }), ).toHaveValue(\"new_collector\")"
+          },
+          {
+            "line": 80,
+            "assertion": "expect(page).toHaveURL((url) => url.pathname === \"/\")"
+          },
+          {
+            "line": 87,
+            "assertion": "expect(conflict.status).toBe(409)"
+          },
+          {
+            "line": 94,
+            "assertion": "expect(page.getByRole(\"alert\")).toContainText(\"não conferem\")"
+          },
+          {
+            "line": 97,
+            "assertion": "expect(page).not.toHaveURL(/login/)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T016",
     "criterion": "Acessar checkout sem sessão e autenticar",
     "expected": "Retorna ao checkout com contexto; cotação revalidada",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/account.spec.ts",
+        "title": "T016 T018 T020 checkout session expiration preserves draft and return",
+        "line": 99,
+        "assertions": [
+          {
+            "line": 104,
+            "assertion": "expect(page).toHaveURL(/login.*redirect/)"
+          },
+          {
+            "line": 110,
+            "assertion": "expect( page.getByRole(\"textbox\", { name: \"Nome de exibição\", exact: true }), ).toHaveValue(\"Contexto preservado\")"
+          },
+          {
+            "line": 115,
+            "assertion": "expect(page).toHaveURL(/login/)"
+          },
+          {
+            "line": 117,
+            "assertion": "expect( page.getByRole(\"textbox\", { name: \"Nome de exibição\", exact: true }), ).toHaveValue(\"Contexto preservado\")"
+          },
+          {
+            "line": 120,
+            "assertion": "expect( page.getByRole(\"button\", { name: \"Confirmar compra\" }), ).toHaveCount(0)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T017",
     "criterion": "Expirar conta durante navegação",
     "expected": "Redirecionamento seguro e limpeza de dados",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/account.spec.ts",
+        "title": "T017 T019 T062 private state is isolated after account switch",
+        "line": 124,
+        "assertions": [
+          {
+            "line": 135,
+            "assertion": "expect(page).toHaveURL((url) => url.pathname === \"/\")"
+          },
+          {
+            "line": 137,
+            "assertion": "expect( page.getByRole(\"heading\", { name: \"Sua lista ainda está vazia\" }), ).toBeVisible()"
+          },
+          {
+            "line": 140,
+            "assertion": "expect((await api<string[]>(page, \"GET\", \"/favorites\")).data).toEqual([])"
+          },
+          {
+            "line": 143,
+            "assertion": "expect(page).toHaveURL(/login/)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T018",
     "criterion": "Expirar no checkout e entrar novamente",
     "expected": "Retoma revisão; não confirma sozinho",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/account.spec.ts",
+        "title": "T016 T018 T020 checkout session expiration preserves draft and return",
+        "line": 99,
+        "assertions": [
+          {
+            "line": 104,
+            "assertion": "expect(page).toHaveURL(/login.*redirect/)"
+          },
+          {
+            "line": 110,
+            "assertion": "expect( page.getByRole(\"textbox\", { name: \"Nome de exibição\", exact: true }), ).toHaveValue(\"Contexto preservado\")"
+          },
+          {
+            "line": 115,
+            "assertion": "expect(page).toHaveURL(/login/)"
+          },
+          {
+            "line": 117,
+            "assertion": "expect( page.getByRole(\"textbox\", { name: \"Nome de exibição\", exact: true }), ).toHaveValue(\"Contexto preservado\")"
+          },
+          {
+            "line": 120,
+            "assertion": "expect( page.getByRole(\"button\", { name: \"Confirmar compra\" }), ).toHaveCount(0)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T019",
     "criterion": "A sair/entrar como B com request A atrasado",
     "expected": "Dados e eventos A descartados",
-    "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "testFiles": ["tests/e2e/account.spec.ts", "tests/e2e/recovery.spec.ts"],
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/account.spec.ts",
+        "title": "T019 delayed private response from A is discarded after login as B",
+        "line": 6,
+        "assertions": [
+          {
+            "line": 12,
+            "assertion": "expect(page.locator(\".skeleton-summary\")).toBeVisible()"
+          },
+          {
+            "line": 14,
+            "assertion": "expect(page).toHaveURL((url) => url.pathname === \"/\")"
+          },
+          {
+            "line": 16,
+            "assertion": "expect( page.getByRole(\"textbox\", { name: \"E-mail\", exact: true }), ).toHaveValue(\"collector.b@example.test\")"
+          },
+          {
+            "line": 19,
+            "assertion": "expect(page.locator(\".account-identity\")).toContainText(\"Bia\")"
+          },
+          {
+            "line": 20,
+            "assertion": "expect(page.locator(\".account-content\")).not.toContainText( \"collector.a@example.test\", )"
+          }
+        ]
+      },
+      {
+        "file": "tests/e2e/account.spec.ts",
+        "title": "T017 T019 T062 private state is isolated after account switch",
+        "line": 124,
+        "assertions": [
+          {
+            "line": 135,
+            "assertion": "expect(page).toHaveURL((url) => url.pathname === \"/\")"
+          },
+          {
+            "line": 137,
+            "assertion": "expect( page.getByRole(\"heading\", { name: \"Sua lista ainda está vazia\" }), ).toBeVisible()"
+          },
+          {
+            "line": 140,
+            "assertion": "expect((await api<string[]>(page, \"GET\", \"/favorites\")).data).toEqual([])"
+          },
+          {
+            "line": 143,
+            "assertion": "expect(page).toHaveURL(/login/)"
+          }
+        ]
+      },
+      {
+        "file": "tests/e2e/recovery.spec.ts",
+        "title": "T019 late ${expired ? \"401\" : \"200\"} from A cannot affect B",
+        "line": 7,
+        "assertions": [
+          {
+            "line": 15,
+            "assertion": "expect(name).toBeVisible()"
+          },
+          {
+            "line": 32,
+            "assertion": "expect .poll(async () => (await import(\"./helpers\")) .api<{ displayName: string }>(page, \"GET\", \"/profile\") .then((value) => value.data.displayName), ) .toBe(\"Resposta da conta anterior\")"
+          },
+          {
+            "line": 42,
+            "assertion": "expect(page.locator(\".header-actions\")).toContainText(\"Entrar\")"
+          },
+          {
+            "line": 54,
+            "assertion": "expect(page.locator(\".account-link\")).toContainText(\"Bia\")"
+          },
+          {
+            "line": 65,
+            "assertion": "expect((await received).status()).toBe(expired ? 401 : 200)"
+          },
+          {
+            "line": 66,
+            "assertion": "expect(page.locator(\".account-link\")).toContainText(\"Bia\")"
+          },
+          {
+            "line": 73,
+            "assertion": "expect( page.getByRole(\"textbox\", { name: \"E-mail\", exact: true }), ).toHaveValue(\"collector.b@example.test\")"
+          },
+          {
+            "line": 76,
+            "assertion": "expect(page.locator(\".toast\")).not.toContainText(\"Perfil atualizado\")"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T020",
     "criterion": "Recarregar rota privada com sessão válida",
     "expected": "Sem flash de dados errados; consulta sessão antes do guard",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/account.spec.ts",
+        "title": "T016 T018 T020 checkout session expiration preserves draft and return",
+        "line": 99,
+        "assertions": [
+          {
+            "line": 104,
+            "assertion": "expect(page).toHaveURL(/login.*redirect/)"
+          },
+          {
+            "line": 110,
+            "assertion": "expect( page.getByRole(\"textbox\", { name: \"Nome de exibição\", exact: true }), ).toHaveValue(\"Contexto preservado\")"
+          },
+          {
+            "line": 115,
+            "assertion": "expect(page).toHaveURL(/login/)"
+          },
+          {
+            "line": 117,
+            "assertion": "expect( page.getByRole(\"textbox\", { name: \"Nome de exibição\", exact: true }), ).toHaveValue(\"Contexto preservado\")"
+          },
+          {
+            "line": 120,
+            "assertion": "expect( page.getByRole(\"button\", { name: \"Confirmar compra\" }), ).toHaveCount(0)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T021",
     "criterion": "Tentar pedido/recibo de outro usuário",
     "expected": "404 sem conteúdo privado; cenário 403 também apresentado",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/orders.spec.ts",
+        "title": "T021 foreign order and receipt are hidden; explicit forbidden scenario",
+        "line": 262,
+        "assertions": [
+          {
+            "line": 267,
+            "assertion": "expect((await api(page, \"GET\", `/orders/${order.id}`)).status).toBe(404)"
+          },
+          {
+            "line": 268,
+            "assertion": "expect((await api(page, \"GET\", `/orders/${order.id}/receipt`)).status).toBe( 404, )"
+          },
+          {
+            "line": 273,
+            "assertion": "expect(page.getByRole(\"alert\")).toContainText(\"permissão\")"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T022",
     "criterion": "Favoritar, refresh, sair/entrar",
     "expected": "Persiste por usuário",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/account.spec.ts",
+        "title": "T022 T023 T024 optimistic favorite rollback and persistence",
+        "line": 145,
+        "assertions": [
+          {
+            "line": 152,
+            "assertion": "expect(favorite).toHaveAttribute(\"aria-pressed\", \"true\")"
+          },
+          {
+            "line": 153,
+            "assertion": "expect(favorite).toBeEnabled()"
+          },
+          {
+            "line": 155,
+            "assertion": "expect(favorite).toHaveAttribute(\"aria-pressed\", \"true\")"
+          },
+          {
+            "line": 158,
+            "assertion": "expect(page.locator(\".toast\")).toContainText(\"estado anterior\")"
+          },
+          {
+            "line": 159,
+            "assertion": "expect(favorite).toHaveAttribute(\"aria-pressed\", \"true\")"
+          },
+          {
+            "line": 162,
+            "assertion": "expect(favorite).toHaveAttribute(\"aria-pressed\", \"false\")"
+          },
+          {
+            "line": 163,
+            "assertion": "expect(favorite).toBeEnabled()"
+          },
+          {
+            "line": 166,
+            "assertion": "expect(favorite).toHaveAttribute(\"aria-pressed\", \"true\")"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T023",
     "criterion": "Adicionar/remover favorito e forçar falha",
     "expected": "Feedback e rollback exatos",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/account.spec.ts",
+        "title": "T022 T023 T024 optimistic favorite rollback and persistence",
+        "line": 145,
+        "assertions": [
+          {
+            "line": 152,
+            "assertion": "expect(favorite).toHaveAttribute(\"aria-pressed\", \"true\")"
+          },
+          {
+            "line": 153,
+            "assertion": "expect(favorite).toBeEnabled()"
+          },
+          {
+            "line": 155,
+            "assertion": "expect(favorite).toHaveAttribute(\"aria-pressed\", \"true\")"
+          },
+          {
+            "line": 158,
+            "assertion": "expect(page.locator(\".toast\")).toContainText(\"estado anterior\")"
+          },
+          {
+            "line": 159,
+            "assertion": "expect(favorite).toHaveAttribute(\"aria-pressed\", \"true\")"
+          },
+          {
+            "line": 162,
+            "assertion": "expect(favorite).toHaveAttribute(\"aria-pressed\", \"false\")"
+          },
+          {
+            "line": 163,
+            "assertion": "expect(favorite).toBeEnabled()"
+          },
+          {
+            "line": 166,
+            "assertion": "expect(favorite).toHaveAttribute(\"aria-pressed\", \"true\")"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T024",
     "criterion": "Clicar rapidamente no favorito",
     "expected": "Estado final corresponde à última intenção; sem inversão por resposta antiga",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/account.spec.ts",
+        "title": "T022 T023 T024 optimistic favorite rollback and persistence",
+        "line": 145,
+        "assertions": [
+          {
+            "line": 152,
+            "assertion": "expect(favorite).toHaveAttribute(\"aria-pressed\", \"true\")"
+          },
+          {
+            "line": 153,
+            "assertion": "expect(favorite).toBeEnabled()"
+          },
+          {
+            "line": 155,
+            "assertion": "expect(favorite).toHaveAttribute(\"aria-pressed\", \"true\")"
+          },
+          {
+            "line": 158,
+            "assertion": "expect(page.locator(\".toast\")).toContainText(\"estado anterior\")"
+          },
+          {
+            "line": 159,
+            "assertion": "expect(favorite).toHaveAttribute(\"aria-pressed\", \"true\")"
+          },
+          {
+            "line": 162,
+            "assertion": "expect(favorite).toHaveAttribute(\"aria-pressed\", \"false\")"
+          },
+          {
+            "line": 163,
+            "assertion": "expect(favorite).toBeEnabled()"
+          },
+          {
+            "line": 166,
+            "assertion": "expect(favorite).toHaveAttribute(\"aria-pressed\", \"true\")"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T025",
     "criterion": "Adicionar mesma edição e outra edição",
     "expected": "Linhas agrupadas pela chave correta",
     "testFiles": ["tests/e2e/cart.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/cart.spec.ts",
+        "title": "T025 T026 cart groups editions and persists quantities/removal",
+        "line": 6,
+        "assertions": [
+          {
+            "line": 13,
+            "assertion": "expect(page.locator(\".cart-row\")).toHaveCount(2)"
+          },
+          {
+            "line": 14,
+            "assertion": "expect(page.locator(\".cart-row\").first().locator(\"output\")).toHaveText( \"5\", )"
+          },
+          {
+            "line": 22,
+            "assertion": "expect(page.locator(\".cart-row\").first().locator(\"output\")).toHaveText( \"4\", )"
+          },
+          {
+            "line": 26,
+            "assertion": "expect(page.locator(\".cart-row\").first().locator(\"output\")).toHaveText( \"4\", )"
+          },
+          {
+            "line": 34,
+            "assertion": "expect(page.locator(\".cart-row\")).toHaveCount(1)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T026",
     "criterion": "Alterar quantidade, remover item e refresh",
     "expected": "Estado correto persiste",
     "testFiles": ["tests/e2e/cart.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/cart.spec.ts",
+        "title": "T025 T026 cart groups editions and persists quantities/removal",
+        "line": 6,
+        "assertions": [
+          {
+            "line": 13,
+            "assertion": "expect(page.locator(\".cart-row\")).toHaveCount(2)"
+          },
+          {
+            "line": 14,
+            "assertion": "expect(page.locator(\".cart-row\").first().locator(\"output\")).toHaveText( \"5\", )"
+          },
+          {
+            "line": 22,
+            "assertion": "expect(page.locator(\".cart-row\").first().locator(\"output\")).toHaveText( \"4\", )"
+          },
+          {
+            "line": 26,
+            "assertion": "expect(page.locator(\".cart-row\").first().locator(\"output\")).toHaveText( \"4\", )"
+          },
+          {
+            "line": 34,
+            "assertion": "expect(page.locator(\".cart-row\")).toHaveCount(1)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T027",
     "criterion": "Informar quantidade 0, negativa, fracionária ou acima do estoque",
     "expected": "Validação UI e API coerentes",
     "testFiles": ["tests/e2e/cart.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/cart.spec.ts",
+        "title": "T027 rejects zero, negative, fractional and excessive quantities",
+        "line": 36,
+        "assertions": [
+          {
+            "line": 45,
+            "assertion": "expect(result.status).toBe(quantity === 51 ? 409 : 422)"
+          },
+          {
+            "line": 47,
+            "assertion": "expect((await api<CartView>(page, \"GET\", \"/cart\")).data.lines).toHaveLength( 0, )"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T028",
     "criterion": "Aplicar WELCOME10 e remover",
     "expected": "Desconto e total exatos nos dois estados",
     "testFiles": ["tests/e2e/cart.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/cart.spec.ts",
+        "title": "T028 T029 coupon valid, invalid, expired and removal",
+        "line": 51,
+        "assertions": [
+          {
+            "line": 60,
+            "assertion": "expect(page.locator(\".coupon [role=alert]\")).toContainText( code === \"INVALID\" ? \"Não encontramos\" : \"expirou\", )"
+          },
+          {
+            "line": 66,
+            "assertion": "expect(page.locator(\".summary-total\")).toContainText(\"2.158 ETH\")"
+          },
+          {
+            "line": 68,
+            "assertion": "expect(page.locator(\".summary-total\")).toContainText(\"2.396 ETH\")"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T029",
     "criterion": "Aplicar cupom inválido/expirado",
     "expected": "Sem desconto fictício; erro recuperável",
     "testFiles": ["tests/e2e/cart.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/cart.spec.ts",
+        "title": "T028 T029 coupon valid, invalid, expired and removal",
+        "line": 51,
+        "assertions": [
+          {
+            "line": 60,
+            "assertion": "expect(page.locator(\".coupon [role=alert]\")).toContainText( code === \"INVALID\" ? \"Não encontramos\" : \"expirou\", )"
+          },
+          {
+            "line": 66,
+            "assertion": "expect(page.locator(\".summary-total\")).toContainText(\"2.158 ETH\")"
+          },
+          {
+            "line": 68,
+            "assertion": "expect(page.locator(\".summary-total\")).toContainText(\"2.396 ETH\")"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T030",
     "criterion": "Unir visitante com conta e repetir merge",
     "expected": "Itens preservados; operação aplicada uma vez",
     "testFiles": ["tests/e2e/cart.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/cart.spec.ts",
+        "title": "T030 repeated merge and a new visitor cart are each consumed once",
+        "line": 70,
+        "assertions": [
+          {
+            "line": 77,
+            "assertion": "expect(cart.lines[0].quantity).toBe(2)"
+          },
+          {
+            "line": 83,
+            "assertion": "expect(cart.lines[0].quantity).toBe(2)"
+          },
+          {
+            "line": 86,
+            "assertion": "expect(page).toHaveURL((url) => url.pathname === \"/\")"
+          },
+          {
+            "line": 89,
+            "assertion": "expect( (await api<CartView>(page, \"GET\", \"/cart\")).data.lines[0].quantity, ).toBe(3)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T031",
     "criterion": "Unir quantidades acima da disponibilidade",
     "expected": "Ajustes explicados; sem perda silenciosa",
     "testFiles": ["tests/e2e/cart.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/cart.spec.ts",
+        "title": "T031 guest merge explains stock adjustment",
+        "line": 93,
+        "assertions": [
+          {
+            "line": 98,
+            "assertion": "expect(page).toHaveURL((url) => url.pathname === \"/\")"
+          },
+          {
+            "line": 101,
+            "assertion": "expect(page.locator(\".toast\")).toContainText(\"quantidade ajustada\")"
+          },
+          {
+            "line": 102,
+            "assertion": "expect( (await api<CartView>(page, \"GET\", \"/cart\")).data.lines[0].quantity, ).toBe(50)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T032",
     "criterion": "Comparar totais no carrinho, revisão e recibo",
     "expected": "Todos derivam do mesmo snapshot/cotação",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/orders.spec.ts",
+        "title": "T032 T034 T035 T038 immutable quote and receipt use registered secondary wallet",
+        "line": 47,
+        "assertions": [
+          {
+            "line": 61,
+            "assertion": "expect(page.locator(\".quote-review\")).toContainText(\"2.396 ETH\")"
+          },
+          {
+            "line": 65,
+            "assertion": "expect( page.getByRole(\"heading\", { name: \"Compra confirmada!\" }), ).toBeVisible()"
+          },
+          {
+            "line": 72,
+            "assertion": "expect(page.locator(\".summary-total\")).toContainText(\"2.396 ETH\")"
+          },
+          {
+            "line": 74,
+            "assertion": "expect(after.quote).toEqual(before.quote)"
+          },
+          {
+            "line": 75,
+            "assertion": "expect(after.quote.wallet.role).toBe(\"secondary\")"
+          },
+          {
+            "line": 76,
+            "assertion": "expect(after.quote.wallet.provider).toBe(\"coinbase\")"
+          },
+          {
+            "line": 78,
+            "assertion": "expect(page.getByRole(\"dialog\")).toContainText( \"não existe em um explorador\", )"
+          },
+          {
+            "line": 84,
+            "assertion": "expect((await download).suggestedFilename()).toContain(id)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T033",
     "criterion": "Comprar valores com 18 casas e desconto",
     "expected": "Precisão Wei preservada; sem float; apresentação consistente",
     "testFiles": ["tests/e2e/cart.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/cart.spec.ts",
+        "title": "T033 precision is preserved from API through cart presentation",
+        "line": 106,
+        "assertions": [
+          {
+            "line": 116,
+            "assertion": "expect(page.locator(\".summary-total\")).toContainText( \"0.016000000000000052 ETH\", )"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T034",
     "criterion": "Percorrer home → detalhe → carrinho → checkout → pedido",
     "expected": "Pedido passa por pending e confirmed; recibo correto",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/orders.spec.ts",
+        "title": "T032 T034 T035 T038 immutable quote and receipt use registered secondary wallet",
+        "line": 47,
+        "assertions": [
+          {
+            "line": 61,
+            "assertion": "expect(page.locator(\".quote-review\")).toContainText(\"2.396 ETH\")"
+          },
+          {
+            "line": 65,
+            "assertion": "expect( page.getByRole(\"heading\", { name: \"Compra confirmada!\" }), ).toBeVisible()"
+          },
+          {
+            "line": 72,
+            "assertion": "expect(page.locator(\".summary-total\")).toContainText(\"2.396 ETH\")"
+          },
+          {
+            "line": 74,
+            "assertion": "expect(after.quote).toEqual(before.quote)"
+          },
+          {
+            "line": 75,
+            "assertion": "expect(after.quote.wallet.role).toBe(\"secondary\")"
+          },
+          {
+            "line": 76,
+            "assertion": "expect(after.quote.wallet.provider).toBe(\"coinbase\")"
+          },
+          {
+            "line": 78,
+            "assertion": "expect(page.getByRole(\"dialog\")).toContainText( \"não existe em um explorador\", )"
+          },
+          {
+            "line": 84,
+            "assertion": "expect((await download).suggestedFilename()).toContain(id)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T035",
     "criterion": "Selecionar principal/secundária e provedor",
     "expected": "Dados e rede da carteira aparecem na revisão/recibo",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/orders.spec.ts",
+        "title": "T032 T034 T035 T038 immutable quote and receipt use registered secondary wallet",
+        "line": 47,
+        "assertions": [
+          {
+            "line": 61,
+            "assertion": "expect(page.locator(\".quote-review\")).toContainText(\"2.396 ETH\")"
+          },
+          {
+            "line": 65,
+            "assertion": "expect( page.getByRole(\"heading\", { name: \"Compra confirmada!\" }), ).toBeVisible()"
+          },
+          {
+            "line": 72,
+            "assertion": "expect(page.locator(\".summary-total\")).toContainText(\"2.396 ETH\")"
+          },
+          {
+            "line": 74,
+            "assertion": "expect(after.quote).toEqual(before.quote)"
+          },
+          {
+            "line": 75,
+            "assertion": "expect(after.quote.wallet.role).toBe(\"secondary\")"
+          },
+          {
+            "line": 76,
+            "assertion": "expect(after.quote.wallet.provider).toBe(\"coinbase\")"
+          },
+          {
+            "line": 78,
+            "assertion": "expect(page.getByRole(\"dialog\")).toContainText( \"não existe em um explorador\", )"
+          },
+          {
+            "line": 84,
+            "assertion": "expect((await download).suggestedFilename()).toContain(id)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T036",
     "criterion": "Recusar conexão ou desconectar carteira",
     "expected": "Sem criação indevida; recuperação disponível",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/orders.spec.ts",
+        "title": "T036 wallet refused or disconnected cannot create a purchase",
+        "line": 86,
+        "assertions": [
+          {
+            "line": 96,
+            "assertion": "expect(page.getByRole(\"alert\")).toContainText(\"recusada\")"
+          },
+          {
+            "line": 97,
+            "assertion": "expect( page.getByRole(\"button\", { name: \"Revisar compra\" }), ).toBeDisabled()"
+          },
+          {
+            "line": 109,
+            "assertion": "expect(page.getByRole(\"alert\")).toContainText(\"Conecte a carteira\")"
+          },
+          {
+            "line": 110,
+            "assertion": "expect(page).toHaveURL(/checkout/)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T037",
     "criterion": "Misturar redes ou escolher carteira incompatível",
     "expected": "Cotação rejeitada com motivo",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/orders.spec.ts",
+        "title": "T037 mixed-network cart is rejected without charging",
+        "line": 112,
+        "assertions": [
+          {
+            "line": 127,
+            "assertion": "expect(page.getByRole(\"alert\")).toContainText(\"rede dos NFTs\")"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T038",
     "criterion": "Alterar produto após compra confirmada",
     "expected": "Recibo não muda",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/orders.spec.ts",
+        "title": "T032 T034 T035 T038 immutable quote and receipt use registered secondary wallet",
+        "line": 47,
+        "assertions": [
+          {
+            "line": 61,
+            "assertion": "expect(page.locator(\".quote-review\")).toContainText(\"2.396 ETH\")"
+          },
+          {
+            "line": 65,
+            "assertion": "expect( page.getByRole(\"heading\", { name: \"Compra confirmada!\" }), ).toBeVisible()"
+          },
+          {
+            "line": 72,
+            "assertion": "expect(page.locator(\".summary-total\")).toContainText(\"2.396 ETH\")"
+          },
+          {
+            "line": 74,
+            "assertion": "expect(after.quote).toEqual(before.quote)"
+          },
+          {
+            "line": 75,
+            "assertion": "expect(after.quote.wallet.role).toBe(\"secondary\")"
+          },
+          {
+            "line": 76,
+            "assertion": "expect(after.quote.wallet.provider).toBe(\"coinbase\")"
+          },
+          {
+            "line": 78,
+            "assertion": "expect(page.getByRole(\"dialog\")).toContainText( \"não existe em um explorador\", )"
+          },
+          {
+            "line": 84,
+            "assertion": "expect((await download).suggestedFilename()).toContain(id)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T039",
     "criterion": "Adicionar outro item/quantidade enquanto pedido resolve",
     "expected": "Somente quantidades compradas são removidas, uma vez",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/orders.spec.ts",
+        "title": "T039 T063 quantities added during pending survive one terminal transition",
+        "line": 129,
+        "assertions": [
+          {
+            "line": 138,
+            "assertion": "expect( (await api<CartView>(page, \"GET\", \"/cart\")).data.lines[0].quantity, ).toBe(3)"
+          },
+          {
+            "line": 145,
+            "assertion": "expect( (await api<Order>(page, \"GET\", `/orders/${order.id}`)).data.status, ).toBe(\"confirmed\")"
+          },
+          {
+            "line": 148,
+            "assertion": "expect( (await api<CartView>(page, \"GET\", \"/cart\")).data.lines[0].quantity, ).toBe(3)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T040",
     "criterion": "Recusar pagamento",
     "expected": "Carrinho preservado e reserva liberada",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/orders.spec.ts",
+        "title": "T040 declined payment preserves cart and releases reservations",
+        "line": 152,
+        "assertions": [
+          {
+            "line": 160,
+            "assertion": "expect( page.getByRole(\"heading\", { name: \"Pagamento recusado\" }), ).toBeVisible()"
+          },
+          {
+            "line": 163,
+            "assertion": "expect( (await api<CartView>(page, \"GET\", \"/cart\")).data.lines[0].quantity, ).toBe(2)"
+          },
+          {
+            "line": 167,
+            "assertion": "expect(nft.editions[2].reserved).toBe(0)"
+          },
+          {
+            "line": 168,
+            "assertion": "expect(nft.editions[2].stock).toBe(50)"
+          },
+          {
+            "line": 170,
+            "assertion": "expect((await api(page, \"GET\", `/orders/${id}/receipt`)).status).toBe(409)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T041",
     "criterion": "Duplo clique e duas requisições concorrentes",
     "expected": "Mesmo orderId, uma reserva, um efeito final",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/orders.spec.ts",
+        "title": "T041 T043 concurrent same-key requests reserve once; changed body conflicts",
+        "line": 172,
+        "assertions": [
+          {
+            "line": 181,
+            "assertion": "expect(a.data.id).toBe(b.data.id)"
+          },
+          {
+            "line": 182,
+            "assertion": "expect((await firstNft(page)).editions[2].reserved).toBe(2)"
+          },
+          {
+            "line": 183,
+            "assertion": "expect( (await api(page, \"POST\", \"/orders\", { ...body, walletId: \"changed\" }, key)) .status, ).toBe(409)"
+          },
+          {
+            "line": 188,
+            "assertion": "expect((await firstNft(page)).editions[2].stock).toBe(48)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T042",
     "criterion": "Perder resposta após criação e reenviar",
     "expected": "Recupera mesmo pedido, mesmo com cotação original vencida após commit",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/orders.spec.ts",
+        "title": "T042 timeout recovers the persisted key after refresh and quote expiration",
+        "line": 190,
+        "assertions": [
+          {
+            "line": 198,
+            "assertion": "expect( page.getByRole(\"button\", { name: \"Recuperar tentativa de compra\" }), ).toBeEnabled({ timeout: 12000 })"
+          },
+          {
+            "line": 209,
+            "assertion": "expect( page.getByRole(\"heading\", { name: \"Compra confirmada!\" }), ).toBeVisible()"
+          },
+          {
+            "line": 225,
+            "assertion": "expect(page.url()).toContain(order.id)"
+          },
+          {
+            "line": 226,
+            "assertion": "expect((await firstNft(page)).editions[2].stock).toBe(48)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T043",
     "criterion": "Reusar chave com corpo diferente",
     "expected": "409; pedido original intacto",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/orders.spec.ts",
+        "title": "T041 T043 concurrent same-key requests reserve once; changed body conflicts",
+        "line": 172,
+        "assertions": [
+          {
+            "line": 181,
+            "assertion": "expect(a.data.id).toBe(b.data.id)"
+          },
+          {
+            "line": 182,
+            "assertion": "expect((await firstNft(page)).editions[2].reserved).toBe(2)"
+          },
+          {
+            "line": 183,
+            "assertion": "expect( (await api(page, \"POST\", \"/orders\", { ...body, walletId: \"changed\" }, key)) .status, ).toBe(409)"
+          },
+          {
+            "line": 188,
+            "assertion": "expect((await firstNft(page)).editions[2].stock).toBe(48)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T044",
     "criterion": "Duas contas disputarem última unidade",
     "expected": "Só uma reserva; estoque não negativo",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/orders.spec.ts",
+        "title": "T044 two users competing for the last unit cannot oversell",
+        "line": 228,
+        "assertions": [
+          {
+            "line": 242,
+            "assertion": "expect([a.status, b.status].sort()).toEqual([201, 409])"
+          },
+          {
+            "line": 243,
+            "assertion": "expect((await firstNft(page)).editions[2].reserved).toBe(2)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T045",
     "criterion": "Deixar cotação expirar antes de enviar",
     "expected": "Revisão e nova confirmação obrigatórias",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/orders.spec.ts",
+        "title": "T045 expired quote requires a fresh explicit review",
+        "line": 246,
+        "assertions": [
+          {
+            "line": 254,
+            "assertion": "expect(page.getByRole(\"alert\")).toContainText(\"cotação expirou\")"
+          },
+          {
+            "line": 255,
+            "assertion": "expect( page.getByRole(\"button\", { name: \"Confirmar compra\", exact: true }), ).toHaveCount(0)"
+          },
+          {
+            "line": 258,
+            "assertion": "expect( (await api<CartView>(page, \"GET\", \"/cart\")).data.lines[0].quantity, ).toBe(2)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T046",
     "criterion": "Alterar perfil e refresh",
     "expected": "Dados persistem; header/perfil sincronizados",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/account.spec.ts",
+        "title": "T046 T047 profile persists and field errors retain input",
+        "line": 168,
+        "assertions": [
+          {
+            "line": 178,
+            "assertion": "expect(page.locator(\".toast\")).toContainText(\"Perfil atualizado\")"
+          },
+          {
+            "line": 180,
+            "assertion": "expect(name).toHaveValue(\"Alex Teste\")"
+          },
+          {
+            "line": 184,
+            "assertion": "expect(name).toHaveAttribute(\"aria-invalid\", \"true\")"
+          },
+          {
+            "line": 185,
+            "assertion": "expect(name).toHaveValue(\"Nome recusado\")"
+          },
+          {
+            "line": 186,
+            "assertion": "expect(name).toBeFocused()"
+          },
+          {
+            "line": 187,
+            "assertion": "expect((await api<Profile>(page, \"GET\", \"/profile\")).data.displayName).toBe( \"Alex Teste\", )"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T047",
     "criterion": "Rejeitar username/email/ENS no servidor",
     "expected": "Erro vinculado ao campo; conteúdo preservado",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/account.spec.ts",
+        "title": "T046 T047 profile persists and field errors retain input",
+        "line": 168,
+        "assertions": [
+          {
+            "line": 178,
+            "assertion": "expect(page.locator(\".toast\")).toContainText(\"Perfil atualizado\")"
+          },
+          {
+            "line": 180,
+            "assertion": "expect(name).toHaveValue(\"Alex Teste\")"
+          },
+          {
+            "line": 184,
+            "assertion": "expect(name).toHaveAttribute(\"aria-invalid\", \"true\")"
+          },
+          {
+            "line": 185,
+            "assertion": "expect(name).toHaveValue(\"Nome recusado\")"
+          },
+          {
+            "line": 186,
+            "assertion": "expect(name).toBeFocused()"
+          },
+          {
+            "line": 187,
+            "assertion": "expect((await api<Profile>(page, \"GET\", \"/profile\")).data.displayName).toBe( \"Alex Teste\", )"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T048",
     "criterion": "Adicionar, substituir, remover avatar e refresh",
     "expected": "Imagem correta persiste; remoção funciona",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/account.spec.ts",
+        "title": "T048 T049 avatar upload, replace, refresh, invalid upload and removal",
+        "line": 191,
+        "assertions": [
+          {
+            "line": 197,
+            "assertion": "expect(page.locator(\".avatar-editor img\")).toBeVisible()"
+          },
+          {
+            "line": 200,
+            "assertion": "expect(page.locator(\".avatar-editor img\")).not.toHaveAttribute( \"src\", first!, )"
+          },
+          {
+            "line": 205,
+            "assertion": "expect(page.locator(\".avatar-editor img\")).toBeVisible()"
+          },
+          {
+            "line": 212,
+            "assertion": "expect(page.locator(\".toast\")).toContainText(\"ler esta imagem\")"
+          },
+          {
+            "line": 213,
+            "assertion": "expect(page.locator(\".avatar-editor img\")).toHaveAttribute( \"src\", before!, )"
+          },
+          {
+            "line": 222,
+            "assertion": "expect(page.locator(\".toast\")).toContainText(\"imagem\")"
+          },
+          {
+            "line": 223,
+            "assertion": "expect(page.locator(\".avatar-editor img\")).toHaveAttribute( \"src\", before!, )"
+          },
+          {
+            "line": 232,
+            "assertion": "expect(page.locator(\".toast\")).toContainText(\"até 2 MB\")"
+          },
+          {
+            "line": 234,
+            "assertion": "expect(page.locator(\".avatar-editor img\")).toHaveCount(0)"
+          },
+          {
+            "line": 236,
+            "assertion": "expect(page.locator(\".avatar-editor img\")).toHaveCount(0)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T049",
     "criterion": "Enviar avatar inválido ou maior que 2 MB",
     "expected": "Validação sem alterar avatar anterior",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/account.spec.ts",
+        "title": "T048 T049 avatar upload, replace, refresh, invalid upload and removal",
+        "line": 191,
+        "assertions": [
+          {
+            "line": 197,
+            "assertion": "expect(page.locator(\".avatar-editor img\")).toBeVisible()"
+          },
+          {
+            "line": 200,
+            "assertion": "expect(page.locator(\".avatar-editor img\")).not.toHaveAttribute( \"src\", first!, )"
+          },
+          {
+            "line": 205,
+            "assertion": "expect(page.locator(\".avatar-editor img\")).toBeVisible()"
+          },
+          {
+            "line": 212,
+            "assertion": "expect(page.locator(\".toast\")).toContainText(\"ler esta imagem\")"
+          },
+          {
+            "line": 213,
+            "assertion": "expect(page.locator(\".avatar-editor img\")).toHaveAttribute( \"src\", before!, )"
+          },
+          {
+            "line": 222,
+            "assertion": "expect(page.locator(\".toast\")).toContainText(\"imagem\")"
+          },
+          {
+            "line": 223,
+            "assertion": "expect(page.locator(\".avatar-editor img\")).toHaveAttribute( \"src\", before!, )"
+          },
+          {
+            "line": 232,
+            "assertion": "expect(page.locator(\".toast\")).toContainText(\"até 2 MB\")"
+          },
+          {
+            "line": 234,
+            "assertion": "expect(page.locator(\".avatar-editor img\")).toHaveCount(0)"
+          },
+          {
+            "line": 236,
+            "assertion": "expect(page.locator(\".avatar-editor img\")).toHaveCount(0)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T050",
     "criterion": "Alterar senha, sair e entrar com nova",
     "expected": "Senha antiga não autentica; nova autentica",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/account.spec.ts",
+        "title": "T050 T051 password confirmation, wrong current password and new login",
+        "line": 238,
+        "assertions": [
+          {
+            "line": 250,
+            "assertion": "expect(page.getByRole(\"alert\")).toContainText(\"iguais\")"
+          },
+          {
+            "line": 255,
+            "assertion": "expect(page.getByRole(\"alert\")).toContainText(\"atual não confere\")"
+          },
+          {
+            "line": 262,
+            "assertion": "expect(page.locator(\".toast\")).toContainText(\"Senha alterada\")"
+          },
+          {
+            "line": 264,
+            "assertion": "expect(page).toHaveURL((url) => url.pathname === \"/\")"
+          },
+          {
+            "line": 265,
+            "assertion": "expect( ( await api(page, \"POST\", \"/auth/login\", { email: \"collector.a@example.test\", password: \"CollectorDemoA!2026\", }) ).status, ).toBe(401)"
+          },
+          {
+            "line": 273,
+            "assertion": "expect( ( await api(page, \"POST\", \"/auth/login\", { email: \"collector.a@example.test\", password: \"ChangedCollector!2026\", }) ).status, ).toBe(200)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T051",
     "criterion": "Senha atual errada/confirmação divergente",
     "expected": "Erro apropriado; nenhuma alteração",
-    "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "testFiles": ["tests/e2e/account.spec.ts", "tests/e2e/recovery.spec.ts"],
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/account.spec.ts",
+        "title": "T050 T051 password confirmation, wrong current password and new login",
+        "line": 238,
+        "assertions": [
+          {
+            "line": 250,
+            "assertion": "expect(page.getByRole(\"alert\")).toContainText(\"iguais\")"
+          },
+          {
+            "line": 255,
+            "assertion": "expect(page.getByRole(\"alert\")).toContainText(\"atual não confere\")"
+          },
+          {
+            "line": 262,
+            "assertion": "expect(page.locator(\".toast\")).toContainText(\"Senha alterada\")"
+          },
+          {
+            "line": 264,
+            "assertion": "expect(page).toHaveURL((url) => url.pathname === \"/\")"
+          },
+          {
+            "line": 265,
+            "assertion": "expect( ( await api(page, \"POST\", \"/auth/login\", { email: \"collector.a@example.test\", password: \"CollectorDemoA!2026\", }) ).status, ).toBe(401)"
+          },
+          {
+            "line": 273,
+            "assertion": "expect( ( await api(page, \"POST\", \"/auth/login\", { email: \"collector.a@example.test\", password: \"ChangedCollector!2026\", }) ).status, ).toBe(200)"
+          }
+        ]
+      },
+      {
+        "file": "tests/e2e/recovery.spec.ts",
+        "title": "T051 T067 password errors are associated, focused and cleared on recovery",
+        "line": 101,
+        "assertions": [
+          {
+            "line": 116,
+            "assertion": "expect(confirmation).toHaveAttribute(\"aria-invalid\", \"true\")"
+          },
+          {
+            "line": 117,
+            "assertion": "expect(confirmation).toHaveAttribute(\"aria-describedby\", /error/)"
+          },
+          {
+            "line": 118,
+            "assertion": "expect(confirmation).toBeFocused()"
+          },
+          {
+            "line": 123,
+            "assertion": "expect(page.locator(\".toast\")).toContainText(\"Senha alterada\")"
+          },
+          {
+            "line": 124,
+            "assertion": "expect(confirmation).toHaveAttribute(\"aria-invalid\", \"false\")"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T052",
     "criterion": "Criar/editar carteiras principal e secundária",
     "expected": "Persistem e aparecem no checkout",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/account.spec.ts",
+        "title": "T052 newly registered collector creates both wallets through the form",
+        "line": 24,
+        "assertions": [
+          {
+            "line": 33,
+            "assertion": "expect(result.status).toBe(201)"
+          },
+          {
+            "line": 54,
+            "assertion": "expect(page.locator(\".toast\")).toContainText(\"Carteira salva\")"
+          },
+          {
+            "line": 57,
+            "assertion": "expect((await api<Wallet[]>(page, \"GET\", \"/wallets\")).data).toHaveLength(2)"
+          }
+        ]
+      },
+      {
+        "file": "tests/e2e/account.spec.ts",
+        "title": "T052 T053 T054 wallets persist, validate network and copy primary data",
+        "line": 282,
+        "assertions": [
+          {
+            "line": 290,
+            "assertion": "expect(page.locator(\".toast\")).toContainText(\"Carteira salva\")"
+          },
+          {
+            "line": 292,
+            "assertion": "expect( page.getByRole(\"textbox\", { name: \"Apelido da carteira\", exact: true }), ).toHaveValue(\"Principal editada\")"
+          },
+          {
+            "line": 299,
+            "assertion": "expect( page.getByRole(\"textbox\", { name: \"Endereço da carteira\", exact: true }), ).toHaveAttribute(\"aria-invalid\", \"true\")"
+          },
+          {
+            "line": 309,
+            "assertion": "expect(page.locator(\".toast\")).toContainText(\"Carteira salva\")"
+          },
+          {
+            "line": 312,
+            "assertion": "expect( page.getByRole(\"textbox\", { name: \"Apelido da carteira\", exact: true }), ).toHaveValue(\"Principal editada\")"
+          },
+          {
+            "line": 316,
+            "assertion": "expect(wallets[1].address).toBe(wallets[0].address)"
+          },
+          {
+            "line": 322,
+            "assertion": "expect( page.getByRole(\"textbox\", { name: \"Apelido da carteira\", exact: true }), ).toBeEnabled()"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T053",
     "criterion": "Endereço/rede inválidos ou campos obrigatórios vazios",
     "expected": "Validação UI e API; nenhuma falsa gravação",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/account.spec.ts",
+        "title": "T052 T053 T054 wallets persist, validate network and copy primary data",
+        "line": 282,
+        "assertions": [
+          {
+            "line": 290,
+            "assertion": "expect(page.locator(\".toast\")).toContainText(\"Carteira salva\")"
+          },
+          {
+            "line": 292,
+            "assertion": "expect( page.getByRole(\"textbox\", { name: \"Apelido da carteira\", exact: true }), ).toHaveValue(\"Principal editada\")"
+          },
+          {
+            "line": 299,
+            "assertion": "expect( page.getByRole(\"textbox\", { name: \"Endereço da carteira\", exact: true }), ).toHaveAttribute(\"aria-invalid\", \"true\")"
+          },
+          {
+            "line": 309,
+            "assertion": "expect(page.locator(\".toast\")).toContainText(\"Carteira salva\")"
+          },
+          {
+            "line": 312,
+            "assertion": "expect( page.getByRole(\"textbox\", { name: \"Apelido da carteira\", exact: true }), ).toHaveValue(\"Principal editada\")"
+          },
+          {
+            "line": 316,
+            "assertion": "expect(wallets[1].address).toBe(wallets[0].address)"
+          },
+          {
+            "line": 322,
+            "assertion": "expect( page.getByRole(\"textbox\", { name: \"Apelido da carteira\", exact: true }), ).toBeEnabled()"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T054",
     "criterion": "Usar secundária igual à principal e alternar para outra",
     "expected": "Referência/edição persistem conforme regra documentada",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/account.spec.ts",
+        "title": "T052 T053 T054 wallets persist, validate network and copy primary data",
+        "line": 282,
+        "assertions": [
+          {
+            "line": 290,
+            "assertion": "expect(page.locator(\".toast\")).toContainText(\"Carteira salva\")"
+          },
+          {
+            "line": 292,
+            "assertion": "expect( page.getByRole(\"textbox\", { name: \"Apelido da carteira\", exact: true }), ).toHaveValue(\"Principal editada\")"
+          },
+          {
+            "line": 299,
+            "assertion": "expect( page.getByRole(\"textbox\", { name: \"Endereço da carteira\", exact: true }), ).toHaveAttribute(\"aria-invalid\", \"true\")"
+          },
+          {
+            "line": 309,
+            "assertion": "expect(page.locator(\".toast\")).toContainText(\"Carteira salva\")"
+          },
+          {
+            "line": 312,
+            "assertion": "expect( page.getByRole(\"textbox\", { name: \"Apelido da carteira\", exact: true }), ).toHaveValue(\"Principal editada\")"
+          },
+          {
+            "line": 316,
+            "assertion": "expect(wallets[1].address).toBe(wallets[0].address)"
+          },
+          {
+            "line": 322,
+            "assertion": "expect( page.getByRole(\"textbox\", { name: \"Apelido da carteira\", exact: true }), ).toBeEnabled()"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T055",
     "criterion": "Alterar preço via Socket.IO com checkout aberto",
     "expected": "Catálogo/detalhe/carrinho atualizados; aceite anterior inválido",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/orders.spec.ts",
+        "title": "T055 T057 price changes invalidate review with and without a delivered event",
+        "line": 275,
+        "assertions": [
+          {
+            "line": 280,
+            "assertion": "expect( page.getByRole(\"button\", { name: \"Confirmar compra\", exact: true }), ).toHaveCount(0)"
+          },
+          {
+            "line": 283,
+            "assertion": "expect(page.getByRole(\"alert\")).toContainText(\"mudou\")"
+          },
+          {
+            "line": 287,
+            "assertion": "expect(page.locator(\".quote-review\")).toContainText(\"4.396 ETH\")"
+          },
+          {
+            "line": 289,
+            "assertion": "expect(page.locator(\"#main-content\")).toHaveAttribute( \"data-connection\", \"disconnected\", )"
+          },
+          {
+            "line": 297,
+            "assertion": "expect(page.getByRole(\"alert\")).toContainText(\"mudou\")"
+          },
+          {
+            "line": 298,
+            "assertion": "expect( (await api<CartView>(page, \"GET\", \"/cart\")).data.lines[0].quantity, ).toBe(2)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T056",
     "criterion": "Esgotar edição via Socket.IO",
     "expected": "Quantidade/compra bloqueadas e feedback acessível",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/catalog.spec.ts",
+        "title": "T011 T056 sold-out edition disables purchase via Socket.IO",
+        "line": 161,
+        "assertions": [
+          {
+            "line": 165,
+            "assertion": "expect( page.getByRole(\"button\", { name: \"Comprar agora\" }), ).toBeEnabled()"
+          },
+          {
+            "line": 169,
+            "assertion": "expect( page.getByRole(\"button\", { name: \"Comprar agora\" }), ).toBeDisabled()"
+          },
+          {
+            "line": 172,
+            "assertion": "expect( page.getByText(\"Edição esgotada\", { exact: true }), ).toBeVisible()"
+          },
+          {
+            "line": 175,
+            "assertion": "expect((await firstNft(page)).editions[2].stock).toBe(0)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T057",
     "criterion": "Mudar preço entre cotação e criação, sem evento chegar",
     "expected": "API rejeita 409; UI exige revisão explícita",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/orders.spec.ts",
+        "title": "T055 T057 price changes invalidate review with and without a delivered event",
+        "line": 275,
+        "assertions": [
+          {
+            "line": 280,
+            "assertion": "expect( page.getByRole(\"button\", { name: \"Confirmar compra\", exact: true }), ).toHaveCount(0)"
+          },
+          {
+            "line": 283,
+            "assertion": "expect(page.getByRole(\"alert\")).toContainText(\"mudou\")"
+          },
+          {
+            "line": 287,
+            "assertion": "expect(page.locator(\".quote-review\")).toContainText(\"4.396 ETH\")"
+          },
+          {
+            "line": 289,
+            "assertion": "expect(page.locator(\"#main-content\")).toHaveAttribute( \"data-connection\", \"disconnected\", )"
+          },
+          {
+            "line": 297,
+            "assertion": "expect(page.getByRole(\"alert\")).toContainText(\"mudou\")"
+          },
+          {
+            "line": 298,
+            "assertion": "expect( (await api<CartView>(page, \"GET\", \"/cart\")).data.lines[0].quantity, ).toBe(2)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T058",
     "criterion": "Reentregar eventId",
     "expected": "Sem repetir efeitos ou notificações indevidas",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/orders.spec.ts",
+        "title": "T058 T059 duplicate or old events never regress cart values",
+        "line": 302,
+        "assertions": [
+          {
+            "line": 306,
+            "assertion": "expect(page.locator(\"#main-content\")).toHaveAttribute( \"data-connection\", \"connected\", )"
+          },
+          {
+            "line": 315,
+            "assertion": "expect(page.locator(\".cart-product>span\")).toHaveText(\"3.19 ETH\")"
+          },
+          {
+            "line": 319,
+            "assertion": "expect(page.getByTestId(\"socket-status\")).toHaveText(\"connected\")"
+          },
+          {
+            "line": 320,
+            "assertion": "expect(page.getByRole(\"dialog\")).toContainText(\"1 eventos recebidos\")"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T059",
     "criterion": "Entregar versão antiga depois da nova",
     "expected": "Preço/estoque/status permanecem novos",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/orders.spec.ts",
+        "title": "T058 T059 duplicate or old events never regress cart values",
+        "line": 302,
+        "assertions": [
+          {
+            "line": 306,
+            "assertion": "expect(page.locator(\"#main-content\")).toHaveAttribute( \"data-connection\", \"connected\", )"
+          },
+          {
+            "line": 315,
+            "assertion": "expect(page.locator(\".cart-product>span\")).toHaveText(\"3.19 ETH\")"
+          },
+          {
+            "line": 319,
+            "assertion": "expect(page.getByTestId(\"socket-status\")).toHaveText(\"connected\")"
+          },
+          {
+            "line": 320,
+            "assertion": "expect(page.getByRole(\"dialog\")).toContainText(\"1 eventos recebidos\")"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T060",
     "criterion": "Desconectar socket durante pending e reconectar",
     "expected": "REST reconcilia e compra única",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/orders.spec.ts",
+        "title": "T060 T061 pending survives disconnected socket, refresh and REST reconciliation",
+        "line": 322,
+        "assertions": [
+          {
+            "line": 331,
+            "assertion": "expect( page.getByRole(\"heading\", { name: \"Compra confirmada!\" }), ).toBeVisible()"
+          },
+          {
+            "line": 338,
+            "assertion": "expect(page.getByTestId(\"socket-status\")).toHaveText(\"connected\")"
+          },
+          {
+            "line": 339,
+            "assertion": "expect((await firstNft(page)).editions[2].stock).toBe(48)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T061",
     "criterion": "Recarregar página durante pending",
     "expected": "resolveAt e tentativa restaurados; resultado recuperado",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/orders.spec.ts",
+        "title": "T060 T061 pending survives disconnected socket, refresh and REST reconciliation",
+        "line": 322,
+        "assertions": [
+          {
+            "line": 331,
+            "assertion": "expect( page.getByRole(\"heading\", { name: \"Compra confirmada!\" }), ).toBeVisible()"
+          },
+          {
+            "line": 338,
+            "assertion": "expect(page.getByTestId(\"socket-status\")).toHaveText(\"connected\")"
+          },
+          {
+            "line": 339,
+            "assertion": "expect((await firstNft(page)).editions[2].stock).toBe(48)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T062",
     "criterion": "Trocar usuário antes de evento privado atrasado",
     "expected": "Nenhum dado de A em B",
-    "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "testFiles": ["tests/e2e/account.spec.ts", "tests/e2e/recovery.spec.ts"],
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/account.spec.ts",
+        "title": "T017 T019 T062 private state is isolated after account switch",
+        "line": 124,
+        "assertions": [
+          {
+            "line": 135,
+            "assertion": "expect(page).toHaveURL((url) => url.pathname === \"/\")"
+          },
+          {
+            "line": 137,
+            "assertion": "expect( page.getByRole(\"heading\", { name: \"Sua lista ainda está vazia\" }), ).toBeVisible()"
+          },
+          {
+            "line": 140,
+            "assertion": "expect((await api<string[]>(page, \"GET\", \"/favorites\")).data).toEqual([])"
+          },
+          {
+            "line": 143,
+            "assertion": "expect(page).toHaveURL(/login/)"
+          }
+        ]
+      },
+      {
+        "file": "tests/e2e/recovery.spec.ts",
+        "title": "T062 delayed private event from A stays isolated after B signs in",
+        "line": 127,
+        "assertions": [
+          {
+            "line": 139,
+            "assertion": "expect(page.locator(\".header-actions\")).toContainText(\"Entrar\")"
+          },
+          {
+            "line": 151,
+            "assertion": "expect(page.locator(\"#main-content\")).toHaveAttribute( \"data-connection\", \"connected\", )"
+          },
+          {
+            "line": 166,
+            "assertion": "expect(released.data.released).toBe(1)"
+          },
+          {
+            "line": 167,
+            "assertion": "expect(count).toHaveText(before!)"
+          },
+          {
+            "line": 168,
+            "assertion": "expect((await api(page, \"GET\", `/orders/${order.id}`)).status).toBe(404)"
+          },
+          {
+            "line": 169,
+            "assertion": "expect((await api(page, \"GET\", `/orders/${order.id}/receipt`)).status).toBe( 404, )"
+          },
+          {
+            "line": 173,
+            "assertion": "expect(page.locator(\".account-link\")).toContainText(\"Bia\")"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T063",
     "criterion": "Emitir pending após estado terminal",
     "expected": "Sem regressão; carrinho não limpo novamente",
     "testFiles": ["tests/e2e/orders.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/orders.spec.ts",
+        "title": "T039 T063 quantities added during pending survive one terminal transition",
+        "line": 129,
+        "assertions": [
+          {
+            "line": 138,
+            "assertion": "expect( (await api<CartView>(page, \"GET\", \"/cart\")).data.lines[0].quantity, ).toBe(3)"
+          },
+          {
+            "line": 145,
+            "assertion": "expect( (await api<Order>(page, \"GET\", `/orders/${order.id}`)).data.status, ).toBe(\"confirmed\")"
+          },
+          {
+            "line": 148,
+            "assertion": "expect( (await api<CartView>(page, \"GET\", \"/cart\")).data.lines[0].quantity, ).toBe(3)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T064",
     "criterion": "Montar/desmontar páginas e autenticar várias vezes",
     "expected": "Listeners liberados; um evento produz um efeito",
     "testFiles": ["tests/e2e/quality.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/quality.spec.ts",
+        "title": "T064 mounting pages does not duplicate socket effects",
+        "line": 136,
+        "assertions": [
+          {
+            "line": 142,
+            "assertion": "expect(page.locator(\"#main-content\")).not.toBeEmpty()"
+          },
+          {
+            "line": 144,
+            "assertion": "expect(page.locator(\"#main-content\")).toHaveAttribute( \"data-connection\", \"connected\", )"
+          },
+          {
+            "line": 149,
+            "assertion": "expect(page.locator(\".cart-product>span\")).toHaveText(\"4.19 ETH\")"
+          },
+          {
+            "line": 153,
+            "assertion": "expect(page.getByRole(\"dialog\")).toContainText(\"1 eventos recebidos\")"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T065",
     "criterion": "Completar navegação essencial por Tab/Enter/Escape",
     "expected": "Ordem e foco visíveis; controles operáveis",
-    "testFiles": ["tests/e2e/quality.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "testFiles": [
+      "tests/e2e/accessibility.spec.ts",
+      "tests/e2e/quality.spec.ts"
+    ],
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/accessibility.spec.ts",
+        "title": "T065 complete purchase uses Tab and Enter",
+        "line": 21,
+        "assertions": [
+          {
+            "line": 34,
+            "assertion": "expect(page).not.toHaveURL(/\\/login/)"
+          },
+          {
+            "line": 43,
+            "assertion": "expect(page).toHaveURL(/\\/checkout/)"
+          },
+          {
+            "line": 61,
+            "assertion": "expect( page.getByRole(\"heading\", { name: \"Compra confirmada!\" }), ).toBeVisible()"
+          }
+        ]
+      },
+      {
+        "file": "tests/e2e/quality.spec.ts",
+        "title": "T065 T066 keyboard, dialog containment and focus restoration",
+        "line": 6,
+        "assertions": [
+          {
+            "line": 15,
+            "assertion": "expect(dialog).toBeVisible()"
+          },
+          {
+            "line": 18,
+            "assertion": "expect( await dialog.evaluate((element) => element.contains(document.activeElement), ), ).toBe(true)"
+          },
+          {
+            "line": 25,
+            "assertion": "expect(dialog).toHaveCount(0)"
+          },
+          {
+            "line": 26,
+            "assertion": "expect(trigger).toBeFocused()"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T066",
     "criterion": "Abrir/fechar login e drawer de filtros",
     "expected": "Foco entra, fica contido e retorna ao disparador",
-    "testFiles": ["tests/e2e/quality.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "testFiles": [
+      "tests/e2e/accessibility.spec.ts",
+      "tests/e2e/quality.spec.ts"
+    ],
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/accessibility.spec.ts",
+        "title": "T066 login and mobile filters contain and restore focus",
+        "line": 66,
+        "assertions": [
+          {
+            "line": 74,
+            "assertion": "expect(dialog).toBeVisible()"
+          },
+          {
+            "line": 77,
+            "assertion": "expect( await dialog.evaluate((node) => node.contains(document.activeElement)), ).toBe(true)"
+          },
+          {
+            "line": 82,
+            "assertion": "expect(dialog).toHaveCount(0)"
+          },
+          {
+            "line": 83,
+            "assertion": "expect(trigger).toBeFocused()"
+          },
+          {
+            "line": 88,
+            "assertion": "expect(dialog).toBeVisible()"
+          },
+          {
+            "line": 91,
+            "assertion": "expect( await dialog.evaluate((node) => node.contains(document.activeElement)), ).toBe(true)"
+          },
+          {
+            "line": 96,
+            "assertion": "expect(dialog).toHaveCount(0)"
+          },
+          {
+            "line": 97,
+            "assertion": "expect(filters).toBeFocused()"
+          }
+        ]
+      },
+      {
+        "file": "tests/e2e/quality.spec.ts",
+        "title": "T065 T066 keyboard, dialog containment and focus restoration",
+        "line": 6,
+        "assertions": [
+          {
+            "line": 15,
+            "assertion": "expect(dialog).toBeVisible()"
+          },
+          {
+            "line": 18,
+            "assertion": "expect( await dialog.evaluate((element) => element.contains(document.activeElement), ), ).toBe(true)"
+          },
+          {
+            "line": 25,
+            "assertion": "expect(dialog).toHaveCount(0)"
+          },
+          {
+            "line": 26,
+            "assertion": "expect(trigger).toBeFocused()"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T067",
     "criterion": "Enviar formulário inválido",
     "expected": "Primeiro inválido focado; label/erro associado",
-    "testFiles": ["tests/e2e/quality.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "testFiles": [
+      "tests/e2e/quality.spec.ts",
+      "tests/e2e/recovery.spec.ts",
+      "tests/e2e/semantics.spec.ts"
+    ],
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/quality.spec.ts",
+        "title": "T067 invalid form focuses and describes the field",
+        "line": 28,
+        "assertions": [
+          {
+            "line": 35,
+            "assertion": "expect(input).toHaveAttribute(\"aria-invalid\", \"true\")"
+          },
+          {
+            "line": 36,
+            "assertion": "expect(input).toHaveAttribute(\"aria-describedby\", /error/)"
+          },
+          {
+            "line": 37,
+            "assertion": "expect(input).toBeFocused()"
+          }
+        ]
+      },
+      {
+        "file": "tests/e2e/recovery.spec.ts",
+        "title": "T051 T067 password errors are associated, focused and cleared on recovery",
+        "line": 101,
+        "assertions": [
+          {
+            "line": 116,
+            "assertion": "expect(confirmation).toHaveAttribute(\"aria-invalid\", \"true\")"
+          },
+          {
+            "line": 117,
+            "assertion": "expect(confirmation).toHaveAttribute(\"aria-describedby\", /error/)"
+          },
+          {
+            "line": 118,
+            "assertion": "expect(confirmation).toBeFocused()"
+          },
+          {
+            "line": 123,
+            "assertion": "expect(page.locator(\".toast\")).toContainText(\"Senha alterada\")"
+          },
+          {
+            "line": 124,
+            "assertion": "expect(confirmation).toHaveAttribute(\"aria-invalid\", \"false\")"
+          }
+        ]
+      },
+      {
+        "file": "tests/e2e/semantics.spec.ts",
+        "title": "T067 T069 automated semantics and contrast cover every screen",
+        "line": 5,
+        "assertions": [
+          {
+            "line": 31,
+            "assertion": "expect(page.locator(\"#main-content\")).not.toBeEmpty()"
+          },
+          {
+            "line": 32,
+            "assertion": "expect(page.locator(\".skeleton\")).toHaveCount(0)"
+          },
+          {
+            "line": 36,
+            "assertion": "expect( report.violations.map((value) => ({ id: value.id, nodes: value.nodes.map((node) => node.target), })), route, ).toEqual([])"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T068",
     "criterion": "Receber mudança de preço/recusa sem mouse",
     "expected": "Mensagem anunciada; estado não depende só de cor",
     "testFiles": ["tests/e2e/smoke.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/smoke.spec.ts",
+        "title": "T068 socket connection updates an open cart through the real client",
+        "line": 42,
+        "assertions": [
+          {
+            "line": 48,
+            "assertion": "expect(page.locator(\".cart-product>span\")).toHaveText(\"1.19 ETH\")"
+          },
+          {
+            "line": 51,
+            "assertion": "expect(page.locator(\".cart-product>span\")).toHaveText(\"2.19 ETH\")"
+          },
+          {
+            "line": 52,
+            "assertion": "expect(page.locator(\".toast\")).toHaveAttribute(\"role\", \"status\")"
+          },
+          {
+            "line": 53,
+            "assertion": "expect(page.locator(\".toast\")).toHaveAttribute(\"aria-live\", \"polite\")"
+          },
+          {
+            "line": 57,
+            "assertion": "expect(page.getByTestId(\"socket-status\")).toHaveText(\"connected\")"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T069",
     "criterion": "Zoom 200% e verificação a 390/768/1440",
     "expected": "Sem perda de conteúdo/overflow; último controle acessível",
-    "testFiles": ["tests/e2e/quality.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "testFiles": [
+      "tests/e2e/accessibility.spec.ts",
+      "tests/e2e/quality.spec.ts",
+      "tests/e2e/semantics.spec.ts"
+    ],
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/accessibility.spec.ts",
+        "title": "T069 T080 T081 all nine screens and favorites fit required widths",
+        "line": 122,
+        "assertions": [
+          {
+            "line": 149,
+            "assertion": "expect(page.locator(\"#main-content\")).not.toBeEmpty()"
+          },
+          {
+            "line": 150,
+            "assertion": "expect(page.locator(\".skeleton\")).toHaveCount(0)"
+          },
+          {
+            "line": 151,
+            "assertion": "expect( await page.evaluate( () => document.documentElement.scrollWidth <= window.innerWidth + 1, ), `${route} at ${width}`, ).toBe(true)"
+          }
+        ]
+      },
+      {
+        "file": "tests/e2e/quality.spec.ts",
+        "title": "T069 T080 T081 no overflow at 390, 768, 1440 or 200 percent equivalent width",
+        "line": 39,
+        "assertions": [
+          {
+            "line": 55,
+            "assertion": "expect(page.locator(\"#main-content\")).not.toBeEmpty()"
+          },
+          {
+            "line": 56,
+            "assertion": "expect( await page.evaluate( () => document.documentElement.scrollWidth <= window.innerWidth + 1, ), `${route} at ${width}`, ).toBe(true)"
+          }
+        ]
+      },
+      {
+        "file": "tests/e2e/semantics.spec.ts",
+        "title": "T067 T069 automated semantics and contrast cover every screen",
+        "line": 5,
+        "assertions": [
+          {
+            "line": 31,
+            "assertion": "expect(page.locator(\"#main-content\")).not.toBeEmpty()"
+          },
+          {
+            "line": 32,
+            "assertion": "expect(page.locator(\".skeleton\")).toHaveCount(0)"
+          },
+          {
+            "line": 36,
+            "assertion": "expect( report.violations.map((value) => ({ id: value.id, nodes: value.nodes.map((node) => node.target), })), route, ).toEqual([])"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T070",
     "criterion": "Atrasar catálogo/detalhe/resumo",
     "expected": "Skeletons correspondentes e espaço reservado",
-    "testFiles": ["tests/e2e/quality.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "testFiles": [
+      "tests/e2e/accessibility.spec.ts",
+      "tests/e2e/quality.spec.ts"
+    ],
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/accessibility.spec.ts",
+        "title": "T070 T071 shimmer runs normally and stops with reduced motion",
+        "line": 100,
+        "assertions": [
+          {
+            "line": 107,
+            "assertion": "expect(skeleton).toBeVisible()"
+          },
+          {
+            "line": 108,
+            "assertion": "expect( await skeleton.evaluate( (element) => getComputedStyle(element).animationName, ), ).toBe(\"shimmer\")"
+          },
+          {
+            "line": 114,
+            "assertion": "expect( await skeleton.evaluate( (element) => getComputedStyle(element).animationName, ), ).toBe(\"none\")"
+          },
+          {
+            "line": 119,
+            "assertion": "expect(page.locator(\".nft-grid .nft-card\")).toHaveCount(4)"
+          }
+        ]
+      },
+      {
+        "file": "tests/e2e/quality.spec.ts",
+        "title": "T070 T071 slow skeletons and reduced motion remain accessible",
+        "line": 65,
+        "assertions": [
+          {
+            "line": 70,
+            "assertion": "expect( page.getByRole(\"status\", { name: \"Carregando\" }).first(), ).toBeVisible()"
+          },
+          {
+            "line": 73,
+            "assertion": "expect( await page .locator(\".skeleton\") .first() .evaluate((element) => getComputedStyle(element).animationName), ).toBe(\"none\")"
+          },
+          {
+            "line": 79,
+            "assertion": "expect(page.locator(\".nft-grid .nft-card\")).toHaveCount(4)"
+          },
+          {
+            "line": 83,
+            "assertion": "expect(page.locator(\".skeleton-detail\")).toBeVisible()"
+          },
+          {
+            "line": 84,
+            "assertion": "expect( page.getByRole(\"heading\", { name: \"Emerald Ape #042\" }), ).toBeVisible()"
+          },
+          {
+            "line": 88,
+            "assertion": "expect(page.locator(\".skeleton-summary\")).toBeVisible()"
+          },
+          {
+            "line": 89,
+            "assertion": "expect( page.getByRole(\"heading\", { name: \"Seu carrinho está vazio\" }), ).toBeVisible()"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T071",
     "criterion": "Ativar reduced motion",
     "expected": "Shimmer reduzido/desativado sem perder indicação de loading",
-    "testFiles": ["tests/e2e/quality.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "testFiles": [
+      "tests/e2e/accessibility.spec.ts",
+      "tests/e2e/quality.spec.ts"
+    ],
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/accessibility.spec.ts",
+        "title": "T070 T071 shimmer runs normally and stops with reduced motion",
+        "line": 100,
+        "assertions": [
+          {
+            "line": 107,
+            "assertion": "expect(skeleton).toBeVisible()"
+          },
+          {
+            "line": 108,
+            "assertion": "expect( await skeleton.evaluate( (element) => getComputedStyle(element).animationName, ), ).toBe(\"shimmer\")"
+          },
+          {
+            "line": 114,
+            "assertion": "expect( await skeleton.evaluate( (element) => getComputedStyle(element).animationName, ), ).toBe(\"none\")"
+          },
+          {
+            "line": 119,
+            "assertion": "expect(page.locator(\".nft-grid .nft-card\")).toHaveCount(4)"
+          }
+        ]
+      },
+      {
+        "file": "tests/e2e/quality.spec.ts",
+        "title": "T070 T071 slow skeletons and reduced motion remain accessible",
+        "line": 65,
+        "assertions": [
+          {
+            "line": 70,
+            "assertion": "expect( page.getByRole(\"status\", { name: \"Carregando\" }).first(), ).toBeVisible()"
+          },
+          {
+            "line": 73,
+            "assertion": "expect( await page .locator(\".skeleton\") .first() .evaluate((element) => getComputedStyle(element).animationName), ).toBe(\"none\")"
+          },
+          {
+            "line": 79,
+            "assertion": "expect(page.locator(\".nft-grid .nft-card\")).toHaveCount(4)"
+          },
+          {
+            "line": 83,
+            "assertion": "expect(page.locator(\".skeleton-detail\")).toBeVisible()"
+          },
+          {
+            "line": 84,
+            "assertion": "expect( page.getByRole(\"heading\", { name: \"Emerald Ape #042\" }), ).toBeVisible()"
+          },
+          {
+            "line": 88,
+            "assertion": "expect(page.locator(\".skeleton-summary\")).toBeVisible()"
+          },
+          {
+            "line": 89,
+            "assertion": "expect( page.getByRole(\"heading\", { name: \"Seu carrinho está vazio\" }), ).toBeVisible()"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T072",
     "criterion": "Falhar rede/500 e recuperar",
     "expected": "Feedback, retry limitado e nova tentativa preservam contexto",
-    "testFiles": ["tests/e2e/quality.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "testFiles": ["tests/e2e/quality.spec.ts", "tests/e2e/recovery.spec.ts"],
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/quality.spec.ts",
+        "title": "T072 transient failures stop retrying and recover on request",
+        "line": 93,
+        "assertions": [
+          {
+            "line": 98,
+            "assertion": "expect(page.getByRole(\"alert\")).toContainText(\"temporariamente\")"
+          },
+          {
+            "line": 100,
+            "assertion": "expect(page.locator(\".nft-grid .nft-card\")).toHaveCount(4)"
+          }
+        ]
+      },
+      {
+        "file": "tests/e2e/recovery.spec.ts",
+        "title": "T072 initial favorites failure exposes retry and recovers",
+        "line": 80,
+        "assertions": [
+          {
+            "line": 84,
+            "assertion": "expect( page.getByRole(\"textbox\", { name: \"Nome de exibição\", exact: true }), ).toBeVisible()"
+          },
+          {
+            "line": 91,
+            "assertion": "expect( page.getByRole(\"button\", { name: \"Tentar novamente\" }), ).toBeVisible()"
+          },
+          {
+            "line": 94,
+            "assertion": "expect(page.locator(\".skeleton\")).toHaveCount(0)"
+          },
+          {
+            "line": 96,
+            "assertion": "expect( page.getByRole(\"heading\", { name: \"Sua lista ainda está vazia\" }), ).toBeVisible()"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T073",
     "criterion": "Atualizar em background com conteúdo já presente",
     "expected": "Mantém conteúdo com indicador; não substitui por loading inicial indevido",
-    "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "testFiles": [
+      "tests/e2e/accessibility.spec.ts",
+      "tests/e2e/catalog.spec.ts",
+      "tests/e2e/startup.spec.ts"
+    ],
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/accessibility.spec.ts",
+        "title": "T073 background refresh preserves catalog and announces progress",
+        "line": 161,
+        "assertions": [
+          {
+            "line": 165,
+            "assertion": "expect(cards).toHaveCount(9)"
+          },
+          {
+            "line": 166,
+            "assertion": "expect(page.locator(\"#main-content\")).toHaveAttribute( \"data-connection\", \"connected\", )"
+          },
+          {
+            "line": 172,
+            "assertion": "expect(page.locator(\".background-status\")).toHaveText( \"Atualizando resultados…\", )"
+          },
+          {
+            "line": 175,
+            "assertion": "expect(cards).toHaveCount(9)"
+          },
+          {
+            "line": 176,
+            "assertion": "expect(page.locator(\".skeleton\")).toHaveCount(0)"
+          },
+          {
+            "line": 177,
+            "assertion": "expect(cards.first()).toContainText(\"2.19 ETH\")"
+          }
+        ]
+      },
+      {
+        "file": "tests/e2e/catalog.spec.ts",
+        "title": "T006 T073 obsolete search response cannot replace the latest result",
+        "line": 101,
+        "assertions": [
+          {
+            "line": 112,
+            "assertion": "expect(page.locator(\".nft-grid .nft-card-name\").first()).toContainText( \"Golden\", )"
+          },
+          {
+            "line": 115,
+            "assertion": "expect( page.locator(\".nft-grid .nft-card-name\").filter({ hasNotText: \"Golden\" }), ).toHaveCount(0)"
+          }
+        ]
+      },
+      {
+        "file": "tests/e2e/startup.spec.ts",
+        "title": "T009 T073 public snapshots hydrate without errors and reconcile persisted data",
+        "line": 4,
+        "assertions": [
+          {
+            "line": 24,
+            "assertion": "expect(payload.path).toBe(route)"
+          },
+          {
+            "line": 25,
+            "assertion": "expect(payload.data.queries.length).toBeGreaterThan(0)"
+          },
+          {
+            "line": 26,
+            "assertion": "expect( payload.data.queries.every((query: { queryKey: unknown[] }) => [\"catalog\", \"nft\"].includes(String(query.queryKey[0])), ), ).toBe(true)"
+          },
+          {
+            "line": 31,
+            "assertion": "expect(JSON.stringify(payload)).not.toMatch( /passwordHash|kurio-session|collector\\.a@example/, )"
+          },
+          {
+            "line": 35,
+            "assertion": "expect(page.locator(\"html\")).toHaveAttribute( \"data-network-ready\", \"true\", )"
+          },
+          {
+            "line": 39,
+            "assertion": "expect(page.locator(\".cart-link\")).toHaveAttribute( \"aria-label\", \"Carrinho, 2 itens\", )"
+          },
+          {
+            "line": 43,
+            "assertion": "expect( page .locator(route === \"/\" ? \".nft-grid .nft-card\" : \".detail-info\") .first(), ).toContainText(\"2.19 ETH\")"
+          },
+          {
+            "line": 48,
+            "assertion": "expect(page.locator(\"#main-content\")).toHaveAttribute( \"data-connection\", \"connected\", )"
+          },
+          {
+            "line": 53,
+            "assertion": "expect(errors).toEqual([])"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T074",
     "criterion": "Resetar cenário após alterações em todos os recursos",
     "expected": "Dados, versões, filas, sessão e pedidos retornam ao seed conhecido",
     "testFiles": ["tests/e2e/quality.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/quality.spec.ts",
+        "title": "T074 reset restores sessions, versions, cart, favorites and orders",
+        "line": 102,
+        "assertions": [
+          {
+            "line": 111,
+            "assertion": "expect(page.locator(\".header-actions\")).toContainText(\"Entrar\")"
+          },
+          {
+            "line": 113,
+            "assertion": "expect((await api<string[]>(page, \"GET\", \"/favorites\")).data).toEqual([])"
+          },
+          {
+            "line": 114,
+            "assertion": "expect((await api<CartView>(page, \"GET\", \"/cart\")).data.lines).toEqual([])"
+          },
+          {
+            "line": 116,
+            "assertion": "expect(page.locator(\".detail-price\")).toHaveText(\"1.19 ETH\")"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T075",
     "criterion": "Capturar home/detalhe/carrinho/pagamento em desktop e mobile",
     "expected": "8 baselines versionadas com fontes/dados/relógio estáveis",
     "testFiles": ["tests/e2e/visual.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/visual.spec.ts",
+        "title": "T075 visual ${route}",
+        "line": 6,
+        "assertions": [
+          {
+            "line": 17,
+            "assertion": "expect(page.locator(\".skeleton\")).toHaveCount(0)"
+          },
+          {
+            "line": 28,
+            "assertion": "expect(page.locator(\".connection-notice\")).toHaveCount(0)"
+          },
+          {
+            "line": 29,
+            "assertion": "expect(page).toHaveScreenshot(`${route}.png`, { fullPage: true })"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T076",
     "criterion": "Abrir rotas diretas e refresh no deploy",
     "expected": "SPA, MSW, Socket.IO e assets funcionando no mesmo commit",
-    "testFiles": [],
-    "evidence": "Hosted smoke command and delivery verification report"
+    "testFiles": ["tests/e2e/smoke.spec.ts", "tests/e2e/startup.spec.ts"],
+    "evidence": "Same tests executed against the published URL; exact commit recorded in delivery evidence.",
+    "tests": []
   },
   {
     "id": "T077",
     "criterion": "Reproduzir instalação em checkout limpo",
     "expected": "Tipos, lint, build, E2E e auditoria seguem README; sem serviços privados",
-    "testFiles": [],
-    "evidence": "GitHub Actions: clean checkout and complete checks workflow"
+    "testFiles": [".github/workflows/checks.yml"],
+    "evidence": "Clean checkout, npm ci, typecheck, lint, unit tests, production build and E2E in GitHub Actions.",
+    "tests": []
   },
   {
     "id": "T078",
     "criterion": "Rodar home/detalhe em mobile/desktop três vezes",
     "expected": "12 relatórios HTML/JSON, medianas 90/95/95/90 e LCP/CLS/TBT; desvios explicados",
-    "testFiles": [],
-    "evidence": "evidence/lighthouse/: 12 reports, mobile performance below target documented"
+    "testFiles": ["audit/config.mjs", "audit/run.mjs"],
+    "evidence": "evidence/lighthouse/summary.json and all 12 HTML/JSON pairs; median thresholds enforced by exit code.",
+    "tests": []
   },
   {
     "id": "T079",
     "criterion": "Usar social, newsletter, recuperação, editorial e explorer",
     "expected": "Sem OAuth/envio/transação real ou sucesso falso; mensagem/destino coerente",
     "testFiles": ["tests/e2e/quality.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/quality.spec.ts",
+        "title": "T079 auxiliary actions explain scope without pretending to send",
+        "line": 118,
+        "assertions": [
+          {
+            "line": 126,
+            "assertion": "expect(page.getByRole(\"dialog\")).toContainText(\"demonstração\")"
+          },
+          {
+            "line": 132,
+            "assertion": "expect(page.getByRole(\"dialog\")).toContainText( \"Nenhum e-mail foi cadastrado\", )"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T080",
     "criterion": "Percorrer checkout completo em 390 px com teclado aberto",
     "expected": "Todos os campos/revisão acessíveis; CTA não encobre conteúdo",
-    "testFiles": ["tests/e2e/quality.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "testFiles": [
+      "tests/e2e/accessibility.spec.ts",
+      "tests/e2e/quality.spec.ts"
+    ],
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/accessibility.spec.ts",
+        "title": "T069 T080 T081 all nine screens and favorites fit required widths",
+        "line": 122,
+        "assertions": [
+          {
+            "line": 149,
+            "assertion": "expect(page.locator(\"#main-content\")).not.toBeEmpty()"
+          },
+          {
+            "line": 150,
+            "assertion": "expect(page.locator(\".skeleton\")).toHaveCount(0)"
+          },
+          {
+            "line": 151,
+            "assertion": "expect( await page.evaluate( () => document.documentElement.scrollWidth <= window.innerWidth + 1, ), `${route} at ${width}`, ).toBe(true)"
+          }
+        ]
+      },
+      {
+        "file": "tests/e2e/accessibility.spec.ts",
+        "title": "T080 checkout remains operable in a short mobile viewport",
+        "line": 180,
+        "assertions": [
+          {
+            "line": 186,
+            "assertion": "expect(page.locator(\".skeleton\")).toHaveCount(0)"
+          },
+          {
+            "line": 193,
+            "assertion": "expect .poll( () => field.evaluate((element) => { const rect = element.getBoundingClientRect(); const hit = document.elementFromPoint( rect.x + rect.width / 2, rect.y + rect.height / 2, ); return { inside: rect.top >= -1 && rect.bottom <= innerHeight + 1, uncovered: hit === element || element.contains(hit), }; }), { message: (await field.getAttribute(\"id\")) ?? \"checkout field\" }, ) .toEqual({ inside: true, uncovered: true })"
+          },
+          {
+            "line": 218,
+            "assertion": "expect(page.locator(\"#quote-review\")).toBeFocused()"
+          },
+          {
+            "line": 219,
+            "assertion": "expect( page.getByRole(\"heading\", { name: \"Revise e confirme\" }), ).toBeVisible()"
+          },
+          {
+            "line": 225,
+            "assertion": "expect( page.getByRole(\"heading\", { name: \"Compra confirmada!\" }), ).toBeVisible()"
+          }
+        ]
+      },
+      {
+        "file": "tests/e2e/quality.spec.ts",
+        "title": "T069 T080 T081 no overflow at 390, 768, 1440 or 200 percent equivalent width",
+        "line": 39,
+        "assertions": [
+          {
+            "line": 55,
+            "assertion": "expect(page.locator(\"#main-content\")).not.toBeEmpty()"
+          },
+          {
+            "line": 56,
+            "assertion": "expect( await page.evaluate( () => document.documentElement.scrollWidth <= window.innerWidth + 1, ), `${route} at ${width}`, ).toBe(true)"
+          }
+        ]
+      }
+    ],
+    "limitations": "Short viewport emulates loss of available height; physical iOS/Android keyboard behavior is not certified."
   },
   {
     "id": "T081",
     "criterion": "Usar perfil, carteiras e confirmação em mobile",
     "expected": "Três adaptações completas sem frame específico",
-    "testFiles": ["tests/e2e/quality.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "testFiles": [
+      "tests/e2e/accessibility.spec.ts",
+      "tests/e2e/quality.spec.ts"
+    ],
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/accessibility.spec.ts",
+        "title": "T069 T080 T081 all nine screens and favorites fit required widths",
+        "line": 122,
+        "assertions": [
+          {
+            "line": 149,
+            "assertion": "expect(page.locator(\"#main-content\")).not.toBeEmpty()"
+          },
+          {
+            "line": 150,
+            "assertion": "expect(page.locator(\".skeleton\")).toHaveCount(0)"
+          },
+          {
+            "line": 151,
+            "assertion": "expect( await page.evaluate( () => document.documentElement.scrollWidth <= window.innerWidth + 1, ), `${route} at ${width}`, ).toBe(true)"
+          }
+        ]
+      },
+      {
+        "file": "tests/e2e/quality.spec.ts",
+        "title": "T069 T080 T081 no overflow at 390, 768, 1440 or 200 percent equivalent width",
+        "line": 39,
+        "assertions": [
+          {
+            "line": 55,
+            "assertion": "expect(page.locator(\"#main-content\")).not.toBeEmpty()"
+          },
+          {
+            "line": 56,
+            "assertion": "expect( await page.evaluate( () => document.documentElement.scrollWidth <= window.innerWidth + 1, ), `${route} at ${width}`, ).toBe(true)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T082",
     "criterion": "Ler abas de detalhes/avaliações e usar relacionados",
     "expected": "Conteúdo fictício coerente e navegação real; sem avaliações de pessoas reais",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/catalog.spec.ts",
+        "title": "T082 detail tabs expose attributes, honest empty reviews and related navigation",
+        "line": 6,
+        "assertions": [
+          {
+            "line": 11,
+            "assertion": "expect(page.getByRole(\"tabpanel\")).toContainText(\"Esmeralda\")"
+          },
+          {
+            "line": 15,
+            "assertion": "expect(page.getByRole(\"tabpanel\")).toContainText( \"Ainda não há avaliações\", )"
+          },
+          {
+            "line": 21,
+            "assertion": "expect(page).toHaveURL(new RegExp(href!))"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T083",
     "criterion": "Usar tabs Todos/Novos/Em alta, busca mobile e filtros em drawer",
     "expected": "Estado preservado na URL e resultados coerentes",
     "testFiles": ["tests/e2e/catalog.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/catalog.spec.ts",
+        "title": "T002 T004 T083 combined category/network/price filters reset page",
+        "line": 54,
+        "assertions": [
+          {
+            "line": 58,
+            "assertion": "expect(page).toHaveURL(/page=2/)"
+          },
+          {
+            "line": 66,
+            "assertion": "expect(page).toHaveURL(/page=1/)"
+          },
+          {
+            "line": 73,
+            "assertion": "expect(page.locator(\".nft-grid .nft-card\")).toHaveCount(2)"
+          },
+          {
+            "line": 74,
+            "assertion": "expect(page).toHaveURL(/categories/)"
+          },
+          {
+            "line": 76,
+            "assertion": "expect(page.locator(\".nft-grid .nft-card\")).toHaveCount(2)"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "T084",
     "criterion": "Abrir /login direto, refresh e fechar diálogo com return inválido",
     "expected": "Fallback seguro, sem open redirect ou dependência de histórico inexistente",
     "testFiles": ["tests/e2e/account.spec.ts"],
-    "evidence": "Playwright: desktop and mobile"
+    "evidence": "Playwright: desktop and mobile",
+    "tests": [
+      {
+        "file": "tests/e2e/account.spec.ts",
+        "title": "T084 direct login rejects external return destinations",
+        "line": 326,
+        "assertions": [
+          {
+            "line": 336,
+            "assertion": "expect(page).toHaveURL((url) => url.pathname === \"/\")"
+          },
+          {
+            "line": 337,
+            "assertion": "expect(page.getByRole(\"heading\", { name: /SEJA DONO/ })).toBeVisible()"
+          }
+        ]
+      }
+    ]
   }
 ]

@@ -62,3 +62,9 @@ Erros relevantes: `VALIDATION_ERROR` 422, `SESSION_EXPIRED` 401, `FORBIDDEN` 403
 `order.updated` usa o mesmo envelope, resourceId do pedido, userId do dono e data.status. `subscribe` envia `{token}` ao socket. Duplicatas e versões menores/iguais são ignoradas. O evento serve para invalidar e reconciliar REST; não substitui a cotação nem o snapshot. O domínio emite depois de confirmar a transação. O cliente libera listeners ao trocar sessão/desmontar.
 
 Tipos de ação: `scenario.set`, `clock.advance`, `session.expire`, `nft.change`, `order.resolve`, `socket.disconnect`, `socket.reconnect`. `nft.change` aceita nftId/editionId, priceEth ou available e flags duplicate/old. `order.resolve` aceita orderId e confirmed/declined. Os testes usam essas mesmas rotas MSW; não escrevem diretamente no repositório ou cache da aplicação.
+
+## Barreiras determinísticas de teste
+
+`network.hold` e `network.release` recebem `{method, path, phase}`. A fase `request` (padrão) segura a operação antes da transação; `response` segura uma resposta já calculada. `events.hold` retém eventos `order.updated`; `events.release` libera a fila e aguarda as verificações de sessão dos subscribers. Os eventos continuam passando pelo binding e pelo cliente Socket.IO. O reset libera requisições e descarta eventos retidos. Essas ações permitem trocar de usuário antes de soltar uma resposta 200/401 ou um evento antigo, sem sleeps arbitrários.
+
+O upload de avatar verifica limite, MIME e decodificação da imagem antes de iniciar a transação. Bytes inválidos declarados como PNG retornam 422 e preservam o avatar anterior.

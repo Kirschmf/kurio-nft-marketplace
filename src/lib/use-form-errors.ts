@@ -1,7 +1,12 @@
-import { useEffect } from "react";
-export function useFormErrors(errors: Record<string, string[]>) {
+import { useEffect, type RefObject } from "react";
+export function useFormErrors(
+  errors: Record<string, string[]>,
+  scope?: RefObject<HTMLElement | null>,
+) {
   useEffect(() => {
     if (Object.keys(errors).length)
-      document.querySelector<HTMLInputElement>("[aria-invalid=true]")?.focus();
-  }, [errors]);
+      (scope?.current ?? document)
+        .querySelector<HTMLElement>("[aria-invalid=true]")
+        ?.focus();
+  }, [errors, scope]);
 }

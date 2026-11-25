@@ -2,7 +2,7 @@
 
 ## Fronteira de rede
 
-A SPA usa TanStack Router para rotas, busca e proteção; TanStack Query para consultas, mutations e invalidação; Axios para todo o transporte REST da aplicação. O MSW intercepta HTTP e WebSocket antes da montagem do React. Isso também precisa ocorrer antes do import de `socket.io-client`: Engine.IO captura o construtor WebSocket durante a importação.
+A SPA usa TanStack Router para rotas, busca e proteção; TanStack Query para consultas, mutations e invalidação; Axios para todo o transporte REST da aplicação. A inicialização de MSW começa em paralelo à interface. Toda chamada Axios aguarda a barreira de rede, e o import de `socket.io-client` aguarda essa mesma barreira: Engine.IO captura o construtor WebSocket durante a importação.
 
 Um repositório IndexedDB guarda o estado inteiro do servidor demonstrativo. Uma transação de escrita lê, verifica e grava carrinho, reservas, pedidos e idempotência atomicamente. Criptografia, arquivos, rede e timers ficam fora dessa transação. Catálogo, favoritos, perfil, carteiras, cotação, recibo e eventos usam a mesma fonte. BroadcastChannel encaminha eventos de domínio entre abas da mesma origem; cada aba ainda recebe esses eventos pela conexão MSW → Socket.IO → cliente. Não há servidor externo nem coordenação entre navegadores.
 
@@ -40,7 +40,9 @@ O transporte é exclusivamente WebSocket, Engine.IO v4 / Socket.IO v4, namespace
 
 ## Interface e Figma
 
-A identidade KURIO, paleta marrom/cobre, composição monoespaçada e artes dos frames são preservadas. As quatro imagens foram recortadas dos PNGs exportados do Figma; masters PNG e variantes WebP/thumbnail ficam locais. Não há imagem da tela inteira usada como interface. A tipografia interna exata ainda não foi confirmada: DejaVu Sans Mono é uma substituição local licenciada, registrada em `public/assets/FONT-LICENSE.txt`. Isso impede afirmar fidelidade pixel a pixel.
+A identidade KURIO, a paleta marrom/cobre e a composição monoespaçada seguem os 15 frames exportados. O SVG nativo confirma **Roboto Mono**. Os arquivos regular/medium/bold são locais, com subset dos caracteres usados em português e licença SIL OFL em `public/assets/FONT-LICENSE.txt`. Os quatro PNGs originais de 1254 × 1254, extraídos dos SVGs sem recompressão, estão em `assets/figma/`; WebP de 450/900 px e miniaturas atendem aos tamanhos de exibição. Os cinco ícones de login/provedores também vieram do arquivo. `docs/assets.json` registra origem, operações e hashes; `docs/figma-reference.json` registra tipografia e posições dos 15 frames. Nenhuma tela inteira é usada como interface.
+
+A comparação visual é manual, apoiada nessas medidas e nas capturas da implementação. Não há promessa de igualdade pixel a pixel: dados preenchidos, validações, estados assíncronos e controles de demonstração mudam a altura das páginas. Bordas de campos e foco têm contraste mais forte. A ordenação permanece disponível no mobile; controles de adicionar, remover e favoritar continuam explícitos. Não reproduzimos avaliações numéricas sem fixtures que as sustentem.
 
 Campos e números inconsistentes nos frames usam dados coerentes com a API. Os números de categorias refletem fixtures reais. Filtros de preço usam inputs explícitos para permitir 18 casas e teclado. As miniaturas mostram enquadramentos da mesma arte, pois não foram fornecidas imagens alternativas do NFT. Perfil, carteiras e confirmação mobile adaptam o desktop. O pagamento mobile tem etapas Dados → Carteira/rede → Revisão; o espaço inferior permite rolar além da barra fixa.
 
@@ -50,6 +52,10 @@ Carteira secundária “igual à principal” salva uma cópia dos campos naquel
 
 ## Publicação e reprodução
 
-O build estático inclui MSW, fontes, imagens e cenários. A hospedagem precisa de fallback SPA para caminhos que não são arquivos, preservando `/mockServiceWorker.js`. `public/_redirects` e `vercel.json` documentam/implementam opções de hospedagem; Sites é a publicação de revisão usada neste ambiente. O código e os assets executam sem o serviço de hospedagem via `npm ci && npm run dev:mocks`.
+O build estático inclui MSW, fontes, imagens e cenários. `npm run build` também pré-renderiza o catálogo e os 36 detalhes públicos usando a mesma consulta de domínio e o seed dos handlers. O adaptador SSR oficial do TanStack Router produz o HTML, estado de rota e hidratação React. Apenas consultas públicas `catalog`/`nft` entram no HTML: sessão, carrinho, perfil, carteira e pedido não são serializados. Não existe resposta fictícia de negócio em componente ou cliente Axios.
 
-As medições não removem funcionalidades nem usam uma página especial de auditoria. Configuração, condições, resultados e desvios ficam nos relatórios. Baselines Playwright são da implementação; não constituem uma comparação automática com o arquivo original do Figma.
+A pré-renderização é uma melhoria para todos os visitantes, sem detecção de Lighthouse. O CSS de produção é incorporado ao HTML; imagens e fontes locais são pré-carregadas conforme a rota. Com parâmetros de busca ou sessão existente, a aplicação monta a SPA normalmente. Após iniciar MSW, invalida o snapshot público e reconcilia o IndexedDB daquele navegador. Ações aguardam a rede; a cotação e o pedido sempre passam pelo servidor demonstrativo. `VITE_API_MODE=remote` não gera snapshots dos mocks.
+
+O build grava detalhes como `nfts/:id/index.html` e `nfts/:id.html` para hosts com resoluções distintas. A hospedagem precisa servir arquivos existentes antes do fallback SPA, preservando `/mockServiceWorker.js`. `public/_redirects` e `vercel.json` documentam opções; Sites é a publicação de revisão. O projeto executa sem esse serviço via checkout limpo.
+
+As medições carregam todas as funcionalidades, fontes e imagens. O runner mede três vezes cada página/perfil, registra o commit e se o checkout estava limpo e termina com erro se qualquer mediana ficar abaixo das metas. As baselines Playwright são da implementação; a comparação com os originais do Figma é separada.

@@ -20,6 +20,10 @@ export async function api<T = unknown>(
   error?: { code: string; details?: unknown };
 }> {
   await expect(page.locator(".site-header")).toBeAttached();
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-network-ready",
+    "true",
+  );
   return page.evaluate(
     async ({ method, path, body, key }) => {
       const token = sessionStorage.getItem("kurio-session");

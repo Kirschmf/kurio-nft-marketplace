@@ -34,6 +34,23 @@ export interface Profile {
   avatar: string | null;
   version: number;
 }
+export interface LoginInput {
+  email: string;
+  password: string;
+}
+export interface RegisterInput extends LoginInput {
+  username: string;
+  confirmPassword: string;
+}
+export type ProfileInput = Pick<
+  Profile,
+  "displayName" | "username" | "email" | "ensName" | "walletNickname"
+> & { expectedVersion: number };
+export interface PasswordInput {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
 export interface User {
   id: string;
   profile: Profile;
@@ -62,6 +79,9 @@ export interface Wallet {
   version: number;
   sameAsPrimary?: boolean;
 }
+export type WalletInput = Omit<Wallet, "id" | "userId" | "version"> & {
+  expectedVersion: number;
+};
 export interface CartLine {
   id: string;
   nftId: string;

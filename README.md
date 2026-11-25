@@ -29,6 +29,8 @@ npm run test:visual
 npm run audit:lighthouse
 ```
 
+Para testar o build otimizado localmente, use `PLAYWRIGHT_PRODUCTION=true npm run test:e2e` (PowerShell: `$env:PLAYWRIGHT_PRODUCTION="true"; npm run test:e2e`). Execute `npm run build` antes; o Playwright inicia o preview quando não há uma URL externa configurada. A CI usa essa mesma opção.
+
 Feche o preview antes da auditoria: ela inicia e encerra seu próprio servidor em 4173. Para revisar baselines intencionalmente: `npm run test:visual -- --update-snapshots`. Os relatórios ficam em `playwright-report/`, traces de falhas em `test-results/` e as 12 medições Lighthouse em `audit-results/`. Nenhum teste altera serviços externos.
 
 ## Contas fictícias
@@ -41,6 +43,8 @@ Feche o preview antes da auditoria: ela inicia e encerra seu próprio servidor e
 Cada conta começa com carteiras principal e secundária editáveis. Novas contas podem cadastrar as duas no menu de carteiras. Endereços e nomes ENS são fictícios; a conexão apenas simula um provedor.
 
 ## Configuração
+
+O build pré-renderiza apenas o catálogo e os detalhes públicos. A interface hidrata esse HTML, inicia MSW e reconcilia os dados persistidos antes de tratar as atualizações do socket. Perfil, sessão e compra continuam sendo carregados pela API simulada. A pré-renderização usa os mesmos dados de domínio e não depende de um serviço externo.
 
 As opções de `.env.example` são públicas e não contêm segredos. O padrão inicia MSW também no build de demonstração. `VITE_API_MODE=remote` desativa os mocks e pressupõe um backend que implemente os contratos de `docs/CONTRACTS.md`; esse backend não faz parte da entrega. `VITE_SCENARIO` seleciona o primeiro seed de um navegador novo; não sobrescreve dados já persistidos. `VITE_DEMO_CONTROLS=false` esconde os controles de demonstração.
 
@@ -63,4 +67,4 @@ Os demais nomes do seletor identificam receitas de teste: `duplicate-account`, `
 
 `src/pages/` contém as telas. `src/lib/` reúne contratos, cliente Axios, sessão, regras de validação, dinheiro e reconciliação. `src/mocks/` implementa o servidor demonstrativo: REST/MSW, binding Socket.IO, fixtures e repositório IndexedDB único. Os componentes não importam o repositório nem recebem dados fictícios diretamente.
 
-Leia `ARCHITECTURE.md` para as decisões e limites, `docs/CONTRACTS.md` para o transporte e `docs/VERIFICATION.md` para a cobertura e as evidências da entrega.
+Leia `ARCHITECTURE.md` para as decisões e limites, `docs/CONTRACTS.md` para o transporte e `docs/VERIFICATION.md` para a cobertura e as evidências da entrega. `docs/FIGMA.md` lista a conferência dos 15 frames e os ajustes de acessibilidade e comportamento.

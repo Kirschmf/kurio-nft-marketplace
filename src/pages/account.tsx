@@ -1,5 +1,5 @@
-import { useEffect, useState, type ReactNode } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import {
   Heart,
@@ -7,16 +7,21 @@ import {
   UserRound,
   Wallet as WalletIcon,
   Camera,
+  Activity,
+  Tag,
+  Download,
+  LifeBuoy,
 } from "lucide-react";
 import {
   api,
   auth,
   errorMessage,
   errorsFrom,
+  isCanceled,
   queryClient,
   sessionKey,
 } from "../lib/client";
-import type { Profile, Wallet } from "../lib/types";
+import type { Profile, Wallet, WalletInput } from "../lib/types";
 import {
   fieldErrors,
   profileSchema,
@@ -28,10 +33,12 @@ import { Button } from "../components/ui/button";
 import {
   Busy,
   EmptyState,
+  DemoInfo,
   ErrorState,
   Field,
   NftCard,
   PasswordField,
+  SelectField,
   Skeleton,
   useAuth,
   useFavorites,
@@ -46,10 +53,24 @@ export function AccountShell({
   title: string;
 }) {
   const user = useAuth(),
-    navigate = useNavigate();
+    navigate = useNavigate(),
+    notice = useNotice();
+  const [info, setInfo] = useState("");
+  const logout = useMutation({
+    mutationFn: () => auth.logout(),
+    onSuccess: () => navigate({ to: "/" }),
+    onError: (error) => {
+      if (!isCanceled(error))
+        notice(
+          "Você saiu neste navegador. Não foi possível avisar o servidor; a sessão remota expira automaticamente.",
+        );
+      if (!auth.get()) void navigate({ to: "/" });
+    },
+  });
   return (
     <div className="account-layout container">
       <aside className="account-sidebar">
+        <h2>Meu perfil</h2>
         <div className="account-identity">
           {user?.user.profile.avatar ? (
             <img
@@ -75,14 +96,54 @@ export function AccountShell({
             <WalletIcon size={20} />
             Minhas carteiras
           </Link>
+          <button
+            onClick={() =>
+              setInfo(
+                "Atividade não está incluída nesta demonstração. Os pedidos podem ser acompanhados pelo endereço exibido ao concluir a compra.",
+              )
+            }
+          >
+            <Activity size={20} />
+            Atividade
+          </button>
           <Link to="/favorites" activeProps={{ className: "active" }}>
             <Heart size={20} />
             Lista de interesse
           </Link>
           <button
-            onClick={() => {
-              void auth.logout().finally(() => navigate({ to: "/" }));
-            }}
+            onClick={() =>
+              setInfo(
+                "Ofertas entre colecionadores não estão disponíveis na demonstração. A compra usa o preço e a disponibilidade informados no catálogo.",
+              )
+            }
+          >
+            <Tag size={20} />
+            Ofertas
+          </button>
+          <button
+            onClick={() =>
+              setInfo(
+                "O download das obras não faz parte do desafio. O comprovante JSON fica disponível em um pedido confirmado.",
+              )
+            }
+          >
+            <Download size={20} />
+            Arquivos baixados
+          </button>
+          <button
+            onClick={() =>
+              setInfo(
+                "O atendimento não está ativo nesta demonstração. Use os cenários para reproduzir falhas de sessão, conexão e compra.",
+              )
+            }
+          >
+            <LifeBuoy size={20} />
+            Suporte
+          </button>
+          <button
+            className="logout-button"
+            disabled={logout.isPending}
+            onClick={() => logout.mutate()}
           >
             <LogOut size={20} />
             Sair
@@ -93,6 +154,7 @@ export function AccountShell({
         <h1>{title}</h1>
         {children}
       </section>
+      <DemoInfo open={!!info} onClose={() => setInfo("")} message={info} />
     </div>
   );
 }
@@ -119,15 +181,20 @@ function ProfileForm({ profile }: { profile: Profile }) {
   const [form, setForm] = useState(profile),
     [errors, setErrors] = useState<Record<string, string[]>>({}),
     [error, setError] = useState(""),
-    [busy, setBusy] = useState(false),
     [password, setPassword] = useState({
       currentPassword: "",
       newPassword: "",
       confirmPassword: "",
     }),
     [passwordError, setPasswordError] = useState(""),
+    [passwordErrors, setPasswordErrors] = useState<Record<string, string[]>>(
+      {},
+    ),
     notice = useNotice();
-  useFormErrors(errors);
+  const profileRef = useRef<HTMLFormElement>(null);
+  const passwordRef = useRef<HTMLFormElement>(null);
+  useFormErrors(errors, profileRef);
+  useFormErrors(passwordErrors, passwordRef);
   useEffect(() => setForm(profile), [profile]);
   const update = (key: keyof Profile, value: string) =>
     setForm((current) => ({ ...current, [key]: value }));
@@ -135,85 +202,70 @@ function ProfileForm({ profile }: { profile: Profile }) {
     queryClient.setQueryData(["profile", ...sessionKey()], next);
     auth.updateProfile(next);
   };
-  const submit = async (event: React.FormEvent) => {
+  const save = useMutation({
+    onMutate: () => auth.generation(),
+    mutationFn: api.saveProfile,
+    onSuccess: (next, _body, started) => {
+      if (started !== auth.generation()) return;
+      saved(next);
+      notice("Perfil atualizado.");
+    },
+    onError: (error, _body, started) => {
+      if (started !== auth.generation() || isCanceled(error)) return;
+      setError(errorMessage(error));
+      setErrors(errorsFrom(error));
+    },
+  });
+  const avatar = useMutation({
+    onMutate: () => auth.generation(),
+    mutationFn: api.avatar,
+    onSuccess: (next, file, started) => {
+      if (started !== auth.generation()) return;
+      saved(next);
+      notice(file ? "Foto atualizada." : "Foto removida.");
+    },
+    onError: (error, _file, started) => {
+      if (started !== auth.generation()) return;
+      if (!isCanceled(error)) notice(errorMessage(error));
+    },
+  });
+  const changePassword = useMutation({
+    onMutate: () => auth.generation(),
+    mutationFn: api.changePassword,
+    onSuccess: (_data, _body, started) => {
+      if (started !== auth.generation()) return;
+      setPassword({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+      notice("Senha alterada. Outras sessões foram encerradas.");
+    },
+    onError: (error, _body, started) => {
+      if (started !== auth.generation() || isCanceled(error)) return;
+      setPasswordError(errorMessage(error));
+      setPasswordErrors(errorsFrom(error));
+    },
+  });
+  const busy = save.isPending || avatar.isPending || changePassword.isPending;
+  const submit = (event: React.FormEvent) => {
     event.preventDefault();
+    if (busy) return;
     const parsed = profileSchema.safeParse(form);
     if (!parsed.success) {
       setErrors(fieldErrors(parsed.error));
       return;
     }
-    setBusy(true);
     setError("");
     setErrors({});
-    try {
-      saved(
-        await api.saveProfile({
-          ...parsed.data,
-          expectedVersion: form.version,
-        }),
-      );
-      notice("Perfil atualizado.");
-    } catch (error) {
-      setError(errorMessage(error));
-      setErrors(errorsFrom(error));
-    } finally {
-      setBusy(false);
-    }
-  };
-  const avatar = async (file?: File) => {
-    setBusy(true);
-    try {
-      saved(await api.avatar(file));
-      notice(file ? "Foto atualizada." : "Foto removida.");
-    } catch (error) {
-      notice(errorMessage(error));
-    } finally {
-      setBusy(false);
-    }
+    save.mutate({
+      ...parsed.data,
+      expectedVersion: form.version,
+    });
   };
   return (
     <>
-      <div className="avatar-editor">
-        {profile.avatar ? (
-          <img
-            src={profile.avatar}
-            width="90"
-            height="90"
-            alt="Sua foto de perfil"
-          />
-        ) : (
-          <span className="avatar-placeholder">
-            <UserRound size={40} />
-          </span>
-        )}
-        <div>
-          <label className="button button-outline button-small">
-            <Camera size={16} />
-            Alterar foto
-            <input
-              className="sr-only"
-              type="file"
-              accept="image/png,image/jpeg,image/webp"
-              disabled={busy}
-              onChange={(event) => {
-                const file = event.target.files?.[0];
-                if (file) void avatar(file);
-                event.target.value = "";
-              }}
-            />
-          </label>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => void avatar()}
-            disabled={busy || !profile.avatar}
-          >
-            Remover
-          </Button>
-          <small>PNG, JPG ou WebP. Até 2 MB.</small>
-        </div>
-      </div>
-      <form onSubmit={submit} noValidate>
+      <form ref={profileRef} onSubmit={submit} noValidate>
         <div className="form-grid">
           <Field
             label="Nome de exibição"
@@ -255,6 +307,46 @@ function ProfileForm({ profile }: { profile: Profile }) {
             error={errors.walletNickname}
             required
           />
+          <div className="avatar-editor">
+            {profile.avatar ? (
+              <img
+                src={profile.avatar}
+                width="90"
+                height="90"
+                alt="Sua foto de perfil"
+              />
+            ) : (
+              <span className="avatar-placeholder">
+                <UserRound size={40} />
+              </span>
+            )}
+            <div>
+              <label className="button button-outline button-small">
+                <Camera size={16} />
+                Alterar foto
+                <input
+                  className="sr-only"
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp"
+                  disabled={busy}
+                  onChange={(event) => {
+                    const file = event.target.files?.[0];
+                    if (file) avatar.mutate(file);
+                    event.target.value = "";
+                  }}
+                />
+              </label>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => avatar.mutate(undefined)}
+                disabled={busy || !profile.avatar}
+              >
+                Remover
+              </Button>
+              <small>PNG, JPG ou WebP. Até 2 MB.</small>
+            </div>
+          </div>
         </div>
         {error && (
           <p role="alert" className="field-error">
@@ -268,32 +360,25 @@ function ProfileForm({ profile }: { profile: Profile }) {
       <section className="password-section">
         <h2>Alterar senha</h2>
         <form
+          ref={passwordRef}
           onSubmit={(event) => {
             event.preventDefault();
+            if (busy) return;
+            setPasswordErrors({});
             const parsed = passwordSchema.safeParse(password);
             if (!parsed.success) {
+              setPasswordErrors(fieldErrors(parsed.error));
               setPasswordError(parsed.error.issues[0].message);
               return;
             }
-            setBusy(true);
             setPasswordError("");
-            void api
-              .changePassword(parsed.data)
-              .then(() => {
-                setPassword({
-                  currentPassword: "",
-                  newPassword: "",
-                  confirmPassword: "",
-                });
-                notice("Senha alterada. Outras sessões foram encerradas.");
-              })
-              .catch((error) => setPasswordError(errorMessage(error)))
-              .finally(() => setBusy(false));
+            changePassword.mutate(parsed.data);
           }}
         >
           <div className="form-grid">
             <PasswordField
               label="Senha atual"
+              error={passwordErrors.currentPassword}
               value={password.currentPassword}
               onChange={(event) =>
                 setPassword({
@@ -306,6 +391,7 @@ function ProfileForm({ profile }: { profile: Profile }) {
             />
             <PasswordField
               label="Nova senha"
+              error={passwordErrors.newPassword}
               value={password.newPassword}
               onChange={(event) =>
                 setPassword({ ...password, newPassword: event.target.value })
@@ -316,6 +402,7 @@ function ProfileForm({ profile }: { profile: Profile }) {
             />
             <PasswordField
               label="Confirmar nova senha"
+              error={passwordErrors.confirmPassword}
               value={password.confirmPassword}
               onChange={(event) =>
                 setPassword({
@@ -366,41 +453,67 @@ export function WalletsPage() {
   const current = query.data?.find((wallet) => wallet.role === tab);
   return (
     <AccountShell title="Minhas carteiras">
-      <div className="account-tabs">
-        <button
-          className={tab === "primary" ? "active" : ""}
-          onClick={() => setTab("primary")}
-        >
-          Carteira principal
-        </button>
-        <button
-          className={tab === "secondary" ? "active" : ""}
-          onClick={() => setTab("secondary")}
-        >
-          Carteira secundária
-        </button>
+      <div className="wallet-sections">
+        {(["primary", "secondary"] as const).map((role) => (
+          <section key={role}>
+            <button
+              className="wallet-section-heading"
+              aria-expanded={tab === role}
+              onClick={() => setTab(role)}
+            >
+              {role === "primary"
+                ? "Carteira principal"
+                : "Carteira secundária"}{" "}
+              <span>{tab === role ? "Editando" : "Alterar"}</span>
+            </button>
+            {tab === role && (
+              <>
+                {query.isPending ? (
+                  <Skeleton type="summary" />
+                ) : query.isError ? (
+                  <ErrorState
+                    error={query.error}
+                    retry={() => void query.refetch()}
+                  />
+                ) : (
+                  <WalletForm
+                    key={`${tab}-${current?.version ?? 0}`}
+                    wallet={current ?? initial}
+                    primary={query.data.find(
+                      (wallet) => wallet.role === "primary",
+                    )}
+                  />
+                )}
+              </>
+            )}
+          </section>
+        ))}
       </div>
-      {query.isPending ? (
-        <Skeleton type="summary" />
-      ) : query.isError ? (
-        <ErrorState error={query.error} retry={() => void query.refetch()} />
-      ) : (
-        <WalletForm
-          key={`${tab}-${current?.version ?? 0}`}
-          wallet={current ?? initial}
-          primary={query.data.find((wallet) => wallet.role === "primary")}
-        />
-      )}
     </AccountShell>
   );
 }
+
 function WalletForm({ wallet, primary }: { wallet: Wallet; primary?: Wallet }) {
   const [form, setForm] = useState(wallet),
     [errors, setErrors] = useState<Record<string, string[]>>({}),
     [error, setError] = useState(""),
-    [busy, setBusy] = useState(false),
     notice = useNotice();
   useFormErrors(errors);
+  const save = useMutation({
+    onMutate: () => auth.generation(),
+    mutationFn: (body: WalletInput) => api.saveWallet(body, wallet.id),
+    onSuccess: (_data, _body, started) => {
+      if (started !== auth.generation()) return;
+      void queryClient.invalidateQueries({ queryKey: ["wallets"] });
+      notice("Carteira salva.");
+    },
+    onError: (error, _body, started) => {
+      if (started !== auth.generation() || isCanceled(error)) return;
+      setError(errorMessage(error));
+      setErrors(errorsFrom(error));
+    },
+  });
+  const busy = save.isPending;
   const field = (key: keyof Wallet, label: string, required = true) => (
     <Field
       label={label}
@@ -416,28 +529,15 @@ function WalletForm({ wallet, primary }: { wallet: Wallet; primary?: Wallet }) {
       noValidate
       onSubmit={(event) => {
         event.preventDefault();
+        if (busy) return;
         const parsed = walletSchema.safeParse(form);
         if (!parsed.success) {
           setErrors(fieldErrors(parsed.error));
           return;
         }
-        setBusy(true);
         setError("");
         setErrors({});
-        void api
-          .saveWallet(
-            { ...parsed.data, expectedVersion: wallet.version },
-            wallet.id,
-          )
-          .then(() => {
-            void queryClient.invalidateQueries({ queryKey: ["wallets"] });
-            notice("Carteira salva.");
-          })
-          .catch((error) => {
-            setError(errorMessage(error));
-            setErrors(errorsFrom(error));
-          })
-          .finally(() => setBusy(false));
+        save.mutate({ ...parsed.data, expectedVersion: wallet.version });
       }}
     >
       {wallet.role === "secondary" && (
@@ -467,48 +567,43 @@ function WalletForm({ wallet, primary }: { wallet: Wallet; primary?: Wallet }) {
       <div className="form-grid">
         {field("displayName", "Nome de exibição")}
         {field("nickname", "Apelido da carteira")}
-        <label className="field">
-          Rede <span className="required">*</span>
-          <select
-            aria-label="Rede"
-            value={form.network}
-            disabled={form.sameAsPrimary}
-            onChange={(event) =>
-              setForm({
-                ...form,
-                network: event.target.value as Wallet["network"],
-              })
-            }
-          >
-            <option value="ethereum">Ethereum</option>
-            <option value="polygon">Polygon</option>
-            <option value="solana">Solana</option>
-          </select>
-        </label>
+        <SelectField
+          label="Rede"
+          error={errors.network}
+          required
+          value={form.network}
+          disabled={form.sameAsPrimary}
+          onChange={(event) =>
+            setForm({
+              ...form,
+              network: event.target.value as Wallet["network"],
+            })
+          }
+        >
+          <option value="ethereum">Ethereum</option>
+          <option value="polygon">Polygon</option>
+          <option value="solana">Solana</option>
+        </SelectField>
         {field("profileName", "Nome do perfil")}
         {field("address", "Endereço da carteira")}
         {field("secondaryIdentifier", "ENS ou carteira secundária", false)}
-        <label className="field">
-          Tipo de carteira <span className="required">*</span>
-          <select
-            aria-label="Tipo de carteira"
-            value={form.provider}
-            disabled={form.sameAsPrimary}
-            onChange={(event) =>
-              setForm({
-                ...form,
-                provider: event.target.value as Wallet["provider"],
-              })
-            }
-          >
-            <option value="walletconnect">WalletConnect</option>
-            <option value="metamask">MetaMask</option>
-            <option value="coinbase">Coinbase Wallet</option>
-          </select>
-          {errors.provider && (
-            <span className="field-error">{errors.provider[0]}</span>
-          )}
-        </label>
+        <SelectField
+          label="Tipo de carteira"
+          error={errors.provider}
+          required
+          value={form.provider}
+          disabled={form.sameAsPrimary}
+          onChange={(event) =>
+            setForm({
+              ...form,
+              provider: event.target.value as Wallet["provider"],
+            })
+          }
+        >
+          <option value="walletconnect">WalletConnect</option>
+          <option value="metamask">MetaMask</option>
+          <option value="coinbase">Coinbase Wallet</option>
+        </SelectField>
         {field("referralCode", "Código de indicação")}
         {field("email", "E-mail")}
         {field("ensName", "Nome ENS")}
@@ -537,16 +632,16 @@ export function FavoritesPage() {
     });
   return (
     <AccountShell title="Lista de interesse">
-      {favorites.isPending || catalog.isPending ? (
-        <Skeleton />
-      ) : favorites.isError || catalog.isError ? (
+      {favorites.isError || catalog.isError ? (
         <ErrorState
           error={favorites.error ?? catalog.error}
           retry={() => {
-            void favorites.refetch();
-            void catalog.refetch();
+            if (favorites.isError) void favorites.refetch();
+            else void catalog.refetch();
           }}
         />
+      ) : favorites.isPending || catalog.isPending ? (
+        <Skeleton />
       ) : !catalog.data.length ? (
         <EmptyState title="Sua lista ainda está vazia">
           <p>Toque no coração de uma obra para guardá-la aqui.</p>

@@ -1,37 +1,34 @@
 # Verificação da entrega
 
-A suíte contém 53 cenários executados em Chromium desktop e mobile: **106 verificações**, além de sete testes unitários e oito baselines visuais versionadas. Todos usam os handlers MSW e o cliente Socket.IO da aplicação. Cada teste começa em contexto isolado e reinicia o servidor demonstrativo.
+A suíte define 66 cenários em Chromium desktop e mobile: **132 verificações**, 12 testes unitários e oito baselines visuais versionadas. REST passa pelos handlers MSW e eventos pelo cliente Socket.IO. Os contextos são isolados e o seed é reiniciado em cada teste. O relatório HTML e os traces de falhas ficam nos artifacts da [execução em checkout limpo](https://github.com/Kirschmf/kurio-nft-marketplace/actions/workflows/checks.yml).
 
-[Execuções integrais em instalação limpa](https://github.com/Kirschmf/kurio-nft-marketplace/actions/workflows/checks.yml). O workflow instala dependências, executa tipos, lint, unitários, build e Playwright, e disponibiliza relatório HTML e traces de falhas como artifacts. O código da aplicação auditado corresponde ao commit `6752b16832c6980c0868cb1fc3cc257f48a8df5f`; os commits seguintes de testes/documentação não alteram seu comportamento. As melhorias de carregamento também foram conferidas por oito capturas visuais e 16 verificações de qualidade, além dos 32 testes de pedido/compra/socket.
+O workflow usa `npm ci`, instala Chromium, executa tipos, lint, unitários, build e a suíte inteira contra o preview de produção. A auditoria Lighthouse é um comando separado, com execução serial e perfil novo por medição.
 
-## Cobertura
+## Cobertura verificável
 
-`docs/coverage-map.json` relaciona os 84 critérios do planejamento aos arquivos executáveis. T076 corresponde ao smoke publicado; T077 à instalação limpa do workflow; T078 aos relatórios Lighthouse. O fluxo de eventos verifica também a região de status acessível (T068).
+`coverage-map.json` relaciona os 84 critérios aos títulos, arquivos, linhas e asserções dos testes. T076 usa os mesmos testes de smoke/startup na URL publicada; T077 corresponde à instalação limpa da CI; T078 aos 12 relatórios Lighthouse e suas medianas. Esses gates têm evidência externa ao teste E2E, não são contados como cenários adicionais.
 
-Larguras exercitadas: 390, 768, 1440 e 720 px. Compra completa em desktop e mobile, incluindo visitante → login → revisão → pedido confirmado → refresh → recibo. A inspeção no Chrome com zoom de 200% confirmou conteúdo de 760 CSS px dentro de viewport de 768 CSS px, sem overflow horizontal. O zoom foi restaurado.
+Há compra completa apenas com Tab/Enter, contenção/restauração de foco em login e drawer, erros associados aos campos, contraste/semântica via axe nas nove telas e favoritos, shimmer normal e preferência por movimento reduzido. A matriz de layout cobre 390, 414, 768, 1440 e 720 px em todas essas telas. O checkout com 390 × 420 testa campos focados, rolagem e confirmação com altura disponível reduzida. Isso não equivale a testar um teclado físico de celular.
 
-Depois da publicação, os mesmos testes de smoke podem ser executados contra a URL hospedada, com MSW ativo no build:
+A conferência no Chrome com zoom real de 200% não apresentou overflow horizontal no catálogo; a ampliação foi restaurada. A matriz de largura reduzida cobre as demais telas. A conferência dos 15 frames e as diferenças de UX estão em [FIGMA.md](FIGMA.md); baselines da aplicação não substituem essa comparação.
+
+A regressão de startup verifica HTML público, ausência de dados privados serializados, hidratação sem erro e reconciliação de preço/carrinho alterados antes de recarregar. As regressões de sessão seguram respostas 200/401 e um evento privado até a troca de conta; a nova conta mantém seus próprios dados.
+
+## Publicação
+
+Depois de publicar o mesmo commit:
 
 ```powershell
 $env:PLAYWRIGHT_BASE_URL='https://kurio-colecoes-matheus.famousbrush11.chatgpt.site'
-npx playwright test smoke.spec.ts
+npx playwright test smoke.spec.ts startup.spec.ts
 ```
 
-Em shells POSIX, prefixe o comando com `PLAYWRIGHT_BASE_URL=https://kurio-colecoes-matheus.famousbrush11.chatgpt.site`. Isso cobre acesso direto a detalhe, carrinho, login, checkout, pedido, refresh e atualização pelo socket. O manifesto publicado e o repositório recebem o mesmo commit pelo processo de empacotamento.
+Isso verifica catálogo → detalhe → carrinho visitante → login → compra confirmada → recibo/refresh, atualização de preço pelo socket e startup com dados persistidos. Guards, rotas inexistentes, contas e erros também fazem parte da suíte completa local/CI. O registro de entrega identifica o commit publicado e a versão salva pelo host.
 
 ## Lighthouse
 
-[Relatórios completos e análise](../evidence/lighthouse/README.md): 12 medições (duas páginas × dois perfis × três execuções), HTML/JSON, versões, ambiente, medianas, LCP, CLS e TBT. As medições mantêm fontes, imagens, MSW, dados e eventos da entrega.
+[Relatórios HTML/JSON e medianas](../evidence/lighthouse/README.md). O comando mede duas páginas × dois perfis × três execuções com build de produção e cenário padrão. Registra versões, ambiente, commit, LCP, CLS e TBT. As metas 90/95/95/90 são verificadas pelo runner; qualquer mediana abaixo delas produz saída de erro.
 
-| Página  | Perfil  | Performance | Acessibilidade | Boas práticas | SEO |
-| ------- | ------- | ----------: | -------------: | ------------: | --: |
-| Início  | Desktop |         100 |            100 |           100 | 100 |
-| Detalhe | Desktop |          99 |            100 |           100 | 100 |
-| Início  | Mobile  |          80 |            100 |           100 | 100 |
-| Detalhe | Mobile  |          81 |            100 |           100 | 100 |
+## Limites
 
-A meta de performance mobile (90) não foi atingida. O LCP mediano fica perto de 4,3 s, com CLS zero e TBT de 227–253 ms. O relatório identifica a inicialização dos módulos e mocks na cadeia crítica e registra as próximas otimizações sem omitir a limitação.
-
-## Limites da verificação
-
-As baselines são da implementação; não substituem comparação com o arquivo original. A fonte exata do Figma ainda não foi confirmada: há substituição local licenciada e documentada. Os testes mobile usam emulação Chromium, não dispositivos Android/iOS físicos. Nenhum resultado certifica segurança de produção, transações reais ou integrações blockchain, que estão fora do escopo.
+Os resultados mobile são emulação Chromium. A demonstração não integra blockchain, gateways ou autenticação de produção. Todos os dados e credenciais são fictícios. A referência tipográfica foi confirmada como Roboto Mono e as quatro artes originais foram preservadas; desvios restantes estão descritos por frame. Os relatórios verificam comportamentos e condições reproduzíveis, sem garantir nota do avaliador ou ausência absoluta de defeitos.
